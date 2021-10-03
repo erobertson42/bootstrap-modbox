@@ -1,0 +1,29 @@
+{
+  "name": "bootstrap-modbox",
+  "version": "1.0.0",
+  "description": "Native JavaScript wrapper for simple Bootstrap 5 modals",
+  "author": "Eric Robertson",
+  "license": "MIT",
+  "homepage": "[github.io page]",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erobertson42/bootstrap-modbox.git"
+  },
+  "main": "dist/bootstrap-modbox.esm.min.js",
+  "scripts": {
+    "dist": "grunt default",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.6",
+    "grunt": "^1.4.1",
+    "grunt-babel": "^8.0.0",
+    "grunt-contrib-clean": "^2.0.0",
+    "grunt-contrib-uglify": "^5.0.1",
+    "uglify-js": "^3.14.2"
+  },
+  "peerDependencies": {
+    "bootstrap": "^5.0.1"
+  }
+}
