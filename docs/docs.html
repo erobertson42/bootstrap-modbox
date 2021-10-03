@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>bootstrap-modbox - Documentation</title>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link rel="stylesheet" href="vendor/prism/prism.css">
+	<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+	<header class="bg-secondary text-light">
+		<div class="container">
+			<h1>Documentation</h1>
+		</div>
+	</header>
+
+
+	<main id="page-contents">
+		<div class="container" id="page-docs">
+			<div class="row">
+				<div class="col-lg-2 d-none d-lg-block">
+					<aside class="h-100 border-end">
+						<nav class="nav flex-column fs-5 sticky-top">
+							<a class="nav-link" href="#modals">Modals</a>
+							<a class="nav-link" href="#options">Options</a>
+							<a class="nav-link" href="#properties">Properties</a>
+							<a class="nav-link" href="#methods">Methods</a>
+							<a class="nav-link" href="#events">Events</a>
+						</nav>
+					</aside>
+				</div>
+				<div class="col-12 col-lg-10 ps-lg-4 ps-xl-5">
+					<section>
+						<h2 class="anchor" id="modals">Modals</h2>
+
+						<p>The <span class="fw-bolder">bootstrap-modbox</span> library provides several convenience class methods to easily create <span class="fw-bolder">alert</span>, <span class="fw-bolder">confirm</span>, and <span class="fw-bolder">prompt</span> type modals.  These mimic the browser dialogs that can be called by their respective JavaScript functions, except for the fact that, like native Bootstrap modals, they're asyncronous - meaning they do not block the browser thread.</p>
+						<p>In addition, custom and more advanced modals may be created by calling the constructor directly (<code>new modbox(options)</code>).</p>
+						<div class="callout callout-info">
+							<h5><i class="fas fa-info-circle"></i> Information</h5>
+							All of the class modal methods return a Promise, whereas calling the constuctor does not.  For <code>.confirm()</code> and <code>.prompt()</code>, the Promise is resolved when clicking the <code>okButton</code>, and rejected when the modal is closed in any other way (<code>closeButton</code>, 'X', <kbd>ESC</kbd> key, clicking the backdrop, etc).  For <code>.alert()</code> and its variants, which only have the single Close button, the Promise is always resolved.
+						</div>
+						<dl>
+							<dt class="anchor" id="modals-alert">modbox.alert(<code>object options</code>)</dt>
+							<dd>
+								<p>Creates an <span class="fw-bolder">alert</span> type modal.  In addition, there are several methods that create variants of this modal which are all functionally identical, but serve as shortcuts to different header styles.  Alert modals using other styles not defined as method variants may be created by passing the <code>style</code> configuration option.</p>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Variant</th>
+											<th>Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><code>modbox.info(object options)</code></td>
+											<td>Creates an <span class="fw-bolder">alert</span> type modal, with an <code>info</code> Bootstrap styled header background.</td>
+										</tr>
+										<tr>
+											<td><code>modbox.success(object options)</code></td>
+											<td>Creates an <span class="fw-bolder">alert</span> type modal, with a <code>success</code> Bootstrap styled header background.</td>
+										</tr>
+										<tr>
+											<td><code>modbox.danger(object options)</code></td>
+											<td>Creates an <span class="fw-bolder">alert</span> type modal, with a <code>danger</code> Bootstrap styled header background.</td>
+										</tr>
+										<tr>
+											<td><code>modbox.error(object options)</code></td>
+											<td>Alternate method name for the <code>.danger()</code> modal.</td>
+										</tr>
+									</tbody>
+								</table>
+							</dd>
+
+							<dt class="anchor" id="modals-confirm">modbox.confirm(<code>object options</code>)</dt>
+							<dd>Creates a <span class="fw-bolder">confirm</span> type modal.</dd>
+
+							<dt class="anchor" id="modals-prompt">modbox.prompt(<code>object options</code>)</dt>
+							<dd>
+								<p>Creates a <span class="fw-bolder">prompt</span> type modal.  The value of the input field is passed to the Promise <code>resolve()</code> function.</p>
+								<div class="callout callout-danger">
+									<h5><i class="fas fa-exclamation-triangle"></i> Important</h5>
+									The input value returned when the Promise is resolved is not sanitized in any way.  If the intent is to store or process this data, it is your responsibility to make sure it is safe.
+								</div>
+							</dd>
+
+							<dt class="anchor" id="modals-custom">new modbox(<code>object options</code>)</dt>
+							<dd>Lacks the extra scaffolding present in the class methods above, which allows for the creation of custom and more advanced modals.  Returns a modbox object.</dd>
+						</dl>
+					</section>
+
+					<section id="section-options">
+						<h2 class="anchor" id="options">Options</h2>
+
+						<p>A configuration object to be passed in to any modbox modal.  If a string is passed in place of the options object when creating a modbox, it will be used as the <code>body</code>.</p>
+						<dl>
+							<dt class="anchor" id="options-backdrop">backdrop <a href="https://getbootstrap.com/docs/5.1/components/modal/#options" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dd>
+								<p>Type: <code>boolean</code> | <code>string</code></p>
+								<p>Default: <code>true</code></p>
+								<p>Includes a modal-backdrop element. Alternatively, specify <code>static</code> for a backdrop which doesn't close the modal on click.</p>
+							</dd>
+
+							<dt class="anchor" id="options-body">body</dt>
+							<dd>
+								<p>Type: <code>string</code></p>
+								<p><span class="badge bg-danger">This option is required</span></p>
+								<p>A string consisting of plain text or HTML markup which will be used as the main body of the modal.</p>
+							</dd>
+
+							<dt class="anchor" id="options-buttons">buttons <span class="badge bg-danger float-end">Only available to custom modals</span></dt>
+							<dd>
+								<p>Type: <code>array</code></p>
+								<p>Default: <code>[]</code></p>
+								<p>Each item in the array is an object defining the button configuration.  If a custom or more advance button is necessary, a string containing the HTML markup may be passed instead of the configuration object.</p>
+								<div class="callout callout-danger">
+									<h5><i class="fas fa-exclamation-triangle"></i> Important</h5>
+									This option is only available to custom modals created by calling the constructor directly (<code>new modbox(options)</code>).
+									The class modals <code>.confirm()</code> and <code>.prompt()</code> instead have the special options <code>okButton</code> and <code>closeButton</code>, whereas <code>.alert()</code> and its variants only have <code>closeButton</code>.
+									Both of these special button objects accept the same configuration options below.
+								</div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Option</th>
+											<th>Type</th>
+											<th>Default</th>
+											<th>Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>callback</td>
+											<td><code>function</code></td>
+											<td><code>null</code></td>
+											<td>Function to be called when the button is clicked.  It is passed two arguments: the event object, and the modbox instance object.  Also, the function context (<code>this</code>) is set to the button element.</td>
+										</tr>
+										<tr>
+											<td>class</td>
+											<td><code>string</code></td>
+											<td><code>''</code></td>
+											<td>Additional class list that will be added to the button's <code>class</code> attribute.</td>
+										</tr>
+										<tr>
+											<td>close</td>
+											<td><code>boolean</code></td>
+											<td><code>true</code></td>
+											<td>Whether the modal will automatically close when the button is clicked.</td>
+										</tr>
+										<tr>
+											<td>disabled</td>
+											<td><code>boolean</code></td>
+											<td><code>false</code></td>
+											<td>Adds the <code>disabled</code> attribute.</td>
+										</tr>
+										<tr>
+											<td>icon</td>
+											<td><code>string</code></td>
+											<td><code>null</code></td>
+											<td>Class list (eg. <code>'fas fa-times'</code>) used to add an icon to the button.  The markup injected is for use by icon font libraries matching the pattern <code>&lt;i class="fas fa-times">&lt;/i></code> (Font Awesome, Material Design, etc).  Otherwise, if you are using ligatures or non-font based icon sets (img, svg, etc), the markup can be manually added to the <code>label</code> option:<br><code>'&lt;span class="material-icons">close&lt;/span> Close'</code></td>
+										</tr>
+										<tr>
+											<td>id</td>
+											<td><code>string</code></td>
+											<td><code>'modbox-btn-[random #]'</code></td>
+											<td>Sets the <code>id</code> attribute.</td>
+										</tr>
+										<tr>
+											<td>label</td>
+											<td><code>string</code></td>
+											<td><code>'Close'</code></td>
+											<td>Sets the displayed text (custom HTML markup supported).</td>
+										</tr>
+										<tr>
+											<td>outline</td>
+											<td><code>boolean</code></td>
+											<td><code>false</code></td>
+											<td>Whether to use the <a href="https://getbootstrap.com/docs/5.1/components/buttons/#outline-buttons" target="_bsdocs">outline button</a> style.</td>
+										</tr>
+										<tr>
+											<td>size</td>
+											<td><code>string</code></td>
+											<td><code>null</code></td>
+											<td>Sets an alternate button size.  Possible values:<br><code>sm, lg</code></td>
+										</tr>
+										<tr>
+											<td>style</td>
+											<td><code>string</code></td>
+											<td><code>'secondary'</code></td>
+											<td>Sets the color based on the predefined <a href="https://getbootstrap.com/docs/5.1/components/buttons/#examples" target="_bsdocs">Bootstrap utility classes</a>.  Possible values:<br><code>primary, secondary, success, danger, warning, info, light, dark, link</code></td>
+										</tr>
+										<tr>
+											<td>title</td>
+											<td><code>string</code></td>
+											<td><code>null</code></td>
+											<td>Sets the <code>title</code> attribute.</td>
+										</tr>
+									</tbody>
+								</table>
+							</dd>
+
+							<dt class="anchor" id="options-center">center</dt>
+							<dd>
+								<p>Type: <code>boolean</code></p>
+								<p>Default: <code>false</code></p>
+								<p>Vertically centers the modal within the viewport.</p>
+							</dd>
+
+							<dt class="anchor" id="options-closeButton">closeButton <span class="badge bg-danger float-end">Only available to class modals</span></dt>
+							<dd>
+								<p>Type: <code>object</code></p>
+								<p>Default: <code>[default button]</code></p>
+								<p>Configuration for the "Close" button.  This is a special option only available to the class modals <code>.alert()</code> (and variants), <code>.confirm()</code>, and <code>.prompt()</code>.  Accepts the same configuration options as a standard <code>buttons</code> object.  Also rejects the returned Promise.</p>
+							</dd>
+
+							<dt class="anchor" id="options-destroyOnClose">destroyOnClose <span class="badge bg-danger float-end">Only available to custom modals</span></dt>
+							<dd>
+								<p>Type: <code>boolean</code></p>
+								<p>Default: <code>false</code></p>
+								<p>Automaticlly calls the <code>destroy()</code> method when the modal is closed. This option is ignored for the class modals <code>.alert()</code>, <code>.confirm()</code>, and <code>.prompt()</code>, as they are always destroyed on close.</p>
+							</dd>
+
+							<dt class="anchor" id="options-defaultButton">defaultButton <span class="badge bg-danger float-end">Only available to custom modals</span></dt>
+							<dd>
+								<p>Type: <code>boolean</code></p>
+								<p>Default: <code>true</code></p>
+								<p>Automatically adds a default button to the footer which closes the modal.  This option is ignored if custom buttons are defined with the <code>buttons</code> option.  If set to <code>false</code> and no <code>buttons</code> are specified, the modal footer is hidden.</p>
+							</dd>
+
+							<dt class="anchor" id="options-defaultButtonLabel">defaultButtonLabel <span class="badge bg-danger float-end">Only available to custom modals</span></dt>
+							<dd>
+								<p>Type: <code>string</code></p>
+								<p>Default: <code>'Close'</code></p>
+								<p>Sets the displayed text on the default button.  This option is ignored if custom buttons are defined with the <code>buttons</code> option.</p>
+							</dd>
+
+							<dt class="anchor" id="options-events">events</dt>
+							<dd>
+								<p>Type: <code>object</code></p>
+								<p>Default: <code>{}</code></p>
+								<p>An object containing event keys and a corresponding callback function.  See the <a href="#events">Events</a> section for more details.</p>
+							</dd>
+
+							<dt class="anchor" id="options-fade">fade</dt>
+							<dd>
+								<p>Type: <code>boolean</code></p>
+								<p>Default: <code>true</code></p>
+								<p>Animates the modal when shown and hidden.</p>
+							</dd>
+
+							<dt class="anchor" id="options-focus">focus <a href="https://getbootstrap.com/docs/5.1/components/modal/#options" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dd>
+								<p>Type: <code>boolean</code></p>
+								<p>Default: <code>true</code></p>
+								<p>Puts the focus on the modal when initialized.</p>
+							</dd>
+
+							<dt class="anchor" id="options-icon">icon</dt>
+							<dd>
+								<p>Type: <code>string</code></p>
+								<p>Default: <code>null</code></p>
+								<p>Class list (eg. <code>'fas fa-exclamation-triangle'</code>) used to add an icon to the modal header.  The markup injected is for use by icon font libraries matching the pattern <code>&lt;i class="fas fa-exclamation-triangle">&lt;/i></code> (Font Awesome, Material Design, etc).  Otherwise, if you are using ligatures or non-font based icon sets (img, svg, etc), the markup can be manually added to the <code>title</code> option:<br><code>'&lt;span class="material-icons">warning&lt;/span> Error'</code></p>
+							</dd>
+
+							<dt class="anchor" id="options-id">id</dt>
+							<dd>
+								<p>Type: <code>string</code></p>
+								<p>Default: <code>'modbox-[random #]'</code></p>
+								<p>Sets the <code>id</code> attribute of the top-level modal element.</p>
+							</dd>
+
+							<dt class="anchor" id="options-input">input <span class="badge bg-danger float-end">Only available to .prompt() modal</span></dt>
+							<dd>
+								<p>Type: <code>object</code> | <code>string</code></p>
+								<p>Default: <code>object</code></p>
+								<p>Defines the <code>input</code> field element that will be added to the modal body.  This is a special option only available to the class modal <code>.prompt()</code>.</p>
+								<p>If a custom or more advance field is necessary, a string containing the HTML markup may be passed instead of the configuration object.  However, please note that if a custom field is used, its value will not be passed to the Promise <code>resolve()</code> function, and any necessary validation and/or logic must be handled manually (modal events, button callbacks, etc).</p>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Option</th>
+											<th>Type</th>
+											<th>Default</th>
+											<th>Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>autocomplete</td>
+											<td><code>string</code></td>
+											<td><code>'off'</code></td>
+											<td>Sets the <code>autocomplete</code> attribute.</td>
+										</tr>
+										<tr>
+											<td>class</td>
+											<td><code>string</code></td>
+											<td><code>''</code></td>
+											<td>Additional class list that will be added to the <code>class</code> attribute.</td>
+										</tr>
+										<tr>
+											<td>id</td>
+											<td><code>string</code></td>
+											<td><code>'modbox-input-[random #]'</code></td>
+											<td>Sets the <code>id</code> attribute.</td>
+										</tr>
+										<tr>
+											<td>maxlength</td>
+											<td><code>number</code></td>
+											<td><code>null</code></td>
+											<td>Sets the <code>maxlength</code> attribute.</td>
+										</tr>
+										<tr>
+											<td>minlength</td>
+											<td><code>number</code></td>
+											<td><code>null</code></td>
+											<td>Sets the <code>minlength</code> attribute.  If set, the validity of the input field will be checked when clicking the <code>okButton</code>.</td>
+										</tr>
+										<tr>
+											<td>pattern</td>
+											<td><code>string, regexp</code></td>
+											<td><code>null</code></td>
+											<td>Sets the <code>pattern</code> attribute.  If set, the validity of the input field will be checked when clicking the <code>okButton</code>.  If passing a string, backslashes much be escaped - eg. <code>/\d+/</code> or <code>'\\d+'</code>.</td>
+										</tr>
+										<tr>
+											<td>placeholder</td>
+											<td><code>string</code></td>
+											<td><code>null</code></td>
+											<td>Sets the <code>placeholder</code> attribute.</td>
+										</tr>
+										<tr>
+											<td>required</td>
+											<td><code>boolean</code></td>
+											<td><code>false</code></td>
+											<td>Adds the <code>required</code> attribute.  If <code>true</code>, the validity of the input field will be checked when clicking the <code>okButton</code>.</td>
+										</tr>
+										<tr>
+											<td>title</td>
+											<td><code>string</code></td>
+											<td><code>null</code></td>
+											<td>Sets the <code>title</code> attribute.</td>
+										</tr>
+										<tr>
+											<td>type</td>
+											<td><code>string</code></td>
+											<td><code>'text'</code></td>
+											<td>Sets the <code>type</code> attribute.</td>
+										</tr>
+										<tr>
+											<td>value</td>
+											<td><code>string</code></td>
+											<td><code>''</code></td>
+											<td>Sets the initial value of the input field.</td>
+										</tr>
+									</tbody>
+								</table>
+							</dd>
+
+							<dt class="anchor" id="options-justifyButtons">justifyButtons</dt>
+							<dd>
+								<p>Type: <code>string</code></p>
+								<p>Default: <code>null</code></p>
+								<p>Adds <a href="https://getbootstrap.com/docs/5.1/utilities/flex/#justify-content" target="_bsdocs">Bootstrap flex utility classes</a> to the modal footer to alter the alignment of the buttons.  Possible values: <code>start, end, center, between, around, evenly</code></p>
+							</dd>
+
+							<dt class="anchor" id="options-keyboard">keyboard <a href="https://getbootstrap.com/docs/5.1/components/modal/#options" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dd>
+								<p>Type: <code>boolean</code></p>
+								<p>Default: <code>true</code></p>
+								<p>Closes the modal when <kbd>ESC</kbd> key is pressed.</p>
+							</dd>
+
+							<dt class="anchor" id="options-okButton">okButton <span class="badge bg-danger float-end">Only available to class modals</span></dt>
+							<dd>
+								<p>Type: <code>object</code></p>
+								<p>Default: <code>[default button]</code></p>
+								<p>Configuration for the "OK" button.  This is a special option only available to the class modals <code>.confirm()</code> and <code>.prompt()</code>.  Accepts the same configuration options as a standard <code>buttons</code> object.  Also resolves the returned Promise, and in the case of <code>.prompt()</code>, the value of the input field is passed to the <code>resolve()</code> function.</p>
+							</dd>
+
+							<dt class="anchor" id="options-scrollable">scrollable</dt>
+							<dd>
+								<p>Type: <code>boolean</code></p>
+								<p>Default: <code>true</code></p>
+								<p>Allows long content of the modal body to scroll as opposed to scrolling the viewport.</p>
+							</dd>
+
+							<dt class="anchor" id="options-show">show <span class="badge bg-danger float-end">Only available to custom modals</span></dt>
+							<dd>
+								<p>Type: <code>boolean</code></p>
+								<p>Default: <code>false</code></p>
+								<p>Whether the modal will be shown immediately upon creation.  This option is ignored for the class modals <code>.alert()</code>, <code>.confirm()</code>, and <code>.prompt()</code>, as they are always shown immediately.</p>
+							</dd>
+
+							<dt class="anchor" id="options-size">size</dt>
+							<dd>
+								<p>Type: <code>string</code></p>
+								<p>Default: <code>null</code></p>
+								<p>Sets an alternate size for the modal.  Possible values: <code>sm, lg, xl, fullscreen</code></p>
+							</dd>
+
+							<dt class="anchor" id="options-style">style</dt>
+							<dd>
+								<p>Type: <code>string</code></p>
+								<p>Default: <code>'white'</code></p>
+								<p>Sets the header background color based on the predefined <a href="https://getbootstrap.com/docs/5.1/utilities/background/#background-color" target="_bsdocs">Bootstrap utility classes</a>.  Possible values:<br><code>primary, secondary, success, danger, warning, info, light, dark, body, white</code></p>
+							</dd>
+
+							<dt class="anchor" id="options-swapButtonOrder">swapButtonOrder</dt>
+							<dd>
+								<p>Type: <code>boolean</code></p>
+								<p>Default: <code>false</code></p>
+								<p>Reverses the order of the buttons in the modal footer.  This setting also affects where new buttons are appended when using the <code>.addButton()</code> method.</p>
+							</dd>
+
+							<dt class="anchor" id="options-title">title</dt>
+							<dd>
+								<p>Type: <code>string</code></p>
+								<p>Default: <code>'Information'</code></p>
+								<p>Sets the text displayed in the modal header (custom HTML markup supported).  If set to <code>null</code> or an empty string, the header will be hidden.</p>
+							</dd>
+
+							<dt class="anchor" id="options-titleStyle">titleStyle</dt>
+							<dd>
+								<p>Type: <code>string</code></p>
+								<p>Default: <code>null</code></p>
+								<p>Sets the title text color based on the predefined <a href="https://getbootstrap.com/docs/5.1/utilities/colors/#colors" target="_bsdocs">Bootstrap utility classes</a>.  If <code>null</code>, this will be automatically set to <code>dark</code> or <code>white</code>, depending on the value of the <code>style</code> option.  Possible values:<br><code>primary, secondary, success, danger, warning, info, light, dark, body, white, muted</code></p>
+							</dd>
+						</dl>
+					</section>
+
+					<section>
+						<h2 class="anchor" id="properties">Properties</h2>
+
+						<h5>Instance Properties</h5>
+						<p>The following properties can be referenced on any instance of a modbox object.</p>
+						<dl>
+							<dt class="anchor" id="properties-buttons">buttons</dt>
+							<dd>
+								<p>Type: <code>array</code></p>
+								<p>An array of button elements in the footer of the modal.</p>
+							</dd>
+
+							<dt class="anchor" id="properties-modal">modal</dt>
+							<dd>
+								<p>Type: <code>object</code></p>
+								<p>The native bootstrap modal object.</p>
+							</dd>
+
+							<dt class="anchor" id="properties-modalEl">modalEl</dt>
+							<dd>
+								<p>Type: <code>element</code></p>
+								<p>The top-level <code>.modal</code> DOM element.</p>
+							</dd>
+
+							<dt class="anchor" id="properties-options">options</dt>
+							<dd>
+								<p>Type: <code>object</code></p>
+								<p>The options configuration object that was used to create the modbox modal.</p>
+							</dd>
+						</dl>
+
+						<h5 class="mt-5">Class/Static Properties</h5>
+						<p>The following properties are available to the modbox class.</p>
+						<dl>
+							<dt class="anchor" id="properties-container">container</dt>
+							<dd>
+								<p>Type: <code>element</code></p>
+								<p>The <code>#modbox-container</code> DOM element that holds all modboxes.</p>
+							</dd>
+
+							<dt class="anchor" id="properties-version">version</dt>
+							<dd>
+								<p>Type: <code>string</code></p>
+								<p>The version of the modbox library being used.</p>
+							</dd>
+						</dl>
+					</section>
+
+					<section>
+						<h2 class="anchor" id="methods">Methods</h2>
+
+						<h5>Instance Methods</h5>
+						<p>The following methods can be called on any instance of a modbox object.</p>
+						<dl>
+							<dt class="anchor" id="methods-addButton">addButton(<code>object options</code>, <code>boolean appendStart</code>)</dt>
+							<dd>
+								<p>Returns: <code>element button</code></p>
+								<p>Appends a button to the footer of the modal.  If the <code>appendStart</code> argument is <code>true</code> (default <code>false</code>) or the <code>swapButtonOrder</code> option was <code>true</code> when the modal was created, new buttons will be added as the first child of the footer (to the left), otherwise they will be added as the last child (to the right).  However, the <code>appendStart</code> argument will always override the <code>swapButtonOrder</code> config option.  See the <code>buttons</code> <a href="#options-buttons">options</a> for more details.</p>
+								<p>
+									<pre>
+										<code class="line-numbers lang-js">
+											const newButton = myModbox.addButton({
+												label: 'New Button'
+											});
+										</code>
+									</pre>
+								</p>
+							</dd>
+
+							<dt class="anchor" id="methods-addEvent">addEvent(<code>string type</code>, <code>function callback</code>)</dt>
+							<dd>
+								<p>Add an event to the modal.  See the <a href="#events">Events</a> section for more details.</p>
+								<p>
+									<pre>
+										<code class="line-numbers lang-js">
+											myModbox.addEvent('hide', () => console.log('hiding modal'));
+										</code>
+									</pre>
+								</p>
+							</dd>
+
+							<dt class="anchor" id="methods-destroy">destroy()</dt>
+							<dd>
+								<p>Completely deletes the modal.  Calls <code>.dispose()</code> to clean up the stored data, and removes applicable elements from the DOM.</p>
+							</dd>
+
+							<dt class="anchor" id="methods-dispose">dispose() <a href="https://getbootstrap.com/docs/5.1/components/modal/#dispose" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dd>
+								<p>Destroys an element's modal. (Removes stored data on the DOM element)</p>
+							</dd>
+
+							<dt class="anchor" id="methods-handleUpdate">handleUpdate() <a href="https://getbootstrap.com/docs/5.1/components/modal/#handleupdate" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dd>
+								<p>Manually readjust the modal's position if the height of a modal changes while it is open (i.e. in case a scrollbar appears).</p>
+							</dd>
+
+							<dt class="anchor" id="methods-hide">hide() <a href="https://getbootstrap.com/docs/5.1/components/modal/#hide" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dd>
+								<p>Manually hides a modal. <b>Returns to the caller before the modal has actually been hidden</b> (i.e. before the <code>hidden.bs.modal</code> event occurs).</p>
+							</dd>
+
+							<dt class="anchor" id="methods-show">show(<code>element relatedTarget</code>) <a href="https://getbootstrap.com/docs/5.1/components/modal/#show" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dd>
+								<p>Manually opens a modal. <b>Returns to the caller before the modal has actually been shown</b> (i.e. before the <code>shown.bs.modal</code> event occurs).  Also, you can pass a DOM element as an argument that can be received in the modal events (as the <code>relatedTarget</code> property).</p>
+							</dd>
+
+							<dt class="anchor" id="methods-toggle">toggle() <a href="https://getbootstrap.com/docs/5.1/components/modal/#toggle-1" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dd>
+								<p>Manually toggles a modal. <b>Returns to the caller before the modal has actually been shown or hidden</b> (i.e. before the <code>shown.bs.modal</code> or <code>hidden.bs.modal</code> event occurs).</p>
+							</dd>
+						</dl>
+
+						<h5 class="mt-5">Class/Static Methods</h5>
+						<p>The following methods are available to the modbox class.</p>
+						<dl>
+							<dt class="anchor" id="methods-alert">alert(<code>object options</code>)</dt>
+							<dd>
+								<p>Returns: <code>promise</code></p>
+								<p>Creates an <span class="fw-bolder">alert</span> type modal.</p>
+							</dd>
+
+							<dt class="anchor" id="methods-confirm">confirm(<code>object options</code>)</dt>
+							<dd>
+								<p>Returns: <code>promise</code></p>
+								<p>Creates a <span class="fw-bolder">confirm</span> type modal.</p>
+							</dd>
+
+							<dt class="anchor" id="methods-danger">danger(<code>object options</code>)</dt>
+							<dd>
+								<p>Returns: <code>promise</code></p>
+								<p>Creates an <span class="fw-bolder">alert</span> type modal, with a <code>danger</code> Bootstrap styled header background.</p>
+							</dd>
+
+							<dt class="anchor" id="methods-error">error(<code>object options</code>)</dt>
+							<dd>
+								<p>Returns: <code>promise</code></p>
+								<p>Alternate method name for the <code>.danger()</code> modal.</p>
+							</dd>
+
+							<dt class="anchor" id="methods-getInstance">getInstance(<code>element modal</code>) <a href="https://getbootstrap.com/docs/5.1/components/modal/#getinstance" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dd>
+								<p>Returns: <code>object modal</code></p>
+								<p>Get the modal instance associated with a DOM element.</p>
+							</dd>
+
+							<dt class="anchor" id="methods-getOrCreateInstance">getOrCreateInstance(<code>element modal</code>) <a href="https://getbootstrap.com/docs/5.1/components/modal/#getorcreateinstance" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dd>
+								<p>Returns: <code>object modal</code></p>
+								<p>Get the modal instance associated with a DOM element, or create a new one in case it wasn't initialized.</p>
+							</dd>
+
+							<dt class="anchor" id="methods-info">info(<code>object options</code>)</dt>
+							<dd>
+								<p>Returns: <code>promise</code></p>
+								<p>Creates an <span class="fw-bolder">alert</span> type modal, with an <code>info</code> Bootstrap styled header background.</p>
+							</dd>
+
+							<dt class="anchor" id="methods-prompt">prompt(<code>object options</code>)</dt>
+							<dd>
+								<p>Returns: <code>promise</code></p>
+								<p>Creates a <span class="fw-bolder">prompt</span> type modal.</p>
+							</dd>
+
+							<dt class="anchor" id="methods-success">success(<code>object options</code>)</dt>
+							<dd>
+								<p>Returns: <code>promise</code></p>
+								<p>Creates an <span class="fw-bolder">alert</span> type modal, with a <code>success</code> Bootstrap styled header background.</p>
+							</dd>
+						</dl>
+					</section>
+
+					<section>
+						<h2 class="anchor" id="events">Events</h2>
+
+						<p>All native Bootstrap events are supported through the <code>events</code> configuration option, or by calling the <code>addEvent()</code> <a href="#methods-addEvent">instance method</a>.</p>
+						<p>
+							<pre>
+								<code class="line-numbers lang-js">
+									new modbox({
+										events: {
+											shown: () => console.log('modal shown'),
+											hidden: () => console.log('modal hidden')
+										}
+									});
+								</code>
+							</pre>
+						</p>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Type</th>
+									<th>Bootstrap Event</th>
+									<th>Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><code>show</code></td>
+									<td><code>show.bs.modal</code></td>
+									<td>This event fires immediately when the <code>show</code> instance method is called. If caused by a click, the clicked element is available as the <code>relatedTarget</code> property of the event.</td>
+								</tr>
+								<tr>
+									<td><code>shown</code></td>
+									<td><code>shown.bs.modal</code></td>
+									<td>This event is fired when the modal has been made visible to the user (will wait for CSS transitions to complete). If caused by a click, the clicked element is available as the <code>relatedTarget</code> property of the event.</td>
+								</tr>
+								<tr>
+									<td><code>hide</code></td>
+									<td><code>hide.bs.modal</code></td>
+									<td>This event is fired immediately when the <code>hide</code> instance method has been called.</td>
+								</tr>
+								<tr>
+									<td><code>hidden</code></td>
+									<td><code>hidden.bs.modal</code></td>
+									<td>This event is fired when the modal has finished being hidden from the user (will wait for CSS transitions to complete).</td>
+								</tr>
+								<tr>
+									<td><code>hidePrevented</code></td>
+									<td><code>hidePrevented.bs.modal</code></td>
+									<td>This event is fired when the modal is shown, its backdrop is <code>static</code> and a click outside the modal or the <kbd>ESC</kbd> key press is performed with the <code>keyboard</code> option set to <code>false</code>.</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+				</div>
+			</div>
+		</div>
+	</main>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js"></script>
+	<script src="vendor/prism/prism.js"></script>
+	<script src="assets/js/scripts.js"></script>
+
+	<script>
+		initPage('docs');
+	</script>
+</body>
+</html>

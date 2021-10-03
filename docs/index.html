@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>bootstrap-modbox</title>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link rel="stylesheet" href="vendor/prism/prism.css">
+	<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+	<header class="header-main bg-secondary text-light">
+		<div class="container">
+			<h1>bootstrap &middot; <span class="fw-600 text-info">modbox</span></h1>
+			<p>Native JavaScript wrapper for simple Bootstrap 5 modals.<br>Provides support for alert, confirm, and prompt type modals, as well as advanced custom dialogs.</p>
+		</div>
+	</header>
+
+
+	<main id="page-contents">
+		<div class="container" id="page-index">
+			<section>
+				<p>I know, not <i>another</i> JavaScript library for Bootstrap modals, right?</p>
+				<p>However, I found that existing libraries seem to be no longer updated/supported, for older versions of Bootstrap, and/or still require jQuery. So, I decided to write my own for Bootstrap 5, using all native JavaScript and native Bootstrap markup and CSS - there is no custom styling.</p>
+				<p>I should mention that both the standard and module versions of the library are using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#browser_compatibility" target="_mozdev">newer JavaScript features</a> (as of this writing) which are only supported in more recent versions of the major browsers; like class structures, including private fields and methods.</p>
+				<p>That said, I have also included a compatibility version of the library transpiled by Babel, if needed.  It targets the versions of all major browsers which first included class support (for specifics, check out the Grunt configuration file).  I <i>did not</i> go back as far as ES5, because Bootstrap 5 no longer supports it either.</p>
+			</section>
+
+			<section>
+				<h5>Requirements</h5>
+				<p>Just <a href="https://getbootstrap.com/" target="_bootstrap">Bootstrap</a> version 5.0.1 or greater.</p>
+			</section>
+
+			<section>
+				<h5>Getting Started</h5>
+				<p>After downloading the <a href="https://github.com/erobertson42/bootstrap-modbox/releases" target="_modboxRel">latest release</a>, you may include the standard script in your page:</p>
+				<pre>
+					<code class="lang-html">
+						&lt;script src="dist/bootstrap-modbox.min.js">&lt;/script>
+					</code>
+				</pre>
+
+				<p>or the browser compatibility script:</p>
+				<pre>
+					<code class="lang-html">
+						&lt;script src="dist/bootstrap-modbox.compat.min.js">&lt;/script>
+					</code>
+				</pre>
+
+				<p>or import as a module:</p>
+				<pre>
+					<code class="lang-js">
+						import modbox from './dist/bootstrap-modbox.esm.min.js';
+					</code>
+				</pre>
+			</section>
+
+			<section>
+				<h5>Notes</h5>
+				<ul>
+					<li>The input value returned by <code>modbox.prompt()</code> is not sanitized in any way.  If the intent is to store or process this data, it is your responsibility to make sure it is safe.</li>
+					<li>
+						<p>Safari does not yet support <a href="https://caniuse.com/mdn-javascript_classes_private_class_methods" target="_caniuse">private class methods</a> (latest version as of writing: 15).  As a work-around, I added a Grunt task to convert all private methods into private field functions:</p>
+
+						<pre>
+							<code class="line-numbers lang-js">
+								/* source */
+								#myPrivateMethod(foo, bar) {
+									// do the thing
+								}
+
+								/* dist */
+								#myPrivateMethod = (foo, bar) => {
+									// do the thing
+								}
+							</code>
+						</pre>
+
+						<p>This step is meant to be temporary, and I plan to remove it sometime after Safari adds support.</p>
+					</li>
+				</ul>
+			</section>
+		</div>
+	</main>
+
+
+	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script> -->
+	<script src="vendor/prism/prism.js"></script>
+	<script src="assets/js/scripts.js"></script>
+
+	<script>
+		initPage();
+	</script>
+</body>
+</html>

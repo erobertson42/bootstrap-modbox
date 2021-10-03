@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700&family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Poppins', sans-serif;
+}
+
+.modal-header > h5 {
+	font-family: 'Open Sans', sans-serif;
+}
+
+footer {
+	padding: 1rem 0;
+	color: rgba(255, 255, 255, .6);
+}
+
+pre[class*="language-"] {
+	margin: 1em 0;
+	border-radius: .2rem;
+}
+
+pre[class*="language-"], code[class*="language-"] {
+	font-size: 14px;
+	line-height: 18px;
+}
+
+
+.navbar {
+	padding: 20px 0;
+	transition: all 0.25s ease-in;
+}
+
+.navbar .navbar-nav {
+	font-weight: 400;
+}
+
+.navbar .offcanvas.show {
+	background-color: var(--bs-dark);
+}
+
+.navbar .offcanvas:not(.show) .navbar-nav .nav-link {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.navbar-dark .navbar-nav .nav-link:focus {
+	color: rgba(255, 255, 255, .55);
+}
+
+.navbar-dark .navbar-nav .nav-link.active:focus {
+	color: rgba(255, 255, 255, 1);
+}
+
+.navbar.navbar-stuck {
+	padding: 8px 0;
+	background-color: var(--bs-dark);
+}
+
+.navbar .vr {
+	height: 30px;
+	align-self: center;
+	background-color: #fff;
+}
+
+
+/* background pattern from Toptal Subtle Patterns - https://www.toptal.com/designers/subtlepatterns */
+header {
+	padding: 150px 0 20px 0;
+	background-image: url('../images/random_grey_variations.png');
+}
+
+header.header-main {
+	padding: 150px 0;
+	text-align: center;
+}
+
+header.header-main h1 {
+	font-weight: 300;
+}
+
+header.header-main p {
+	font-size: 1.1em;
+}
+
+header p {
+	color: rgba(255, 255, 255, .8);
+}
+
+
+main > .container {
+	padding-top: 60px;
+}
+
+main .nav {
+	font-family: 'Poppins', sans-serif;
+	margin-top: -60px;
+	padding-top: 60px;
+}
+
+
+section {
+	margin-bottom: 60px;
+}
+
+section > h2 {
+	font-weight: 200;
+}
+
+section a, footer a {
+	text-decoration: none;
+}
+
+section a:hover, footer a:hover {
+	text-decoration: underline;
+}
+
+dl {
+	margin-left: 20px;
+}
+
+dl dt {
+	font-size: 1.1rem;
+	margin-bottom: .5rem;
+	font-weight: 400;
+	line-height: 1.2;
+}
+
+dl > dd:not(:last-of-type) {
+	padding-bottom: 25px;
+	margin-bottom: 25px;
+	border-bottom: 1px solid var(--bs-gray-300);
+}
+
+dd > :last-child {
+	margin-bottom: 0;
+}
+
+section#section-options > dl > dd > p:first-of-type {
+	margin-bottom: 0;
+}
+
+
+.callout {
+	font-weight: bolder;
+	padding: 1.25rem;
+	margin-top: 1.25rem;
+	margin-bottom: 1.25rem;
+	border: 1px solid var(--bs-gray-300);
+	border-left-width: .4rem;
+	border-radius: .2rem;
+}
+
+.callout-info {
+	border-left-color: rgb(var(--bs-info-rgb));
+	background-color: rgba(var(--bs-info-rgb), .05);
+}
+
+.callout-danger {
+	border-left-color: rgb(var(--bs-danger-rgb));
+	background-color: rgba(var(--bs-danger-rgb), .05);
+}
+
+.callout.callout-info h5 {
+	color: rgb(var(--bs-info-rgb));
+}
+
+.callout.callout-danger h5 {
+	color: rgb(var(--bs-danger-rgb));
+}
+
+
+div.code-toolbar > .toolbar {
+	top: 4px;
+	right: 10px;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > button {
+	padding: 2px 6px;
+	font-size: .75em;
+	font-weight: 500;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	color: #fff;
+	background: var(--bs-info);
+	border-radius: .15rem;
+	opacity: 0.6;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	transition: opacity 0.25s ease-in-out;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > button:hover {
+	color: #fff;
+	opacity: 1;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > button:focus {
+	color: #fff;
+}
+
+
+.table tbody tr:last-of-type td {
+	border-bottom-width: 0;
+}
+
+.badge {
+	font-weight: 400;
+	border-radius: .2rem;
+}
+
+:not(.icon-only):not(.input-group-text) > i.fas {
+	margin-right: 5px;
+}
+
+.btn {
+	border-radius: .2rem;
+}
+
+.fw-600 {
+	font-weight: 600 !important;
+}
+
+
+.anchorjs-link {
+	font-weight: 400;
+	color: var(--bs-info);
+	transition: all .25s linear;
+}
+
+h2 > .anchorjs-link {
+	font-weight: 300;
+}
+
+.anchorjs-link:hover {
+	color: var(--bs-primary);
+	text-decoration: none;
+}
+
+*:hover > .anchorjs-link {
+	margin-left: -1.125em !important;
+}
+
+.anchor:before {
+	content: '';
+	display: block;
+	margin-top: -64px;
+	height: 64px;
+	width: 0;
+	visibility: hidden;
+	pointer-events: none;
+}

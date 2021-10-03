@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>bootstrap-modbox - Documentation</title>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link rel="stylesheet" href="vendor/prism/prism.css">
+	<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+	<header class="bg-secondary text-light">
+		<div class="container">
+			<h1>Examples</h1>
+		</div>
+	</header>
+
+
+	<main id="page-contents">
+		<div class="container" id="page-examples">
+			<div class="row">
+				<div class="col-lg-2 d-none d-lg-block">
+					<aside class="h-100 border-end">
+						<nav class="nav flex-column fs-5 sticky-top">
+							<a class="nav-link" href="#alert">Alert</a>
+							<a class="nav-link" href="#confirm">Confirm</a>
+							<a class="nav-link" href="#prompt">Prompt</a>
+							<a class="nav-link" href="#custom">Custom</a>
+						</nav>
+					</aside>
+				</div>
+				<div class="col-12 col-lg-10 ps-lg-4 ps-xl-5">
+					<section>
+						<h2 class="anchor" id="alert">Alert</h2>
+						<dl>
+							<dt>Basic</dt>
+							<dd>
+								<p><button type="button" class="btn btn-primary" data-example="alert-basic">Run Example</button></p>
+								<pre>
+									<code class="line-numbers lang-js" id="alert-basic">
+										modbox.alert('Pay attention to the thing.');
+									</code>
+								</pre>
+							</dd>
+
+							<dt>Using options object and Promise</dt>
+							<dd>
+								<p><button type="button" class="btn btn-primary" data-example="alert-options">Run Example</button></p>
+								<pre>
+									<code class="line-numbers lang-js" id="alert-options">
+										modbox.alert({
+											body: 'Pay attention to the thing.'
+										})
+										.then(() => console.log('Alert resolved'));
+									</code>
+								</pre>
+							</dd>
+
+							<dt>With markup and custom button options</dt>
+							<dd>
+								<p><button type="button" class="btn btn-primary" data-example="alert-markup">Run Example</button></p>
+								<pre>
+									<code class="line-numbers lang-js" id="alert-markup">
+										modbox.alert({
+											body: '&lt;div class="text-center fw-bold">Pay attention to the thing!&lt;/div>',
+											closeButton: {
+												label: 'I see it!',
+												style: 'primary',
+												outline: true
+											}
+										});
+									</code>
+								</pre>
+							</dd>
+
+							<dt>Danger/Error modal with header title and outline style button</dt>
+							<dd>
+								<p><button type="button" class="btn btn-primary" data-example="alert-error">Run Example</button></p>
+								<pre>
+									<code class="line-numbers lang-js" id="alert-error">
+										modbox.error({
+											title: 'Oops',
+											body: 'You broke the thing.',
+											closeButton: {
+												label: "It wasn't me"
+											}
+										});
+									</code>
+								</pre>
+							</dd>
+
+							<dt>Success modal with header/button icons</dt>
+							<dd>
+								<p><button type="button" class="btn btn-primary" data-example="alert-success">Run Example</button></p>
+								<pre>
+									<code class="line-numbers lang-js" id="alert-success">
+										modbox.success({
+											icon: 'fas fa-check',
+											body: 'We did the thing!',
+											closeButton: {
+												icon: 'fas fa-times'
+											}
+										});
+									</code>
+								</pre>
+							</dd>
+						</dl>
+					</section>
+
+					<section>
+						<h2 class="anchor" id="confirm">Confirm</h2>
+						<dl>
+							<dt>Using custom buttons and Promise</dt>
+							<dd>
+								<p><button type="button" class="btn btn-primary" data-example="confirm-basic">Run Example</button></p>
+								<pre>
+									<code class="line-numbers lang-js" id="confirm-basic">
+										modbox.confirm({
+											body: 'Did you pay attention to the thing?',
+											okButton: {
+												label: 'Yes',
+												size: 'lg'
+											},
+											closeButton: {
+												label: 'No',
+												size: 'sm'
+											}
+										})
+										.then(() => console.log('okButton clicked'))
+										.catch(() => console.log('okButton not clicked'));
+									</code>
+								</pre>
+							</dd>
+
+							<dt>Alternate modal size</dt>
+							<dd>
+								<p>
+									<button type="button" class="btn btn-primary confirm-size" data-size="sm">Small</button>
+									<button type="button" class="btn btn-primary confirm-size" data-size="lg">Large</button>
+									<button type="button" class="btn btn-primary confirm-size" data-size="xl">Extra Large</button>
+									<button type="button" class="btn btn-primary confirm-size" data-size="fullscreen">Full Screen</button>
+								</p>
+								<pre>
+									<code class="line-numbers lang-js" id="confirm-size">
+										modbox.confirm({
+											body: 'Should we do the thing?',
+											size: 'lg'
+										});
+									</code>
+								</pre>
+							</dd>
+						</dl>
+					</section>
+
+					<section>
+						<h2 class="anchor" id="prompt">Prompt</h2>
+						<dl>
+							<dt>Required input matching a pattern</dt>
+							<dd>
+								<p><button type="button" class="btn btn-primary" data-example="prompt-basic">Run Example</button></p>
+								<pre>
+									<code class="line-numbers lang-js" id="prompt-basic">
+										modbox.prompt({
+											body: 'What is the answer to the ultimate question of life, the universe, and everything?',
+											input: {
+												required: true,
+												pattern: /\d+/
+											}
+										})
+										.then(response => console.log(response));
+									</code>
+								</pre>
+							</dd>
+
+							<dt>Using Promise in an <code>async</code> function</dt>
+							<dd>
+								<p><button type="button" class="btn btn-primary" data-example="prompt-async">Run Example</button></p>
+								<pre>
+									<code class="line-numbers lang-js" id="prompt-async">
+										(async () => {
+											try {
+												const response = await modbox.prompt('What was the thing to which you &lt;i>definitely&lt;/i> paid attention?');
+												console.log(response);
+											}
+											catch(err) {
+												console.log('okButton not clicked');
+											}
+										})();
+									</code>
+								</pre>
+							</dd>
+
+							<dt>Custom input field</dt>
+							<dd>
+								<p><button type="button" class="btn btn-primary" data-example="prompt-custom-input">Run Example</button></p>
+								<pre>
+									<code class="line-numbers lang-js" id="prompt-custom-input">
+										modbox.prompt({
+											body: 'How many fingers am I holding up?',
+											input: `
+												&lt;select class="form-select" id="modbox-input-fingers">
+													&lt;option value="">&lt;/option>
+													&lt;option value="0">0&lt;/option>
+													&lt;option value="2">2&lt;/option>
+													&lt;option value="7">7&lt;/option>
+													&lt;option value="12">12&lt;/option>
+													&lt;option value="-1">All of them&lt;/option>
+												&lt;/select>
+											`,
+											okButton: {
+												close: false,
+												callback: (event, modal) => {
+													if (document.getElementById('modbox-input-fingers').value === '12') {
+														alert('Correct!');
+														modal.hide();
+													}
+													else {
+														alert('Wrong! Guess again.');
+													}
+												}
+											}
+										});
+									</code>
+								</pre>
+							</dd>
+						</dl>
+					</section>
+
+					<section>
+						<h2 class="anchor" id="custom">Custom</h2>
+						<div class="callout callout-info">
+							<h5><i class="fas fa-info-circle"></i> Note</h5>
+							The examples below all have the <code>destroyOnClose</code> options set to <code>true</code> only because of how they're being called/generated on this demo page.  While it's ok to use that option, normally it would not be enabled to avoid repeated DOM changes if/when the modal is opened multiple times.  Instead, best practice would be to call the modbox constructor once, then call <code>.show()</code> and <code>.hide()</code> where applicable.
+						</div>
+						<dl>
+							<dt>Multiple events and justified buttons added in various ways</dt>
+							<dd>
+								<p><button type="button" class="btn btn-primary" data-example="custom-events">Run Example</button></p>
+								<pre>
+									<code class="line-numbers lang-js" id="custom-events">
+										const myModal = new modbox({
+											id: 'myModal',
+											style: 'primary',
+											title: 'My Custom Modal',
+											body: 'Details about that thing you were meant to be doing all day.',
+											justifyButtons: 'between',
+											destroyOnClose: true,
+											buttons: [
+												{ label: 'Button 1', style: 'primary' },
+												'&lt;button type="button" class="btn btn-dark" data-bs-dismiss="modal">Button 2&lt;/button>'
+											],
+											events: {
+												shown: () => console.log('modal shown')
+											}
+										});
+
+										myModal.addButton({ label: 'Button 3', style: 'danger' }, true);
+										myModal.addEvent('hidden', () => console.log('modal hidden'));
+										myModal.show();
+									</code>
+								</pre>
+							</dd>
+
+							<dt>Centered progress indicator without header/footer</dt>
+							<dd>
+								<p><button type="button" class="btn btn-primary" data-example="custom-progress">Run Example</button></p>
+								<pre>
+									<code class="line-numbers lang-js" id="custom-progress">
+										const progress = new modbox({
+											id: 'modal-progress',
+											title: null,
+											center: true,
+											defaultButton: false,
+											destroyOnClose: true,
+											body: `
+												&lt;p>Loading the thing...&lt;/p>
+												&lt;div class="progress" style="height: 20px;">
+													&lt;div class="progress-bar" style="width: 0;">&lt;/div>
+												&lt;/div>
+											`,
+											// logic set up for this example - you would handle updating the progress bar elsewhere
+											events: {
+												shown: () => {
+													const bar = progress.modalEl.querySelector('.progress-bar');
+													let percent = 0;
+
+													const updateProgress = (interval) => {
+														percent += 25;
+														bar.setAttribute('style', `width: ${percent}%;`);
+														bar.innerText = `${percent}%`;
+
+														if (percent >= 100) {
+															clearInterval(interval);
+
+															setTimeout(() => {
+																progress.hide();
+																modbox.success('Loading complete!');
+															}, 800);
+														}
+													};
+
+													const interval = setInterval(() => {
+														updateProgress(interval);
+													}, 800);
+												}
+											}
+										});
+
+										progress.show();
+									</code>
+								</pre>
+							</dd>
+
+							<dt>Login dialog</dt>
+							<dd>
+								<p><button type="button" class="btn btn-primary" data-example="custom-login">Run Example</button></p>
+								<pre>
+									<code class="line-numbers lang-js" id="custom-login">
+										const loginBody = `
+											&lt;form>
+												&lt;div class="input-group mb-3">
+													&lt;span class="input-group-text">&lt;i class="fas fa-at">&lt;/i>&lt;/span>
+													&lt;input type="text" class="form-control" id="login-user" placeholder="Email">
+												&lt;/div>
+												&lt;div class="input-group">
+													&lt;span class="input-group-text">&lt;i class="fas fa-key">&lt;/i>&lt;/span>
+													&lt;input type="password" class="form-control" id="login-pass" placeholder="Password">
+												&lt;/div>
+											&lt;/form>
+										`;
+
+										const login = new modbox({
+											id: 'modal-login',
+											title: 'Login',
+											style: 'info',
+											center: true,
+											size: 'sm',
+											destroyOnClose: true,
+											body: loginBody,
+											buttons: [{
+												label: 'Log In',
+												style: 'primary',
+												icon: 'fas fa-sign-in-alt',
+												close: false,
+												callback: (event, modal) => {
+													/* handle login logic */
+													modal.hide();
+												}
+											}, {
+												label: 'Cancel',
+												icon: 'fas fa-times'
+											}]
+										});
+
+										login.show();
+									</code>
+								</pre>
+							</dd>
+						</dl>
+					</section>
+				</div>
+			</div>
+		</div>
+	</main>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js"></script>
+	<script src="../dist/bootstrap-modbox.min.js"></script>
+	<script src="vendor/prism/prism.js"></script>
+	<script src="assets/js/scripts.js"></script>
+
+	<script>
+		initPage('examples');
+		initExamples();
+
+		document.querySelectorAll('.confirm-size').forEach(btn => {
+			btn.addEventListener('click', () => {
+				modbox.confirm({
+					body: 'Should we do the thing?',
+					size: btn.dataset.size
+				});
+			});
+		});
+	</script>
+</body>
+</html>
