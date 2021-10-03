@@ -47,7 +47,7 @@ import modbox from './dist/bootstrap-modbox.esm.min.js';
 
 ## Documentation
 
-Full documentation and examples are available at [TODO: github page link].
+Full documentation and examples are available at https://erobertson42.github.io/bootstrap-modbox/.
 
 All of the convenience modal methods return a Promise (calling the `modbox()` constuctor directly does not).  For `.confirm()` and `.prompt()`, the Promise is resolved when clicking the OK button, and rejected when the modal is closed in any other way (Close button/'X', ESC key, clicking on backdrop, etc).  For the various alert box types that only have the single Close button, the Promise is always resolved.
 
@@ -72,55 +72,8 @@ modbox.confirm({
 		label: 'Confirm'
 	}
 })
-.then(() => console.log('Clicked Confirm button'))
-.catch(() => console.log('Clicked Cancel button'));
-```
-
-Prompt box with primary styling and a required input field:
-```javascript
-document.querySelector('#btn-prompt').addEventListener('click', async () => {
-	const response = await modbox.prompt({
-		type: 'primary',
-		body: 'What is the answer to the ultimate question of life, the universe, and everything?',
-		input: {
-			id: 'prompt-input',
-			required: true
-		}
-	});
-	modbox.info(`Response: <b>${response}</b>`);
-});
-```
-
-Advanced example:
-```javascript
-const formMarkup = '<form>...</form>';
-
-const modal = new modbox({
-	id: 'login-modal',
-	type: 'info',
-	title: 'Account Login',
-	body: formMarkup,
-	center: true,
-	buttons: [{
-		label: 'Log In',
-		type: 'primary',
-		icon: 'fas fa-sign-in',
-		close: false,
-		callback: () => {
-			// submit form data
-		}
-	}, {
-		label: 'Cancel'.
-		type: 'secondary',
-		icon: 'fas fa-times'
-	}],
-	events: {
-		shown: () => console.log('modal shown'),
-		hidden: () => console.log('modal hidden')
-	}
-});
-
-document.querySelector('#btn-login').addEventListener('click', () => modal.show());
+.then(() => console.log('Confirm button clicked'))
+.catch(() => console.log('Confirm button not clicked'));
 ```
 
 
