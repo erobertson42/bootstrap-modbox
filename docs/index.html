@@ -36,26 +36,43 @@
 
 			<section>
 				<h5>Getting Started</h5>
-				<p>After downloading the <a href="https://github.com/erobertson42/bootstrap-modbox/releases" target="_modboxRel">latest release</a>, you may include the standard script in your page:</p>
-				<pre>
-					<code class="lang-html">
-						&lt;script src="dist/bootstrap-modbox.min.js">&lt;/script>
-					</code>
-				</pre>
-
-				<p>or the browser compatibility script:</p>
-				<pre>
-					<code class="lang-html">
-						&lt;script src="dist/bootstrap-modbox.compat.min.js">&lt;/script>
-					</code>
-				</pre>
-
-				<p>or import as a module:</p>
-				<pre>
-					<code class="lang-js">
-						import modbox from './dist/bootstrap-modbox.esm.min.js';
-					</code>
-				</pre>
+				<p>The modbox library can be added to your project in several ways:</p>
+				<ul>
+					<li>
+						<a href="https://www.npmjs.com/package/bootstrap-modbox" target="_npm">NPM</a>:
+						<pre>
+							<code class="lang-plain">
+								npm i bootstrap-modbox
+							</code>
+						</pre>
+					</li>
+					<li>
+						<a href="https://unpkg.com/browse/bootstrap-modbox/" target="_unpkg">Unpkg CDN</a>:
+						<pre>
+							<code class="lang-html">
+								&lt;script src="https://unpkg.com/bootstrap-modbox">&lt;/script>
+							</code>
+						</pre>
+						<pre>
+							<code class="lang-js">
+								import modbox from 'https://unpkg.com/bootstrap-modbox@1.0.0/dist/bootstrap-modbox.esm.min.js';
+							</code>
+						</pre>
+					</li>
+					<li>
+						Download from <a href="https://github.com/erobertson42/bootstrap-modbox/releases" target="_githubRel">GitHub</a>:
+						<pre>
+							<code class="lang-html">
+								&lt;script src="dist/bootstrap-modbox.min.js">&lt;/script>
+							</code>
+						</pre>
+						<pre>
+							<code class="lang-js">
+								import modbox from './dist/bootstrap-modbox.esm.min.js';
+							</code>
+						</pre>
+					</li>
+				</ul>
 			</section>
 
 			<section>

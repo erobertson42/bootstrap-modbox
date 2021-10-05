@@ -31,18 +31,25 @@ Just [Bootstrap](https://getbootstrap.com/) version 5.0.1 or greater.
 
 ## Getting Started
 
-After downloading the [latest release](https://github.com/erobertson42/bootstrap-modbox/releases), you may include the standard script in your page:
-```html
-<script src="dist/bootstrap-modbox.min.js"></script>
-```
-or the browser compatibility script:
-```html
-<script src="dist/bootstrap-modbox.compat.min.js"></script>
-```
-or import as a module:
-```javascript
-import modbox from './dist/bootstrap-modbox.esm.min.js';
-```
+The modbox library can be added to your project in several ways:
+- [NPM](https://www.npmjs.com/package/bootstrap-modbox):
+	```
+	npm i bootstrap-modbox
+	```
+- [Unpkg CDN](https://unpkg.com/browse/bootstrap-modbox/):
+	```html
+	<script src="https://unpkg.com/bootstrap-modbox"></script>
+	```
+	```javascript
+	import modbox from 'https://unpkg.com/bootstrap-modbox@1.0.0/dist/bootstrap-modbox.esm.min.js';
+	```
+- Download from [GitHub](https://github.com/erobertson42/bootstrap-modbox/releases):
+	```html
+	<script src="dist/bootstrap-modbox.min.js"></script>
+	```
+	```javascript
+	import modbox from './dist/bootstrap-modbox.esm.min.js';
+	```
 
 
 ## Documentation
