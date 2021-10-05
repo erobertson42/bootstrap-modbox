@@ -71,12 +71,12 @@ var _addButtons = /*#__PURE__*/new WeakSet();
 var _addEvents = /*#__PURE__*/new WeakSet();
 
 /*
- * bootstrap-modbox - Native JavaScript wrapper for simple Bootstrap 5 modals
+ * bootstrap-modbox - Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
  * version: 1.0.0
  * author: Eric Robertson
  * license: MIT
  *
- * [github.io page]
+ * https://erobertson42.github.io/bootstrap-modbox/
  */
 var modbox = /*#__PURE__*/function () {
   /* private members */
