@@ -49,14 +49,14 @@ import modbox from './dist/bootstrap-modbox.esm.min.js';
 
 Full documentation and examples are available at https://erobertson42.github.io/bootstrap-modbox/.
 
-All of the convenience modal methods return a Promise (calling the `modbox()` constuctor directly does not).  For `.confirm()` and `.prompt()`, the Promise is resolved when clicking the OK button, and rejected when the modal is closed in any other way (Close button/'X', ESC key, clicking on backdrop, etc).  For the various alert box types that only have the single Close button, the Promise is always resolved.
+All of the class modal methods return a Promise, whereas calling the  constuctor does not (`new modbox()`).  For `.confirm()` and `.prompt()`, the Promise is resolved when clicking the `okButton`, and rejected when the modal is closed in any other way (`closeButton`, 'X', ESC key, clicking the backdrop, etc).  For `.alert()` and its variants, which only have the single Close button, the Promise is always resolved.
 
 Simple alert box:
 ```javascript
 modbox.alert('Pay attention to the thing.');
 ```
 
-Alert box with success styling and alternate title (similar methods also exist for `.info()` and `.error()`):
+Alert box with success styling and alternate title (similar methods also exist for `.info()`, `.danger()`, and `.error()`):
 ```javascript
 modbox.success({
 	title: 'Done!',
