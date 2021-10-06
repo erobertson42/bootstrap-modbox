@@ -72,7 +72,7 @@ var _addEvents = /*#__PURE__*/new WeakSet();
 
 /*
  * bootstrap-modbox - Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
- * version: 1.0.0
+ * version: 1.1.0
  * author: Eric Robertson
  * license: MIT
  *
@@ -132,6 +132,7 @@ var modbox = /*#__PURE__*/function () {
       center: false,
       fade: true,
       show: false,
+      relatedTarget: undefined,
       scrollable: true,
       destroyOnClose: false,
       defaultButton: true,
@@ -165,7 +166,7 @@ var modbox = /*#__PURE__*/function () {
     _classPrivateMethodGet(this, _addEvents, _addEvents2).call(this);
 
     if (_classPrivateFieldGet(this, _options).show === true) {
-      this.show();
+      this.show(_classPrivateFieldGet(this, _options).relatedTarget);
     }
   }
 
@@ -228,8 +229,12 @@ var modbox = /*#__PURE__*/function () {
   }, {
     key: "addEvent",
     value: function addEvent(type, callback) {
+      var _this2 = this;
+
       if (['show', 'shown', 'hide', 'hidden', 'hidePrevented'].includes(type) && typeof callback === 'function') {
-        _classPrivateFieldGet(this, _modalEl).addEventListener("".concat(type, ".bs.modal"), callback);
+        _classPrivateFieldGet(this, _modalEl).addEventListener("".concat(type, ".bs.modal"), function (ev) {
+          return callback.call(_classPrivateFieldGet(_this2, _modalEl), ev, _this2);
+        });
       }
     }
   }, {
@@ -249,7 +254,9 @@ var modbox = /*#__PURE__*/function () {
     }
   }, {
     key: "show",
-    value: function show(relatedTarget) {
+    value: function show() {
+      var relatedTarget = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _classPrivateFieldGet(this, _options).relatedTarget;
+
       _classPrivateFieldGet(this, _modal).show(relatedTarget);
     }
   }, {
@@ -462,7 +469,7 @@ function _buildPromiseModal() {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'alert';
   return new Promise(function (resolve, reject) {
-    var box = new modbox(options); // add buttons to modal
+    var box = new modbox(options); // build button configurations
 
     var btns = [options.closeButton];
 
@@ -477,8 +484,8 @@ function _buildPromiseModal() {
           var isValid = options.input._validate === true ? inputEl.reportValidity() : true;
 
           if (isValid) {
-            box.hide();
             resolve(inputEl.value);
+            box.hide();
           }
         };
       }
@@ -492,14 +499,24 @@ function _buildPromiseModal() {
           okCallback();
         }
       }));
-    }
+    } // add buttons to modal
+
 
     var _btns$map = btns.map(function (btnOptions) {
       return box.addButton(btnOptions);
     }),
         _btns$map2 = _slicedToArray(_btns$map, 2),
         okBtn = _btns$map2[0],
-        closeBtn = _btns$map2[1]; // settle the Promise if the modal is closed in a way other than clicking the buttons (click X, click backdrop, press ESC, etc)
+        closeBtn = _btns$map2[1]; // trigger okButton if enter key pressed within input
+
+
+    if (type === 'prompt' && _classStaticPrivateMethodGet(modbox, modbox, _typeof).call(modbox, options.input) === 'object') {
+      box.modalEl.querySelector("#".concat(options.input.id)).addEventListener('keyup', function (ev) {
+        if (ev.key === 'Enter') {
+          okBtn.click();
+        }
+      });
+    } // settle the Promise if the modal is closed in a way other than clicking the buttons (click X, click backdrop, press ESC, etc)
 
 
     box.addEvent('hide', function () {
@@ -537,10 +554,10 @@ function _buildModal2() {
   var title = '';
 
   if (_classPrivateFieldGet(this, _options).title) {
-    title = "\n\t\t\t\t<div class=\"modal-header ".concat(_classPrivateFieldGet(this, _options).style ? "bg-".concat(_classPrivateFieldGet(this, _options).style) : '', "\">\n\t\t\t\t\t<h5 class=\"modal-title text-").concat(titleStyle, "\">").concat(_classPrivateFieldGet(this, _options).icon ? "<i class=\"".concat(_classPrivateFieldGet(this, _options).icon, " me-3\"></i>") : '').concat(_classPrivateFieldGet(this, _options).title, "</h5>\n\t\t\t\t\t<button type=\"button\" class=\"").concat(closeButtonStyle, "\" data-bs-dismiss=\"modal\"></button>\n\t\t\t\t</div>\n\t\t\t").trim();
+    title = "\n\t\t\t\t<div class=\"modal-header ".concat(_classPrivateFieldGet(this, _options).style ? "bg-".concat(_classPrivateFieldGet(this, _options).style) : '', "\">\n\t\t\t\t\t<h5 class=\"modal-title text-").concat(titleStyle, "\">\n\t\t\t\t\t\t").concat(_classPrivateFieldGet(this, _options).icon ? "<i class=\"".concat(_classPrivateFieldGet(this, _options).icon, " me-3\"></i>") : '', "\n\t\t\t\t\t\t<span id=\"").concat(_classPrivateFieldGet(this, _options).id, "-title\">").concat(_classPrivateFieldGet(this, _options).title, "</span>\n\t\t\t\t\t</h5>\n\t\t\t\t\t<button type=\"button\" class=\"").concat(closeButtonStyle, "\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n\t\t\t\t</div>\n\t\t\t").trim();
   }
 
-  modbox.container.insertAdjacentHTML('beforeend', "\n\t\t\t<div class=\"modal ".concat(_classPrivateFieldGet(this, _options).fade ? 'fade' : '', "\" id=\"").concat(_classPrivateFieldGet(this, _options).id, "\" tabindex=\"-1\">\n\t\t\t\t<div class=\"modal-dialog ").concat(_classPrivateFieldGet(this, _options).scrollable ? 'modal-dialog-scrollable' : '', " ").concat(_classPrivateFieldGet(this, _options).center ? 'modal-dialog-centered' : '', " ").concat(_classPrivateFieldGet(this, _options).size ? "modal-".concat(_classPrivateFieldGet(this, _options).size) : '', "\">\n\t\t\t\t\t<div class=\"modal-content\">\n\t\t\t\t\t\t").concat(title, "\n\t\t\t\t\t\t<div class=\"modal-body\">\n\t\t\t\t\t\t\t").concat(_classPrivateFieldGet(this, _options).body, "\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"modal-footer ").concat(_classPrivateFieldGet(this, _options).justifyButtons ? "d-flex justify-content-".concat(_classPrivateFieldGet(this, _options).justifyButtons) : '', "\"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t").trim());
+  modbox.container.insertAdjacentHTML('beforeend', "\n\t\t\t<div class=\"modal ".concat(_classPrivateFieldGet(this, _options).fade ? 'fade' : '', "\" id=\"").concat(_classPrivateFieldGet(this, _options).id, "\" tabindex=\"-1\" aria-labelledby=\"").concat(_classPrivateFieldGet(this, _options).id, "-title\" aria-hidden=\"true\">\n\t\t\t\t<div class=\"modal-dialog ").concat(_classPrivateFieldGet(this, _options).scrollable ? 'modal-dialog-scrollable' : '', " ").concat(_classPrivateFieldGet(this, _options).center ? 'modal-dialog-centered' : '', " ").concat(_classPrivateFieldGet(this, _options).size ? "modal-".concat(_classPrivateFieldGet(this, _options).size) : '', "\">\n\t\t\t\t\t<div class=\"modal-content\">\n\t\t\t\t\t\t").concat(title, "\n\t\t\t\t\t\t<div class=\"modal-body\">\n\t\t\t\t\t\t\t").concat(_classPrivateFieldGet(this, _options).body, "\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"modal-footer ").concat(_classPrivateFieldGet(this, _options).justifyButtons ? "d-flex justify-content-".concat(_classPrivateFieldGet(this, _options).justifyButtons) : '', "\"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t").trim());
 
   _classPrivateFieldSet(this, _modalEl, modbox.container.querySelector("#".concat(_classPrivateFieldGet(this, _options).id)));
 
@@ -551,7 +568,7 @@ function _buildModal2() {
 }
 
 function _addButtons2() {
-  var _this2 = this;
+  var _this3 = this;
 
   if (!Array.isArray(_classPrivateFieldGet(this, _options).buttons)) {
     _classPrivateFieldGet(this, _options).buttons = [];
@@ -566,26 +583,26 @@ function _addButtons2() {
   }
 
   _classPrivateFieldGet(this, _options).buttons.forEach(function (userBtnOptions) {
-    return _this2.addButton(userBtnOptions);
+    return _this3.addButton(userBtnOptions);
   });
 }
 
 function _addEvents2() {
-  var _this3 = this;
+  var _this4 = this;
 
   Object.entries(_classPrivateFieldGet(this, _options).events).forEach(function (_ref2) {
     var _ref3 = _slicedToArray(_ref2, 2),
         type = _ref3[0],
         fn = _ref3[1];
 
-    _this3.addEvent(type, fn);
+    _this4.addEvent(type, fn);
   });
 
   if (_classPrivateFieldGet(this, _options).destroyOnClose === true) {
     this.addEvent('hidden', function () {
-      return _this3.destroy();
+      return _this4.destroy();
     });
   }
 }
 
-_defineProperty(modbox, "version", '1.0.0');
+_defineProperty(modbox, "version", '1.1.0');

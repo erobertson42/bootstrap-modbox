@@ -1,6 +1,6 @@
 /*
  * bootstrap-modbox - Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
- * version: 1.0.0
+ * version: 1.1.0
  * author: Eric Robertson
  * license: MIT
  *
@@ -8,7 +8,7 @@
  */
 class modbox {
 
-	static version = '1.0.0';
+	static version = '1.1.0';
 
 	/* private members */
 
@@ -58,7 +58,7 @@ class modbox {
 		return new Promise((resolve, reject) => {
 			const box = new modbox(options);
 
-			// add buttons to modal
+			// build button configurations
 			const btns = [options.closeButton];
 
 			if (['confirm', 'prompt'].includes(type)) {
@@ -70,8 +70,8 @@ class modbox {
 						const isValid = (options.input._validate === true) ? inputEl.reportValidity() : true;
 
 						if (isValid) {
-							box.hide();
 							resolve(inputEl.value);
+							box.hide();
 						}
 					};
 				}
@@ -88,7 +88,17 @@ class modbox {
 				});
 			}
 
+			// add buttons to modal
 			const [okBtn, closeBtn] = btns.map(btnOptions => box.addButton(btnOptions));
+
+			// trigger okButton if enter key pressed within input
+			if (type === 'prompt' && modbox.#typeof(options.input) === 'object') {
+				box.modalEl.querySelector(`#${options.input.id}`).addEventListener('keyup', (ev) => {
+					if (ev.key === 'Enter') {
+						okBtn.click();
+					}
+				});
+			}
 
 			// settle the Promise if the modal is closed in a way other than clicking the buttons (click X, click backdrop, press ESC, etc)
 			box.addEvent('hide', () => {
@@ -131,14 +141,17 @@ class modbox {
 		if (this.#options.title) {
 			title = `
 				<div class="modal-header ${this.#options.style ? `bg-${this.#options.style}` : ''}">
-					<h5 class="modal-title text-${titleStyle}">${this.#options.icon ? `<i class="${this.#options.icon} me-3"></i>` : ''}${this.#options.title}</h5>
-					<button type="button" class="${closeButtonStyle}" data-bs-dismiss="modal"></button>
+					<h5 class="modal-title text-${titleStyle}">
+						${this.#options.icon ? `<i class="${this.#options.icon} me-3"></i>` : ''}
+						<span id="${this.#options.id}-title">${this.#options.title}</span>
+					</h5>
+					<button type="button" class="${closeButtonStyle}" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 			`.trim();
 		}
 
 		modbox.container.insertAdjacentHTML('beforeend', `
-			<div class="modal ${this.#options.fade ? 'fade' : ''}" id="${this.#options.id}" tabindex="-1">
+			<div class="modal ${this.#options.fade ? 'fade' : ''}" id="${this.#options.id}" tabindex="-1" aria-labelledby="${this.#options.id}-title" aria-hidden="true">
 				<div class="modal-dialog ${this.#options.scrollable ? 'modal-dialog-scrollable' : ''} ${this.#options.center ? 'modal-dialog-centered' : ''} ${this.#options.size ? `modal-${this.#options.size}` : ''}">
 					<div class="modal-content">
 						${title}
@@ -206,6 +219,7 @@ class modbox {
 			center: false,
 			fade: true,
 			show: false,
+			relatedTarget: undefined,
 			scrollable: true,
 			destroyOnClose: false,
 			defaultButton: true,
@@ -236,7 +250,7 @@ class modbox {
 		this.#addEvents();
 
 		if (this.#options.show === true) {
-			this.show();
+			this.show(this.#options.relatedTarget);
 		}
 	}
 
@@ -302,7 +316,7 @@ class modbox {
 
 	addEvent(type, callback) {
 		if (['show', 'shown', 'hide', 'hidden', 'hidePrevented'].includes(type) && typeof callback === 'function') {
-			this.#modalEl.addEventListener(`${type}.bs.modal`, callback);
+			this.#modalEl.addEventListener(`${type}.bs.modal`, (ev) => callback.call(this.#modalEl, ev, this));
 		}
 	}
 
@@ -482,7 +496,7 @@ class modbox {
 		this.#modal.toggle();
 	}
 
-	show(relatedTarget) {
+	show(relatedTarget = this.#options.relatedTarget) {
 		this.#modal.show(relatedTarget);
 	}
 
