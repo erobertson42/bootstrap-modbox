@@ -4,7 +4,6 @@ module.exports = function(grunt) {
 		clean: ['dist/*'],
 		babel: {
 			options: {
-				// sourceMaps: true,
 				presets: ['@babel/preset-env'],
 				targets: {
 					chrome: '49',

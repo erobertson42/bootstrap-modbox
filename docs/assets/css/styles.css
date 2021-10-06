@@ -91,6 +91,10 @@ header.header-main p {
 	font-size: 1.1em;
 }
 
+header.header-main p:last-of-type {
+	margin-bottom: 0;
+}
+
 header p {
 	color: rgba(255, 255, 255, .8);
 }

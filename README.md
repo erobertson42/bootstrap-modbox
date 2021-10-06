@@ -17,11 +17,11 @@ Native JavaScript wrapper for simple Bootstrap 5 modals.  Provides support for a
 
 I know, not *another* JavaScript library for Bootstrap modals, right?
 
-However, I found that existing libraries seem to be no longer updated/supported, for older versions of Bootstrap, and/or still require jQuery.  So, I decided to write my own for Bootstrap 5, using all native JavaScript and native Bootstrap markup and CSS - there is no custom styling.
+However, I found that existing libraries seem to be no longer updated/supported, are for older versions of Bootstrap, and/or still require jQuery.  So, I decided to write my own for Bootstrap 5, using all native JavaScript and native Bootstrap markup and CSS - there is no custom styling.
 
 I should mention that both the standard and module versions of the library are using [newer JavaScript features](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#browser_compatibility) (as of this writing) which are only supported in more recent versions of the major browsers; like class structures, including private fields and methods.
 
-That said, I have also included a compatibility version of the library transpiled by Babel, if needed.  It targets the versions of all major browsers which first included class support (for specifics, check out the Grunt configuration file).  I *did not* go back as far as ES5, because Bootstrap 5 no longer supports it either.
+That said, I have also included a compatibility version of the library transpiled by Babel, if needed.  It targets the versions of all major browsers which first included class support (for specifics, check out the [Grunt configuration file](https://github.com/erobertson42/bootstrap-modbox/blob/main/Gruntfile.js)).  I *did not* go back as far as ES5, because Bootstrap 5 no longer supports it either.
 
 
 ## Requirements
@@ -36,6 +36,8 @@ The modbox library can be added to your project in several ways:
 	```
 	npm i bootstrap-modbox
 	```
+	Although since it's client-side, if you're not using a bundler (eg. Webpack), you'll also have to copy the necessary `.js` file(s) from `node_modules/bootstrap-modbox/dist` into your project folder structure and include it in your page(s) like the examples below.
+
 - [Unpkg CDN](https://unpkg.com/browse/bootstrap-modbox/):
 	```html
 	<script src="https://unpkg.com/bootstrap-modbox"></script>
@@ -43,6 +45,7 @@ The modbox library can be added to your project in several ways:
 	```javascript
 	import modbox from 'https://unpkg.com/bootstrap-modbox@1.0.0/dist/bootstrap-modbox.esm.min.js';
 	```
+
 - Download from [GitHub](https://github.com/erobertson42/bootstrap-modbox/releases):
 	```html
 	<script src="dist/bootstrap-modbox.min.js"></script>

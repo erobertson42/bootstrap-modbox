@@ -6,7 +6,7 @@
 
 	<title>bootstrap-modbox</title>
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 	<link rel="stylesheet" href="vendor/prism/prism.css">
 	<link rel="stylesheet" href="assets/css/styles.css">
@@ -16,6 +16,7 @@
 		<div class="container">
 			<h1>bootstrap &middot; <span class="fw-600 text-info">modbox</span></h1>
 			<p>Native JavaScript wrapper for simple Bootstrap 5 modals.<br>Provides support for alert, confirm, and prompt type modals, as well as advanced custom dialogs.</p>
+			<p><a class="btn btn-outline-light" href="#" target="_githubRel">Current version: <span class="fw-bolder" id="version">??</span></a></p>
 		</div>
 	</header>
 
@@ -26,7 +27,7 @@
 				<p>I know, not <i>another</i> JavaScript library for Bootstrap modals, right?</p>
 				<p>However, I found that existing libraries seem to be no longer updated/supported, for older versions of Bootstrap, and/or still require jQuery. So, I decided to write my own for Bootstrap 5, using all native JavaScript and native Bootstrap markup and CSS - there is no custom styling.</p>
 				<p>I should mention that both the standard and module versions of the library are using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#browser_compatibility" target="_mozdev">newer JavaScript features</a> (as of this writing) which are only supported in more recent versions of the major browsers; like class structures, including private fields and methods.</p>
-				<p>That said, I have also included a compatibility version of the library transpiled by Babel, if needed.  It targets the versions of all major browsers which first included class support (for specifics, check out the Grunt configuration file).  I <i>did not</i> go back as far as ES5, because Bootstrap 5 no longer supports it either.</p>
+				<p>That said, I have also included a compatibility version of the library transpiled by Babel, if needed.  It targets the versions of all major browsers which first included class support (for specifics, check out the <a href="https://github.com/erobertson42/bootstrap-modbox/blob/main/Gruntfile.js" target="_gruntfile">Grunt configuration file</a>).  I <i>did not</i> go back as far as ES5, because Bootstrap 5 no longer supports it either.</p>
 			</section>
 
 			<section>
@@ -45,6 +46,7 @@
 								npm i bootstrap-modbox
 							</code>
 						</pre>
+						<p>Although since it's client-side, if you're not using a bundler (eg. Webpack), you'll also have to copy the necessary <code>.js</code> file(s) from <code>node_modules/bootstrap-modbox/dist</code> into your project folder structure and include it in your page(s) like the examples below.</p>
 					</li>
 					<li>
 						<a href="https://unpkg.com/browse/bootstrap-modbox/" target="_unpkg">Unpkg CDN</a>:
@@ -104,12 +106,14 @@
 	</main>
 
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.min.js"></script>
+	<script src="https://unpkg.com/bootstrap-modbox"></script>
 	<script src="vendor/prism/prism.js"></script>
 	<script src="assets/js/scripts.js"></script>
 
 	<script>
 		initPage();
+		document.getElementById('version').innerText = modbox.version || '??';
 	</script>
 </body>
 </html>

@@ -6,7 +6,7 @@
 
 	<title>bootstrap-modbox - Documentation</title>
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 	<link rel="stylesheet" href="vendor/prism/prism.css">
 	<link rel="stylesheet" href="assets/css/styles.css">
@@ -379,6 +379,13 @@
 								<p>Configuration for the "OK" button.  This is a special option only available to the class modals <code>.confirm()</code> and <code>.prompt()</code>.  Accepts the same configuration options as a standard <code>buttons</code> object.  Also resolves the returned Promise, and in the case of <code>.prompt()</code>, the value of the input field is passed to the <code>resolve()</code> function.</p>
 							</dd>
 
+							<dt class="anchor" id="options-relatedTarget">relatedTarget</dt>
+							<dd>
+								<p>Type: <code>element</code></p>
+								<p>Default: <code>undefined</code></p>
+								<p>Sets the <code>relatedTarget</code> property on the event object passed to <code>show</code> and <code>shown</code> event callback functions.  Can be overridden by passing in an element when calling the <code>.show()</code> method.</p>
+							</dd>
+
 							<dt class="anchor" id="options-scrollable">scrollable</dt>
 							<dd>
 								<p>Type: <code>boolean</code></p>
@@ -533,7 +540,7 @@
 
 							<dt class="anchor" id="methods-show">show(<code>element relatedTarget</code>) <a href="https://getbootstrap.com/docs/5.1/components/modal/#show" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
 							<dd>
-								<p>Manually opens a modal. <b>Returns to the caller before the modal has actually been shown</b> (i.e. before the <code>shown.bs.modal</code> event occurs).  Also, you can pass a DOM element as an argument that can be received in the modal events (as the <code>relatedTarget</code> property).</p>
+								<p>Manually opens a modal. <b>Returns to the caller before the modal has actually been shown</b> (i.e. before the <code>shown.bs.modal</code> event occurs).  Also, you can pass a DOM element as an argument that can be received in the modal events (as the <code>relatedTarget</code> property).  If no element is passed, the <code>relatedTarget</code> modal configuration option will be used instead (if set).</p>
 							</dd>
 
 							<dt class="anchor" id="methods-toggle">toggle() <a href="https://getbootstrap.com/docs/5.1/components/modal/#toggle-1" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
@@ -604,7 +611,7 @@
 					<section>
 						<h2 class="anchor" id="events">Events</h2>
 
-						<p>All native Bootstrap events are supported through the <code>events</code> configuration option, or by calling the <code>addEvent()</code> <a href="#methods-addEvent">instance method</a>.</p>
+						<p>All native Bootstrap events are supported through the <code>events</code> configuration option, or by calling the <code>addEvent()</code> <a href="#methods-addEvent">instance method</a>.  The callback functions are passed two arguments: the event object, and the modbox instance object.  Also, the function context (<code>this</code>) is set to the top-level <code>.modal</code> DOM element.</p>
 						<p>
 							<pre>
 								<code class="line-numbers lang-js">
@@ -629,7 +636,7 @@
 								<tr>
 									<td><code>show</code></td>
 									<td><code>show.bs.modal</code></td>
-									<td>This event fires immediately when the <code>show</code> instance method is called. If caused by a click, the clicked element is available as the <code>relatedTarget</code> property of the event.</td>
+									<td>This event fires immediately when the <code>show()</code> instance method is called. If caused by a click, the clicked element is available as the <code>relatedTarget</code> property of the event.</td>
 								</tr>
 								<tr>
 									<td><code>shown</code></td>
@@ -639,7 +646,7 @@
 								<tr>
 									<td><code>hide</code></td>
 									<td><code>hide.bs.modal</code></td>
-									<td>This event is fired immediately when the <code>hide</code> instance method has been called.</td>
+									<td>This event is fired immediately when the <code>hide()</code> instance method has been called.</td>
 								</tr>
 								<tr>
 									<td><code>hidden</code></td>
@@ -660,7 +667,7 @@
 	</main>
 
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js"></script>
 	<script src="vendor/prism/prism.js"></script>
 	<script src="assets/js/scripts.js"></script>
