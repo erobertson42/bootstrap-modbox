@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 - Ability to set defaults with new `modbox.defaultOptions` and `modbox.defaultButtonOptions` class properties.
 
 ### Changed
-- GitHub Pages site now uses the compatibility version of bootstrap-modbox to ensure most people can view it correctly.
+- GitHub Pages site now uses the compatibility version of bootstrap-modbox to ensure most browsers can view it correctly.
 - Updated documentation to reflect changes.
 
 ### Removed
