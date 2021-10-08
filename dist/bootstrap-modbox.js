@@ -1,6 +1,6 @@
 /*
  * bootstrap-modbox - Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
- * version: 1.1.0
+ * version: 1.2.0
  * author: Eric Robertson
  * license: MIT
  *
@@ -8,7 +8,7 @@
  */
 class modbox {
 
-	static version = '1.1.0';
+	static version = '1.2.0';
 
 	/* private members */
 
@@ -16,6 +16,71 @@ class modbox {
 	#modal;
 	#modalEl;
 	#footer;
+
+
+	static #defaultOptions = {
+		// bootstrap modal default options
+		...bootstrap.Modal.Default,
+
+		// modbox default options
+		icon: null,
+		style: 'white',
+		titleStyle: null,
+		title: 'Information',
+		body: '',
+		size: null,
+		center: false,
+		fade: true,
+		show: false,
+		relatedTarget: undefined,
+		scrollable: true,
+		destroyOnClose: false,
+		defaultButton: true,
+		swapButtonOrder: false,
+		justifyButtons: null,
+		events: {},
+
+		// only applies to constructor modals
+		buttons: [],
+
+		// only applies to class modals, and overwrites defaults set by modbox.defaultButtonOptions
+		okButton: {
+			label: 'OK',
+			style: 'primary'
+		},
+		closeButton: {
+			label: 'Cancel',
+			style: 'secondary'
+		},
+
+		// only applies to .prompt() class modal
+		input: {
+			type: 'text',
+			class: '',
+			value: '',
+			title: null,
+			placeholder: null,
+			autocomplete: 'off',
+			minlength: null,
+			maxlength: null,
+			pattern: null,
+			required: false
+		},
+	};
+
+
+	static #defaultButtonOptions = {
+		label: 'Close',
+		style: 'secondary',
+		class: '',
+		outline: false,
+		size: null,
+		icon: null,
+		title: null,
+		disabled: false,
+		close: true,
+		callback: null
+	};
 
 
 	// generate a pseudo-random id
@@ -55,6 +120,14 @@ class modbox {
 
 	// build custom modal that returns a Promise
 	static #buildPromiseModal = (options = {}, type = 'alert') => {
+		options = {
+			...options,
+			// defaults that cannot be overridden
+			destroyOnClose: true,
+			defaultButton: false,
+			buttons: []
+		};
+
 		return new Promise((resolve, reject) => {
 			const box = new modbox(options);
 
@@ -65,9 +138,17 @@ class modbox {
 				let okCallback = () => resolve();
 
 				if (type === 'prompt' && modbox.#typeof(options.input) === 'object') {
+					let validateInput = false;
+
+					// don't add modal close markup to button if an option is specified that needs to be validated (handled in button callback instead)
+					if (options.input.required === true || typeof options.input.minlength === 'number' || (typeof options.input.pattern === 'string' && options.input.pattern.length)) {
+						options.okButton.close = false;
+						validateInput = true;
+					}
+
 					okCallback = () => {
 						const inputEl = box.modalEl.querySelector(`#${options.input.id}`);
-						const isValid = (options.input._validate === true) ? inputEl.reportValidity() : true;
+						const isValid = (validateInput === true) ? inputEl.reportValidity() : true;
 
 						if (isValid) {
 							resolve(inputEl.value);
@@ -112,23 +193,6 @@ class modbox {
 
 			box.show();
 		});
-	}
-
-
-	#getDefaultButtonOptions = (label = 'Close') => {
-		return {
-			id: modbox.#getUID('modbox-btn-'),
-			label: label,
-			style: 'secondary',
-			class: '',
-			outline: false,
-			size: null,
-			icon: null,
-			title: null,
-			disabled: false,
-			close: true,
-			callback: null
-		};
 	}
 
 
@@ -179,7 +243,7 @@ class modbox {
 
 		if (this.#options.buttons.length === 0 && this.#options.defaultButton === true) {
 			// add default button
-			this.#options.buttons = [this.#getDefaultButtonOptions(this.#options.defaultButtonLabel)];
+			this.#options.buttons = [modbox.#defaultButtonOptions];
 		}
 		else {
 			// hide footer when there are no buttons
@@ -205,30 +269,9 @@ class modbox {
 
 	constructor(userOptions = {}) {
 		this.#options = {
-			// bootstrap modal default options
-			...bootstrap.Modal.Default,
-
 			// modbox default options
+			...modbox.#defaultOptions,
 			id: modbox.#getUID(),
-			icon: null,
-			style: 'white',
-			titleStyle: null,
-			title: 'Information',
-			body: '',
-			size: null,
-			center: false,
-			fade: true,
-			show: false,
-			relatedTarget: undefined,
-			scrollable: true,
-			destroyOnClose: false,
-			defaultButton: true,
-			defaultButtonLabel: 'Close',
-			swapButtonOrder: false,
-			justifyButtons: null,
-			buttons: [],
-			events: {},
-
 			// user options
 			...modbox.#checkUserOptions(userOptions)
 		};
@@ -277,6 +320,26 @@ class modbox {
 	}
 
 
+	static get defaultOptions() {
+		return modbox.#defaultOptions;
+	}
+
+
+	static set defaultOptions(userDefaultOptions = {}) {
+		modbox.#defaultOptions = modbox.#deepMerge(modbox.#defaultOptions, userDefaultOptions);
+	}
+
+
+	static get defaultButtonOptions() {
+		return modbox.#defaultButtonOptions;
+	}
+
+
+	static set defaultButtonOptions(userDefaultButtonOptions = {}) {
+		modbox.#defaultButtonOptions = { ...modbox.#defaultButtonOptions, ...userDefaultButtonOptions };
+	}
+
+
 	addButton(userBtnOptions = {}, appendStart = this.#options.swapButtonOrder) {
 		// show footer if hidden
 		this.#footer.classList.remove('d-none');
@@ -289,7 +352,11 @@ class modbox {
 			return buttons[appendStart ? 0 : buttons.length - 1];
 		}
 
-		const btnOptions = { ...this.#getDefaultButtonOptions(), ...userBtnOptions };
+		const btnOptions = {
+			...modbox.#defaultButtonOptions,
+			id: modbox.#getUID('modbox-btn-'),
+			...userBtnOptions
+		};
 
 		this.#footer.insertAdjacentHTML(appendLocation, `
 			<button
@@ -345,17 +412,10 @@ class modbox {
 	static alert(userOptions = {}) {
 		const defaultOptions = {
 			title: 'Alert',
-			closeButton: {},
+			closeButton: modbox.#defaultOptions.closeButton
 		};
 
-		const options = {
-			...modbox.#deepMerge(defaultOptions, modbox.#checkUserOptions(userOptions)),
-			// defaults that cannot be overridden
-			destroyOnClose: true,
-			defaultButton: false,
-			buttons: []
-		};
-
+		const options = modbox.#deepMerge(defaultOptions, modbox.#checkUserOptions(userOptions));
 		return modbox.#buildPromiseModal(options);
 	}
 
@@ -400,23 +460,11 @@ class modbox {
 	static confirm(userOptions = {}) {
 		const defaultOptions = {
 			title: 'Confirm',
-			okButton: {
-				label: 'OK',
-				style: 'primary'
-			},
-			closeButton: {
-				label: 'Cancel'
-			}
+			okButton: modbox.#defaultOptions.okButton,
+			closeButton: modbox.#defaultOptions.closeButton
 		};
 
-		const options = {
-			...modbox.#deepMerge(defaultOptions, modbox.#checkUserOptions(userOptions)),
-			// defaults that cannot be overridden
-			destroyOnClose: true,
-			defaultButton: false,
-			buttons: []
-		};
-
+		const options = modbox.#deepMerge(defaultOptions, modbox.#checkUserOptions(userOptions));
 		return modbox.#buildPromiseModal(options, 'confirm');
 	}
 
@@ -426,45 +474,18 @@ class modbox {
 		const defaultOptions = {
 			title: 'Prompt',
 			input: {
-				id: modbox.#getUID('modbox-input-'),
-				type: 'text',
-				class: '',
-				value: '',
-				title: null,
-				placeholder: null,
-				autocomplete: 'off',
-				minlength: null,
-				maxlength: null,
-				pattern: null,
-				required: false,
-				_validate: false
+				...modbox.#defaultOptions.input,
+				id: modbox.#getUID('modbox-input-')
 			},
-			okButton: {
-				label: 'OK',
-				style: 'primary'
-			},
-			closeButton: {
-				label: 'Cancel'
-			}
+			okButton: modbox.#defaultOptions.okButton,
+			closeButton: modbox.#defaultOptions.closeButton
 		};
 
-		const options = {
-			...modbox.#deepMerge(defaultOptions, modbox.#checkUserOptions(userOptions)),
-			// defaults that cannot be overridden
-			destroyOnClose: true,
-			defaultButton: false,
-			buttons: []
-		};
+		const options = modbox.#deepMerge(defaultOptions, modbox.#checkUserOptions(userOptions));
 
 		// if regex passed as pattern, convert to string first
 		if (modbox.#typeof(options.input?.pattern) === 'regexp') {
 			options.input.pattern = options.input.pattern.source;
-		}
-
-		// don't add modal close markup to button if an option is specified that needs to be validated (handled in button callback instead)
-		if (options.input.required === true || typeof options.input.minlength === 'number' || (typeof options.input.pattern === 'string' && options.input.pattern.length)) {
-			options.okButton.close = false;
-			options.input._validate = true;
 		}
 
 		options.body = `

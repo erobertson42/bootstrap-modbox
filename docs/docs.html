@@ -230,13 +230,6 @@
 								<p>Automatically adds a default button to the footer which closes the modal.  This option is ignored if custom buttons are defined with the <code>buttons</code> option.  If set to <code>false</code> and no <code>buttons</code> are specified, the modal footer is hidden.</p>
 							</dd>
 
-							<dt class="anchor" id="options-defaultButtonLabel">defaultButtonLabel <span class="badge bg-danger float-end">Only available to custom modals</span></dt>
-							<dd>
-								<p>Type: <code>string</code></p>
-								<p>Default: <code>'Close'</code></p>
-								<p>Sets the displayed text on the default button.  This option is ignored if custom buttons are defined with the <code>buttons</code> option.</p>
-							</dd>
-
 							<dt class="anchor" id="options-events">events</dt>
 							<dd>
 								<p>Type: <code>object</code></p>
@@ -475,6 +468,45 @@
 							<dd>
 								<p>Type: <code>element</code></p>
 								<p>The <code>#modbox-container</code> DOM element that holds all modboxes.</p>
+							</dd>
+
+							<dt class="anchor" id="properties-defaultOptions">defaultOptions</dt>
+							<dd>
+								<p>Type: <code>object</code></p>
+								<p>Getter or setter.  Returns the current default modal configuration options, or allows you to overwrite them for future modals.  Button options set by <code>buttons</code>, <code>okButton</code>, and <code>closeButton</code> have precedence over <code>defaultButtonOptions</code></p>
+								<p>
+									<pre>
+										<code class="line-numbers lang-js">
+											console.log(modbox.defaultOptions);
+											// or
+											modbox.defaultOptions = {
+												style: 'info',
+												center: true,
+												closeButton: {
+													label: 'Go Away!'
+												}
+											};
+										</code>
+									</pre>
+								</p>
+							</dd>
+
+							<dt class="anchor" id="properties-defaultButtonOptions">defaultButtonOptions</dt>
+							<dd>
+								<p>Type: <code>object</code></p>
+								<p>Getter or setter.  Returns the current default button configuration options, or allows you to overwrite them for future buttons.</p>
+								<p>
+									<pre>
+										<code class="line-numbers lang-js">
+											console.log(modbox.defaultButtonOptions);
+											// or
+											modbox.defaultButtonOptions = {
+												outline: true,
+												callback: () => console.log('You clicked a button');
+											};
+										</code>
+									</pre>
+								</p>
 							</dd>
 
 							<dt class="anchor" id="properties-version">version</dt>

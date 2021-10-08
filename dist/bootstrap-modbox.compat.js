@@ -38,6 +38,12 @@ function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollect
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _classStaticPrivateFieldSpecSet(receiver, classConstructor, descriptor, value) { _classCheckPrivateStaticAccess(receiver, classConstructor); _classCheckPrivateStaticFieldDescriptor(descriptor, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
+
+function _classStaticPrivateFieldSpecGet(receiver, classConstructor, descriptor) { _classCheckPrivateStaticAccess(receiver, classConstructor); _classCheckPrivateStaticFieldDescriptor(descriptor, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classCheckPrivateStaticFieldDescriptor(descriptor, action) { if (descriptor === undefined) { throw new TypeError("attempted to " + action + " private static field before its declaration"); } }
+
 function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
 
 function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
@@ -62,8 +68,6 @@ var _modalEl = /*#__PURE__*/new WeakMap();
 
 var _footer = /*#__PURE__*/new WeakMap();
 
-var _getDefaultButtonOptions = /*#__PURE__*/new WeakSet();
-
 var _buildModal = /*#__PURE__*/new WeakSet();
 
 var _addButtons = /*#__PURE__*/new WeakSet();
@@ -72,7 +76,7 @@ var _addEvents = /*#__PURE__*/new WeakSet();
 
 /*
  * bootstrap-modbox - Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
- * version: 1.1.0
+ * version: 1.2.0
  * author: Eric Robertson
  * license: MIT
  *
@@ -98,8 +102,6 @@ var modbox = /*#__PURE__*/function () {
 
     _classPrivateMethodInitSpec(this, _buildModal);
 
-    _classPrivateMethodInitSpec(this, _getDefaultButtonOptions);
-
     _classPrivateFieldInitSpec(this, _options, {
       writable: true,
       value: void 0
@@ -120,27 +122,8 @@ var modbox = /*#__PURE__*/function () {
       value: void 0
     });
 
-    _classPrivateFieldSet(this, _options, _objectSpread(_objectSpread({}, bootstrap.Modal.Default), {}, {
-      // modbox default options
-      id: _classStaticPrivateMethodGet(modbox, modbox, _getUID).call(modbox),
-      icon: null,
-      style: 'white',
-      titleStyle: null,
-      title: 'Information',
-      body: '',
-      size: null,
-      center: false,
-      fade: true,
-      show: false,
-      relatedTarget: undefined,
-      scrollable: true,
-      destroyOnClose: false,
-      defaultButton: true,
-      defaultButtonLabel: 'Close',
-      swapButtonOrder: false,
-      justifyButtons: null,
-      buttons: [],
-      events: {}
+    _classPrivateFieldSet(this, _options, _objectSpread(_objectSpread({}, _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions)), {}, {
+      id: _classStaticPrivateMethodGet(modbox, modbox, _getUID).call(modbox)
     }, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions)));
 
     if (typeof _classPrivateFieldGet(this, _options).body !== 'string' || !_classPrivateFieldGet(this, _options).body.length) {
@@ -212,7 +195,9 @@ var modbox = /*#__PURE__*/function () {
         return buttons[appendStart ? 0 : buttons.length - 1];
       }
 
-      var btnOptions = _objectSpread(_objectSpread({}, _classPrivateMethodGet(this, _getDefaultButtonOptions, _getDefaultButtonOptions2).call(this)), userBtnOptions);
+      var btnOptions = _objectSpread(_objectSpread({}, _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultButtonOptions)), {}, {
+        id: _classStaticPrivateMethodGet(modbox, modbox, _getUID).call(modbox, 'modbox-btn-')
+      }, userBtnOptions);
 
       _classPrivateFieldGet(this, _footer).insertAdjacentHTML(appendLocation, "\n\t\t\t<button\n\t\t\t\ttype=\"button\"\n\t\t\t\tclass=\"btn btn-".concat(btnOptions.outline ? 'outline-' : '').concat(btnOptions.style, " ").concat(btnOptions.class, " ").concat(btnOptions.size ? "btn-".concat(btnOptions.size) : '', "\"\n\t\t\t\tid=\"").concat(btnOptions.id, "\"\n\t\t\t\t").concat(btnOptions.title ? "title=\"".concat(btnOptions.title, "\"") : '', "\n\t\t\t\t").concat(btnOptions.close ? 'data-bs-dismiss="modal"' : '', "\n\t\t\t\t").concat(btnOptions.disabled ? 'disabled' : '', "\n\t\t\t>\n\t\t\t\t").concat(btnOptions.icon ? "<i class=\"".concat(btnOptions.icon, " me-2\"></i>") : '').concat(btnOptions.label, "\n\t\t\t</button>\n\t\t").trim());
 
@@ -275,6 +260,30 @@ var modbox = /*#__PURE__*/function () {
       _classPrivateFieldGet(this, _modal).dispose();
     }
   }], [{
+    key: "defaultOptions",
+    get: function get() {
+      return _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions);
+    },
+    set: function set(userDefaultOptions) {
+      if (userDefaultOptions === void 0) {
+        userDefaultOptions = {};
+      }
+
+      _classStaticPrivateFieldSpecSet(modbox, modbox, _defaultOptions, _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions), userDefaultOptions));
+    }
+  }, {
+    key: "defaultButtonOptions",
+    get: function get() {
+      return _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultButtonOptions);
+    },
+    set: function set(userDefaultButtonOptions) {
+      if (userDefaultButtonOptions === void 0) {
+        userDefaultButtonOptions = {};
+      }
+
+      _classStaticPrivateFieldSpecSet(modbox, modbox, _defaultButtonOptions, _objectSpread(_objectSpread({}, _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultButtonOptions)), userDefaultButtonOptions));
+    }
+  }, {
     key: "container",
     get: function get() {
       var containerEl = document.querySelector('#modbox-container');
@@ -294,15 +303,10 @@ var modbox = /*#__PURE__*/function () {
       var userOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var defaultOptions = {
         title: 'Alert',
-        closeButton: {}
+        closeButton: _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions).closeButton
       };
 
-      var options = _objectSpread(_objectSpread({}, _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, defaultOptions, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions))), {}, {
-        // defaults that cannot be overridden
-        destroyOnClose: true,
-        defaultButton: false,
-        buttons: []
-      });
+      var options = _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, defaultOptions, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions));
 
       return _classStaticPrivateMethodGet(modbox, modbox, _buildPromiseModal).call(modbox, options);
     } // convenience method for an info style alert modbox
@@ -350,21 +354,11 @@ var modbox = /*#__PURE__*/function () {
       var userOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var defaultOptions = {
         title: 'Confirm',
-        okButton: {
-          label: 'OK',
-          style: 'primary'
-        },
-        closeButton: {
-          label: 'Cancel'
-        }
+        okButton: _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions).okButton,
+        closeButton: _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions).closeButton
       };
 
-      var options = _objectSpread(_objectSpread({}, _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, defaultOptions, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions))), {}, {
-        // defaults that cannot be overridden
-        destroyOnClose: true,
-        defaultButton: false,
-        buttons: []
-      });
+      var options = _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, defaultOptions, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions));
 
       return _classStaticPrivateMethodGet(modbox, modbox, _buildPromiseModal).call(modbox, options, 'confirm');
     } // convenience method for a prompt modbox
@@ -377,45 +371,18 @@ var modbox = /*#__PURE__*/function () {
       var userOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var defaultOptions = {
         title: 'Prompt',
-        input: {
-          id: _classStaticPrivateMethodGet(modbox, modbox, _getUID).call(modbox, 'modbox-input-'),
-          type: 'text',
-          class: '',
-          value: '',
-          title: null,
-          placeholder: null,
-          autocomplete: 'off',
-          minlength: null,
-          maxlength: null,
-          pattern: null,
-          required: false,
-          _validate: false
-        },
-        okButton: {
-          label: 'OK',
-          style: 'primary'
-        },
-        closeButton: {
-          label: 'Cancel'
-        }
+        input: _objectSpread(_objectSpread({}, _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions).input), {}, {
+          id: _classStaticPrivateMethodGet(modbox, modbox, _getUID).call(modbox, 'modbox-input-')
+        }),
+        okButton: _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions).okButton,
+        closeButton: _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions).closeButton
       };
 
-      var options = _objectSpread(_objectSpread({}, _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, defaultOptions, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions))), {}, {
-        // defaults that cannot be overridden
-        destroyOnClose: true,
-        defaultButton: false,
-        buttons: []
-      }); // if regex passed as pattern, convert to string first
+      var options = _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, defaultOptions, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions)); // if regex passed as pattern, convert to string first
 
 
       if (_classStaticPrivateMethodGet(modbox, modbox, _typeof).call(modbox, (_options$input = options.input) === null || _options$input === void 0 ? void 0 : _options$input.pattern) === 'regexp') {
         options.input.pattern = options.input.pattern.source;
-      } // don't add modal close markup to button if an option is specified that needs to be validated (handled in button callback instead)
-
-
-      if (options.input.required === true || typeof options.input.minlength === 'number' || typeof options.input.pattern === 'string' && options.input.pattern.length) {
-        options.okButton.close = false;
-        options.input._validate = true;
       }
 
       options.body = "\n\t\t\t".concat(options.body ? "<p>".concat(options.body, "</p>") : '', "\n\t\t\t").concat(typeof options.input === 'string' ? options.input : "<input\n\t\t\t\t\ttype=\"".concat(options.input.type, "\"\n\t\t\t\t\tclass=\"form-control ").concat(options.input.class, "\"\n\t\t\t\t\tid=\"").concat(options.input.id, "\"\n\t\t\t\t\tvalue=\"").concat(options.input.value, "\"\n\t\t\t\t\t").concat(options.input.title ? "title=\"".concat(options.input.title, "\"") : '', "\n\t\t\t\t\t").concat(options.input.placeholder ? "placeholder=\"".concat(options.input.placeholder, "\"") : '', "\n\t\t\t\t\t").concat(options.input.autocomplete ? "autocomplete=\"".concat(options.input.autocomplete, "\"") : '', "\n\t\t\t\t\t").concat(typeof options.input.minlength === 'number' ? "minlength=\"".concat(options.input.minlength, "\"") : '', "\n\t\t\t\t\t").concat(typeof options.input.maxlength === 'number' ? "maxlength=\"".concat(options.input.maxlength, "\"") : '', "\n\t\t\t\t\t").concat(typeof options.input.pattern === 'string' && options.input.pattern.length ? "pattern=\"".concat(options.input.pattern, "\"") : '', "\n\t\t\t\t\t").concat(options.input.required ? 'required' : '', "\n\t\t\t\t>"), "\n\t\t").trim();
@@ -468,6 +435,12 @@ function _checkUserOptions(userOptions) {
 function _buildPromiseModal() {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'alert';
+  options = _objectSpread(_objectSpread({}, options), {}, {
+    // defaults that cannot be overridden
+    destroyOnClose: true,
+    defaultButton: false,
+    buttons: []
+  });
   return new Promise(function (resolve, reject) {
     var box = new modbox(options); // build button configurations
 
@@ -479,9 +452,16 @@ function _buildPromiseModal() {
       };
 
       if (type === 'prompt' && _classStaticPrivateMethodGet(modbox, modbox, _typeof).call(modbox, options.input) === 'object') {
+        var validateInput = false; // don't add modal close markup to button if an option is specified that needs to be validated (handled in button callback instead)
+
+        if (options.input.required === true || typeof options.input.minlength === 'number' || typeof options.input.pattern === 'string' && options.input.pattern.length) {
+          options.okButton.close = false;
+          validateInput = true;
+        }
+
         okCallback = function okCallback() {
           var inputEl = box.modalEl.querySelector("#".concat(options.input.id));
-          var isValid = options.input._validate === true ? inputEl.reportValidity() : true;
+          var isValid = validateInput === true ? inputEl.reportValidity() : true;
 
           if (isValid) {
             resolve(inputEl.value);
@@ -530,23 +510,6 @@ function _buildPromiseModal() {
   });
 }
 
-function _getDefaultButtonOptions2() {
-  var label = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Close';
-  return {
-    id: _classStaticPrivateMethodGet(modbox, modbox, _getUID).call(modbox, 'modbox-btn-'),
-    label: label,
-    style: 'secondary',
-    class: '',
-    outline: false,
-    size: null,
-    icon: null,
-    title: null,
-    disabled: false,
-    close: true,
-    callback: null
-  };
-}
-
 function _buildModal2() {
   var isDarkStyle = ['primary', 'secondary', 'success', 'danger', 'dark', 'body'].includes(_classPrivateFieldGet(this, _options).style);
   var titleStyle = _classPrivateFieldGet(this, _options).titleStyle || (isDarkStyle ? 'white' : 'dark');
@@ -576,7 +539,7 @@ function _addButtons2() {
 
   if (_classPrivateFieldGet(this, _options).buttons.length === 0 && _classPrivateFieldGet(this, _options).defaultButton === true) {
     // add default button
-    _classPrivateFieldGet(this, _options).buttons = [_classPrivateMethodGet(this, _getDefaultButtonOptions, _getDefaultButtonOptions2).call(this, _classPrivateFieldGet(this, _options).defaultButtonLabel)];
+    _classPrivateFieldGet(this, _options).buttons = [_classStaticPrivateFieldSpecGet(modbox, modbox, _defaultButtonOptions)];
   } else {
     // hide footer when there are no buttons
     _classPrivateFieldGet(this, _footer).classList.add('d-none');
@@ -605,4 +568,66 @@ function _addEvents2() {
   }
 }
 
-_defineProperty(modbox, "version", '1.1.0');
+_defineProperty(modbox, "version", '1.2.0');
+
+var _defaultOptions = {
+  writable: true,
+  value: _objectSpread(_objectSpread({}, bootstrap.Modal.Default), {}, {
+    // modbox default options
+    icon: null,
+    style: 'white',
+    titleStyle: null,
+    title: 'Information',
+    body: '',
+    size: null,
+    center: false,
+    fade: true,
+    show: false,
+    relatedTarget: undefined,
+    scrollable: true,
+    destroyOnClose: false,
+    defaultButton: true,
+    swapButtonOrder: false,
+    justifyButtons: null,
+    events: {},
+    // only applies to constructor modals
+    buttons: [],
+    // only applies to class modals, and overwrites defaults set by modbox.defaultButtonOptions
+    okButton: {
+      label: 'OK',
+      style: 'primary'
+    },
+    closeButton: {
+      label: 'Cancel',
+      style: 'secondary'
+    },
+    // only applies to .prompt() class modal
+    input: {
+      type: 'text',
+      class: '',
+      value: '',
+      title: null,
+      placeholder: null,
+      autocomplete: 'off',
+      minlength: null,
+      maxlength: null,
+      pattern: null,
+      required: false
+    }
+  })
+};
+var _defaultButtonOptions = {
+  writable: true,
+  value: {
+    label: 'Close',
+    style: 'secondary',
+    class: '',
+    outline: false,
+    size: null,
+    icon: null,
+    title: null,
+    disabled: false,
+    close: true,
+    callback: null
+  }
+};
