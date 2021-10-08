@@ -40,10 +40,12 @@ The modbox library can be added to your project in several ways:
 
 - [Unpkg CDN](https://unpkg.com/browse/bootstrap-modbox/):
 	```html
+	<!-- latest version -->
 	<script src="https://unpkg.com/bootstrap-modbox"></script>
 	```
 	```javascript
-	import modbox from 'https://unpkg.com/bootstrap-modbox@1.0.0/dist/bootstrap-modbox.esm.min.js';
+	// specific version
+	import modbox from 'https://unpkg.com/bootstrap-modbox@1.2.0/dist/bootstrap-modbox.esm.min.js';
 	```
 
 - Download from [GitHub](https://github.com/erobertson42/bootstrap-modbox/releases):

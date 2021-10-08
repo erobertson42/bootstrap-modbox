@@ -19,15 +19,12 @@ function addNavbar(page = 'home') {
 	const navbar = `
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top">
 			<div class="container">
-				<!--<a class="navbar-brand fw-bold" href="index.html">bootstrap-modbox</a>-->
 				<a class="navbar-brand" href="index.html">bootstrap &bull; <span class="fw-600 text-info">modbox</span></a>
 
 				<div class="vr mx-4 d-none d-md-inline-block"></div>
 
 				<div class="offcanvas offcanvas-end p-5 pt-4 p-md-0" id="nav-canvas" tabindex="-1">
 					<div class="offcanvas-header p-0 mb-2">
-						<!--<h5 class="offcanvas-title">bootstrap-modbox</h5>-->
-						<!--<a class="navbar-brand fw-bold" href="index.html">bootstrap-modbox</a>-->
 						<a class="navbar-brand" href="index.html">bootstrap &bull; <span class="fw-600 text-info">modbox</span></a>
 						<button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
 					</div>
