@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ## [1.2.0] - 2021-10-08
 ### Added
-- Ability to set defaults with new `modbox.defaultOptions` and `modbox.defaultButtonOptions` class properties.
+- Ability to set defaults with new `modbox.defaultOptions` and `modbox.defaultButtonOptions` class properties ([docs](https://erobertson42.github.io/bootstrap-modbox/docs.html#properties-defaultOptions)).
 
 ### Changed
 - GitHub Pages site now uses the compatibility version of bootstrap-modbox to ensure most browsers can view it correctly.
