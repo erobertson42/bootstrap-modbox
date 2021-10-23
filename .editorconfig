@@ -3,7 +3,7 @@
 # top-most EditorConfig file
 root = true
 
-[*.{js,html}]
+[*.{js,html,css}]
 indent_style = tab
 end_of_line = lf
 charset = utf-8
