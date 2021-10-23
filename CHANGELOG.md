@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
+## [1.2.1] - 2021-10-23
+### Added
+- New `message` modal configuration option as an alternative to `body` ([docs](https://erobertson42.github.io/bootstrap-modbox/docs.html#options-message)).
+
+### Changed
+- The 2nd argument for the `addButton()` instance method has been renamed from `appendStart` to `swapOrder` to more accurately reflect its behavior.
+- Updated documentation.
+
+
 ## [1.2.0] - 2021-10-08
 ### Added
 - Ability to set defaults with new `modbox.defaultOptions` and `modbox.defaultButtonOptions` class properties ([docs](https://erobertson42.github.io/bootstrap-modbox/docs.html#properties-defaultOptions)).

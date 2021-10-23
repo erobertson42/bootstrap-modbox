@@ -1,6 +1,8 @@
 /*
- * bootstrap-modbox - Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
- * version: 1.2.0
+ * bootstrap-modbox
+ * Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
+ *
+ * version: 1.2.1
  * author: Eric Robertson
  * license: MIT
  *
@@ -8,7 +10,7 @@
  */
 class modbox {
 
-	static version = '1.2.0';
+	static version = '1.2.1';
 
 	/* private members */
 
@@ -28,6 +30,7 @@ class modbox {
 		titleStyle: null,
 		title: 'Information',
 		body: '',
+		message: '',
 		size: null,
 		center: false,
 		fade: true,
@@ -277,7 +280,12 @@ class modbox {
 		};
 
 		if (typeof this.#options.body !== 'string' || !this.#options.body.length) {
-			throw new Error('The "body" configuration option is required (string).');
+			if (typeof this.#options.message === 'string' && this.#options.message.length) {
+				this.#options.body = this.#options.message;
+			}
+			else {
+				throw new Error('The "body" or "message" configuration option is required (string).');
+			}
 		}
 
 		// generate modal HTML and add to DOM
@@ -340,16 +348,16 @@ class modbox {
 	}
 
 
-	addButton(userBtnOptions = {}, appendStart = this.#options.swapButtonOrder) {
+	addButton(userBtnOptions = {}, swapOrder = this.#options.swapButtonOrder) {
 		// show footer if hidden
 		this.#footer.classList.remove('d-none');
 
-		const appendLocation = appendStart ? 'afterbegin' : 'beforeend';
+		const appendLocation = swapOrder ? 'afterbegin' : 'beforeend';
 
 		if (typeof userBtnOptions === 'string' && userBtnOptions.length) {
 			this.#footer.insertAdjacentHTML(appendLocation, userBtnOptions);
 			const buttons = this.buttons;
-			return buttons[appendStart ? 0 : buttons.length - 1];
+			return buttons[swapOrder ? 0 : buttons.length - 1];
 		}
 
 		const btnOptions = {

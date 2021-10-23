@@ -75,8 +75,10 @@ var _addButtons = /*#__PURE__*/new WeakSet();
 var _addEvents = /*#__PURE__*/new WeakSet();
 
 /*
- * bootstrap-modbox - Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
- * version: 1.2.0
+ * bootstrap-modbox
+ * Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
+ *
+ * version: 1.2.1
  * author: Eric Robertson
  * license: MIT
  *
@@ -127,7 +129,11 @@ var modbox = /*#__PURE__*/function () {
     }, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions)));
 
     if (typeof _classPrivateFieldGet(this, _options).body !== 'string' || !_classPrivateFieldGet(this, _options).body.length) {
-      throw new Error('The "body" configuration option is required (string).');
+      if (typeof _classPrivateFieldGet(this, _options).message === 'string' && _classPrivateFieldGet(this, _options).message.length) {
+        _classPrivateFieldGet(this, _options).body = _classPrivateFieldGet(this, _options).message;
+      } else {
+        throw new Error('The "body" or "message" configuration option is required (string).');
+      }
     } // generate modal HTML and add to DOM
 
 
@@ -181,18 +187,18 @@ var modbox = /*#__PURE__*/function () {
       var _this = this;
 
       var userBtnOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var appendStart = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _classPrivateFieldGet(this, _options).swapButtonOrder;
+      var swapOrder = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _classPrivateFieldGet(this, _options).swapButtonOrder;
 
       // show footer if hidden
       _classPrivateFieldGet(this, _footer).classList.remove('d-none');
 
-      var appendLocation = appendStart ? 'afterbegin' : 'beforeend';
+      var appendLocation = swapOrder ? 'afterbegin' : 'beforeend';
 
       if (typeof userBtnOptions === 'string' && userBtnOptions.length) {
         _classPrivateFieldGet(this, _footer).insertAdjacentHTML(appendLocation, userBtnOptions);
 
         var buttons = this.buttons;
-        return buttons[appendStart ? 0 : buttons.length - 1];
+        return buttons[swapOrder ? 0 : buttons.length - 1];
       }
 
       var btnOptions = _objectSpread(_objectSpread({}, _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultButtonOptions)), {}, {
@@ -568,7 +574,7 @@ function _addEvents2() {
   }
 }
 
-_defineProperty(modbox, "version", '1.2.0');
+_defineProperty(modbox, "version", '1.2.1');
 
 var _defaultOptions = {
   writable: true,
@@ -579,6 +585,7 @@ var _defaultOptions = {
     titleStyle: null,
     title: 'Information',
     body: '',
+    message: '',
     size: null,
     center: false,
     fade: true,

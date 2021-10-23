@@ -1,6 +1,6 @@
 {
   "name": "bootstrap-modbox",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.",
   "author": "Eric Robertson",
   "license": "MIT",

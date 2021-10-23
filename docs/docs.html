@@ -6,7 +6,7 @@
 
 	<title>bootstrap-modbox - Documentation</title>
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 	<link rel="stylesheet" href="vendor/prism/prism.css">
 	<link rel="stylesheet" href="assets/css/styles.css">
@@ -38,10 +38,10 @@
 						<h2 class="anchor" id="modals">Modals</h2>
 
 						<p>The <span class="fw-bolder">bootstrap-modbox</span> library provides several convenience class methods to easily create <span class="fw-bolder">alert</span>, <span class="fw-bolder">confirm</span>, and <span class="fw-bolder">prompt</span> type modals.  These mimic the browser dialogs that can be called by their respective JavaScript functions, except for the fact that, like native Bootstrap modals, they're asyncronous - meaning they do not block the browser thread.</p>
-						<p>In addition, custom and more advanced modals may be created by calling the constructor directly (<code>new modbox(options)</code>).</p>
+						<p>In addition, custom and more advanced instance modals may be created by calling the constructor directly (<code>new modbox(options)</code>).</p>
 						<div class="callout callout-info">
 							<h5><i class="fas fa-info-circle"></i> Information</h5>
-							All of the class modal methods return a Promise, whereas calling the constuctor does not.  For <code>.confirm()</code> and <code>.prompt()</code>, the Promise is resolved when clicking the <code>okButton</code>, and rejected when the modal is closed in any other way (<code>closeButton</code>, 'X', <kbd>ESC</kbd> key, clicking the backdrop, etc).  For <code>.alert()</code> and its variants, which only have the single Close button, the Promise is always resolved.
+							All of the class modal methods return a Promise, whereas calling the constuctor does not.  For <code>.confirm()</code> and <code>.prompt()</code>, the Promise is resolved when clicking the <code>okButton</code>, and rejected when the modal is closed in any other way (<code>closeButton</code>, 'X', <kbd>ESC</kbd> key, clicking the backdrop, etc).  For <code>.alert()</code> and its variants, which only have the single <code>closeButton</code>, the Promise is always resolved.
 						</div>
 						<dl>
 							<dt class="anchor" id="modals-alert">modbox.alert(<code>object options</code>)</dt>
@@ -87,8 +87,8 @@
 								</div>
 							</dd>
 
-							<dt class="anchor" id="modals-custom">new modbox(<code>object options</code>)</dt>
-							<dd>Lacks the extra scaffolding present in the class methods above, which allows for the creation of custom and more advanced modals.  Returns a modbox object.</dd>
+							<dt class="anchor" id="modals-instance">new modbox(<code>object options</code>)</dt>
+							<dd>Creates a modbox class instance.  Lacks the extra scaffolding present in the class/static methods above, which allows for the creation of custom and more advanced modals.  Returns a modbox object.</dd>
 						</dl>
 					</section>
 
@@ -108,17 +108,17 @@
 							<dd>
 								<p>Type: <code>string</code></p>
 								<p><span class="badge bg-danger">This option is required</span></p>
-								<p>A string consisting of plain text or HTML markup which will be used as the main body of the modal.</p>
+								<p>A string consisting of plain text or HTML markup which will be used as the main body of the modal.  As an alternate, the <code>message</code> configuration <a href="#options-message">option</a> is also available.  One of the two options is required.</p>
 							</dd>
 
-							<dt class="anchor" id="options-buttons">buttons <span class="badge bg-danger float-end">Only available to custom modals</span></dt>
+							<dt class="anchor" id="options-buttons">buttons <span class="badge bg-danger float-end">Only available to instance modals</span></dt>
 							<dd>
 								<p>Type: <code>array</code></p>
 								<p>Default: <code>[]</code></p>
 								<p>Each item in the array is an object defining the button configuration.  If a custom or more advance button is necessary, a string containing the HTML markup may be passed instead of the configuration object.</p>
 								<div class="callout callout-danger">
 									<h5><i class="fas fa-exclamation-triangle"></i> Important</h5>
-									This option is only available to custom modals created by calling the constructor directly (<code>new modbox(options)</code>).
+									This option is only available to modal instances created by calling the constructor directly (<code>new modbox(options)</code>).
 									The class modals <code>.confirm()</code> and <code>.prompt()</code> instead have the special options <code>okButton</code> and <code>closeButton</code>, whereas <code>.alert()</code> and its variants only have <code>closeButton</code>.
 									Both of these special button objects accept the same configuration options below.
 								</div>
@@ -216,14 +216,14 @@
 								<p>Configuration for the "Close" button.  This is a special option only available to the class modals <code>.alert()</code> (and variants), <code>.confirm()</code>, and <code>.prompt()</code>.  Accepts the same configuration options as a standard <code>buttons</code> object.  Also rejects the returned Promise.</p>
 							</dd>
 
-							<dt class="anchor" id="options-destroyOnClose">destroyOnClose <span class="badge bg-danger float-end">Only available to custom modals</span></dt>
+							<dt class="anchor" id="options-destroyOnClose">destroyOnClose <span class="badge bg-danger float-end">Only available to instance modals</span></dt>
 							<dd>
 								<p>Type: <code>boolean</code></p>
 								<p>Default: <code>false</code></p>
 								<p>Automaticlly calls the <code>destroy()</code> method when the modal is closed. This option is ignored for the class modals <code>.alert()</code>, <code>.confirm()</code>, and <code>.prompt()</code>, as they are always destroyed on close.</p>
 							</dd>
 
-							<dt class="anchor" id="options-defaultButton">defaultButton <span class="badge bg-danger float-end">Only available to custom modals</span></dt>
+							<dt class="anchor" id="options-defaultButton">defaultButton <span class="badge bg-danger float-end">Only available to instance modals</span></dt>
 							<dd>
 								<p>Type: <code>boolean</code></p>
 								<p>Default: <code>true</code></p>
@@ -270,7 +270,20 @@
 								<p>Type: <code>object</code> | <code>string</code></p>
 								<p>Default: <code>object</code></p>
 								<p>Defines the <code>input</code> field element that will be added to the modal body.  This is a special option only available to the class modal <code>.prompt()</code>.</p>
-								<p>If a custom or more advance field is necessary, a string containing the HTML markup may be passed instead of the configuration object.  However, please note that if a custom field is used, its value will not be passed to the Promise <code>resolve()</code> function, and any necessary validation and/or logic must be handled manually (modal events, button callbacks, etc).</p>
+								<p>If a custom or more advance field is necessary, a string containing HTML markup may be passed instead of the configuration object.  However, please note that if a custom field is used, its value will not be passed to the Promise <code>resolve()</code> function, and any necessary validation and/or logic must be handled manually (modal events, button callbacks, etc).</p>
+								<div class="callout callout-info">
+									<h5><i class="fas fa-info-circle"></i> Note</h5>
+									Defaults can be changed by use of the <code>defaultOptions</code> class/static property.
+									<pre class="mb-0">
+										<code class="line-numbers lang-js">
+											modbox.defaultOptions = {
+												input: {
+													...
+												}
+											};
+										</code>
+									</pre>
+								</div>
 								<table class="table">
 									<thead>
 										<tr>
@@ -365,6 +378,13 @@
 								<p>Closes the modal when <kbd>ESC</kbd> key is pressed.</p>
 							</dd>
 
+							<dt class="anchor" id="options-message">message</dt>
+							<dd>
+								<p>Type: <code>string</code></p>
+								<p>Default: <code>''</code></p>
+								<p>Alternate for the <code>body</code> configuration <a href="#options-body">option</a>.  One of the two options is required.</p>
+							</dd>
+
 							<dt class="anchor" id="options-okButton">okButton <span class="badge bg-danger float-end">Only available to class modals</span></dt>
 							<dd>
 								<p>Type: <code>object</code></p>
@@ -386,7 +406,7 @@
 								<p>Allows long content of the modal body to scroll as opposed to scrolling the viewport.</p>
 							</dd>
 
-							<dt class="anchor" id="options-show">show <span class="badge bg-danger float-end">Only available to custom modals</span></dt>
+							<dt class="anchor" id="options-show">show <span class="badge bg-danger float-end">Only available to instance modals</span></dt>
 							<dd>
 								<p>Type: <code>boolean</code></p>
 								<p>Default: <code>false</code></p>
@@ -525,10 +545,10 @@
 						<h5>Instance Methods</h5>
 						<p>The following methods can be called on any instance of a modbox object.</p>
 						<dl>
-							<dt class="anchor" id="methods-addButton">addButton(<code>object options</code>, <code>boolean appendStart</code>)</dt>
+							<dt class="anchor" id="methods-addButton">addButton(<code>object options</code>, <code>boolean swapOrder</code>)</dt>
 							<dd>
 								<p>Returns: <code>element button</code></p>
-								<p>Appends a button to the footer of the modal.  If the <code>appendStart</code> argument is <code>true</code> (default <code>false</code>) or the <code>swapButtonOrder</code> option was <code>true</code> when the modal was created, new buttons will be added as the first child of the footer (to the left), otherwise they will be added as the last child (to the right).  However, the <code>appendStart</code> argument will always override the <code>swapButtonOrder</code> config option.  See the <code>buttons</code> <a href="#options-buttons">options</a> for more details.</p>
+								<p>Appends a button to the footer of the modal.  If the <code>swapOrder</code> argument is <code>true</code> (default <code>false</code>) or the <code>swapButtonOrder</code> option was <code>true</code> when the modal was created, new buttons will be added as the first child of the footer (to the left), otherwise they will be added as the last child (to the right).  However, the <code>swapOrder</code> argument will always override the <code>swapButtonOrder</code> config option.  See the <code>buttons</code> <a href="#options-buttons">options</a> for more details.</p>
 								<p>
 									<pre>
 										<code class="line-numbers lang-js">
@@ -701,7 +721,7 @@
 	</main>
 
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js"></script>
 	<script src="vendor/prism/prism.js"></script>
 	<script src="assets/js/scripts.js"></script>
