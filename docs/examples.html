@@ -236,34 +236,6 @@
 							The examples below all have the <code>destroyOnClose</code> options set to <code>true</code> only because of how they're being called/generated on this demo page.  While it's ok to use that option, normally it would not be enabled to avoid repeated DOM changes if/when the modal is opened multiple times.  Instead, best practice would be to call the modbox constructor once, then call <code>.show()</code> and <code>.hide()</code> where applicable.
 						</div>
 						<dl>
-							<dt>Changing the default options</dt>
-							<dd>
-								<p><button type="button" class="btn btn-primary" data-example="custom-events">Run Example</button></p>
-								<pre>
-									<code class="line-numbers lang-js" id="custom-events">
-										modbox.defaultOptions = {
-											titleStyle: 'info',
-											swapButtonOrder: true
-										};
-
-										modbox.defaultButtonOptions = {
-											outline: true,
-											close: false
-										};
-
-										const myModal = new modbox({
-											body: 'Look at the buttons and title color.',
-											buttons: [
-												{ label: 'Button 1', style: 'primary', close: true },
-												{ label: 'Button 2', style: 'secondary' }
-											]
-										});
-
-										myModal.show();
-									</code>
-								</pre>
-							</dd>
-
 							<dt>Multiple events and justified buttons added in various ways</dt>
 							<dd>
 								<p><button type="button" class="btn btn-primary" data-example="custom-events">Run Example</button></p>
