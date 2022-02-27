@@ -45,7 +45,7 @@ The modbox library can be added to your project in several ways:
 	```
 	```javascript
 	// specific version
-	import modbox from 'https://unpkg.com/bootstrap-modbox@1.2.1/dist/bootstrap-modbox.esm.min.js';
+	import modbox from 'https://unpkg.com/bootstrap-modbox@1.3.0/dist/bootstrap-modbox.esm.min.js';
 	```
 
 - Download from [GitHub](https://github.com/erobertson42/bootstrap-modbox/releases):
@@ -61,14 +61,14 @@ The modbox library can be added to your project in several ways:
 
 Full documentation and examples are available at https://erobertson42.github.io/bootstrap-modbox/.
 
-All of the class modal methods return a Promise, whereas calling the  constuctor does not (`new modbox()`).  For `.confirm()` and `.prompt()`, the Promise is resolved when clicking the `okButton`, and rejected when the modal is closed in any other way (`closeButton`, 'X', ESC key, clicking the backdrop, etc).  For `.alert()` and its variants, which only have the single Close button, the Promise is always resolved.
+All of the class modal methods return a Promise, whereas calling the constuctor does not (`new modbox()`).  For `.confirm()` and `.prompt()`, the Promise is resolved when clicking the `okButton`, and rejected when the modal is closed in any other way (`closeButton`, 'X', ESC key, clicking the backdrop, etc).  For `.alert()` and its variants, which only have the single Close button, the Promise is always resolved.
 
 Simple alert box:
 ```javascript
 modbox.alert('Pay attention to the thing.');
 ```
 
-Alert box with success styling and alternate title (similar methods also exist for `.info()`, `.danger()`, and `.error()`):
+Alert box with success styling and alternate title (similar methods also exist for `.info()`, `.danger()`, `.warning()`, and `.error()`):
 ```javascript
 modbox.success({
 	title: 'Done!',
@@ -91,23 +91,16 @@ modbox.confirm({
 
 ## Notes
 
-- The input value returned by `modbox.prompt()` is not sanitized in any way.  If the intent is to store or process this data, it is your responsibility to make sure it is safe.
-- Safari does not yet support [private class methods](https://caniuse.com/mdn-javascript_classes_private_class_methods) (latest version as of writing: 15).  As a work-around, I added a Grunt task to convert all private methods into private field functions:
+- **Sanitization:**
+	This library builds its markup as a string, then uses the `element.insertAdjacentHTML()` method to parse and inject the resulting nodes into the DOM.  There has been some concern shown for other libraries using similar methods (`element.insertHTML`, jQuery `$(element).html()`, etc) that this could be a potential XSS attack vector (eg. user submitted data), considering that custom markup can be passed as a string with some configuration options (title, body, etc).
 
-	```javascript
-	/* source */
-	#myPrivateMethod(foo, bar) {
-		// do the thing
-	}
+	I understand this argument in theory, however in practice, I feel it's a non-issue.  It should be the responsibility of each developer to handle such situations.  If you're using user submitted data to build the markup for a modbox, it is on you to make sure the data is clean and safe.  Handling this task is outside the scope of this library.
 
-	/* dist */
-	#myPrivateMethod = (foo, bar) => {
-		// do the thing
-	}
-	```
-	This step is meant to be temporary, and I plan to remove it sometime after Safari adds support.
+	So that said, I'm not going to take the time to write and maintain my own sanitizer, nor am I going to add an external dependency.  However, as a compromise, I have added a `sanitizer` option that accepts a function, which can be from an external library like [DOMPurify](https://github.com/cure53/DOMPurify) (for example), should you wish to include/use one on your own.  In addition, the `.prompt()` modal also has an `input.sanitizer` option that can clean the user input before being passed to the Promise resolve function.  See the documentation for more details.
+
+	Please note that if you use software which scans your code for vulnerabilities, the solution above will most likely not satisfy those scans, since markup is still permitted and the sanitizer is optional.
 
 
 ## Copyright and License
 
-&copy; 2021 Eric Robertson and released under the [MIT License](https://github.com/erobertson42/bootstrap-modbox/blob/main/LICENSE).
+&copy; 2021-2022 Eric Robertson and released under the [MIT License](https://github.com/erobertson42/bootstrap-modbox/blob/main/LICENSE).

@@ -64,6 +64,10 @@
 											<td>Creates an <span class="fw-bolder">alert</span> type modal, with a <code>success</code> Bootstrap styled header background.</td>
 										</tr>
 										<tr>
+											<td><code>modbox.warning(object options)</code></td>
+											<td>Creates an <span class="fw-bolder">alert</span> type modal, with a <code>warning</code> Bootstrap styled header background.</td>
+										</tr>
+										<tr>
 											<td><code>modbox.danger(object options)</code></td>
 											<td>Creates an <span class="fw-bolder">alert</span> type modal, with a <code>danger</code> Bootstrap styled header background.</td>
 										</tr>
@@ -83,12 +87,12 @@
 								<p>Creates a <span class="fw-bolder">prompt</span> type modal.  The value of the input field is passed to the Promise <code>resolve()</code> function.</p>
 								<div class="callout callout-danger">
 									<h5><i class="fas fa-exclamation-triangle"></i> Important</h5>
-									The input value returned when the Promise is resolved is not sanitized in any way.  If the intent is to store or process this data, it is your responsibility to make sure it is safe.
+									The input value returned when the Promise is resolved is not sanitized in any way by default.  If the intent is to store or process this data, it is your responsibility to make sure it is safe.  See the <a href="#options-input">documentation</a> for the input <code>sanitizer</code> option as an available solution.
 								</div>
 							</dd>
 
 							<dt class="anchor" id="modals-instance">new modbox(<code>object options</code>)</dt>
-							<dd>Creates a modbox class instance.  Lacks the extra scaffolding present in the class/static methods above, which allows for the creation of custom and more advanced modals.  Returns a modbox object.</dd>
+							<dd>Creates a modbox instance.  Lacks the extra scaffolding present in the class/static methods above, which allows for the creation of custom and more advanced modals.  Returns a modbox object.</dd>
 						</dl>
 					</section>
 
@@ -343,6 +347,27 @@
 											<td>Adds the <code>required</code> attribute.  If <code>true</code>, the validity of the input field will be checked when clicking the <code>okButton</code>.</td>
 										</tr>
 										<tr>
+											<td>sanitizer</td>
+											<td><code>boolean, function</code></td>
+											<td><code>false</code></td>
+											<td>
+												<p>If <code>true</code>, the input field value will be sanitized using the same function that is defined for the modal <code>sanitizer</code> option, before being passed to the Promise resolve function (<a href="#options-sanitizer">see documentation</a>).  Alternatively, a separate function may be supplied, which differs from the modal option.</p>
+												<p>
+													<pre>
+														<code class="line-numbers lang-js">
+															// strip all html tags from input
+															modbox.prompt({
+																...
+																input: {
+																	sanitizer: (input) => input.replace(/(<([^>]+)>)/gi, '')
+																}
+															});
+														</code>
+													</pre>
+												</p>
+											</td>
+										</tr>
+										<tr>
 											<td>title</td>
 											<td><code>string</code></td>
 											<td><code>null</code></td>
@@ -397,6 +422,25 @@
 								<p>Type: <code>element</code></p>
 								<p>Default: <code>undefined</code></p>
 								<p>Sets the <code>relatedTarget</code> property on the event object passed to <code>show</code> and <code>shown</code> event callback functions.  Can be overridden by passing in an element when calling the <code>.show()</code> method.</p>
+							</dd>
+
+							<dt class="anchor" id="options-sanitizer">sanitizer</dt>
+							<dd>
+								<p>Type: <code>function</code></p>
+								<p>Default: <code>[placeholder function]</code></p>
+								<p>This library builds its markup as a string, then uses the <code>element.insertAdjacentHTML()</code> method to parse and inject the resulting nodes into the DOM. There has been some concern shown for other libraries using similar methods (<code>element.insertHTML</code>, jQuery <code>$(element).html()</code>, etc) that this could be a potential XSS attack vector (eg. user submitted data), considering that custom markup can be passed as a string with some configuration options (title, body, etc).</p>
+								<p>This option accepts a function, which can be from an external library like <a href="https://github.com/cure53/DOMPurify" target="_blank">DOMPurify</a> (for example), that can be used to sanitize the modal markup string before parsing and inserting into the DOM. The default placeholder function simply returns the markup string unmodified.</p>
+								<p>If used, it is recommended to set a sanitizer function in the <code>defaultOptions</code>, so it will be applied to all modals.</p>
+								<p>
+									<pre>
+										<code class="line-numbers lang-js">
+											modbox.defaultOptions = {
+												...
+												sanitizer: DOMPurify.sanitize
+											};
+										</code>
+									</pre>
+								</p>
 							</dd>
 
 							<dt class="anchor" id="options-scrollable">scrollable</dt>
@@ -659,6 +703,12 @@
 								<p>Returns: <code>promise</code></p>
 								<p>Creates an <span class="fw-bolder">alert</span> type modal, with a <code>success</code> Bootstrap styled header background.</p>
 							</dd>
+
+							<dt class="anchor" id="methods-warning">warning(<code>object options</code>)</dt>
+							<dd>
+								<p>Returns: <code>promise</code></p>
+								<p>Creates an <span class="fw-bolder">alert</span> type modal, with a <code>warning</code> Bootstrap styled header background.</p>
+							</dd>
 						</dl>
 					</section>
 
@@ -710,7 +760,7 @@
 								<tr>
 									<td><code>hidePrevented</code></td>
 									<td><code>hidePrevented.bs.modal</code></td>
-									<td>This event is fired when the modal is shown, its backdrop is <code>static</code> and a click outside the modal or the <kbd>ESC</kbd> key press is performed with the <code>keyboard</code> option set to <code>false</code>.</td>
+									<td>This event is fired when the modal is shown, its backdrop is <code>static</code>, and a click outside the modal or the <kbd>ESC</kbd> key press is performed with the <code>keyboard</code> option set to <code>false</code>.</td>
 								</tr>
 							</tbody>
 						</table>

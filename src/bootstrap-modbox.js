@@ -55,8 +55,12 @@ class modbox {
 			minlength: null,
 			maxlength: null,
 			pattern: null,
-			required: false
+			required: false,
+			sanitizer: false
 		},
+
+		// meant to be overridden with user defined function
+		sanitizer: modbox.#sanitizeString
 	};
 
 
@@ -109,6 +113,12 @@ class modbox {
 	}
 
 
+	// default sanitizer function which just returns the string unmodified
+	static #sanitizeString(str = '') {
+		return str;
+	}
+
+
 	// build custom modal that returns a Promise
 	static #buildPromiseModal(options = {}, type = 'alert') {
 		options = {
@@ -142,7 +152,10 @@ class modbox {
 						const isValid = (validateInput === true) ? inputEl.reportValidity() : true;
 
 						if (isValid) {
-							resolve(inputEl.value);
+							const sanitizer = (typeof box.options.input.sanitizer === 'function') ? box.options.input.sanitizer :
+								(box.options.input.sanitizer === true) ? box.options.sanitizer : modbox.#sanitizeString;
+
+							resolve(sanitizer(inputEl.value));
 							box.hide();
 						}
 					};
@@ -205,7 +218,7 @@ class modbox {
 			`.trim();
 		}
 
-		modbox.container.insertAdjacentHTML('beforeend', `
+		modbox.container.insertAdjacentHTML('beforeend', this.#options.sanitizer(`
 			<div class="modal ${this.#options.fade ? 'fade' : ''}" id="${this.#options.id}" tabindex="-1" aria-labelledby="${this.#options.id}-title" aria-hidden="true">
 				<div class="modal-dialog ${this.#options.scrollable ? 'modal-dialog-scrollable' : ''} ${this.#options.center ? 'modal-dialog-centered' : ''} ${this.#options.size ? `modal-${this.#options.size}` : ''}">
 					<div class="modal-content">
@@ -217,7 +230,7 @@ class modbox {
 					</div>
 				</div>
 			</div>
-		`.trim());
+		`.trim()));
 
 		this.#modalEl = modbox.container.querySelector(`#${this.#options.id}`);
 		this.#footer = this.#modalEl.querySelector('.modal-footer');
@@ -343,7 +356,7 @@ class modbox {
 		const appendLocation = swapOrder ? 'afterbegin' : 'beforeend';
 
 		if (typeof userBtnOptions === 'string' && userBtnOptions.length) {
-			this.#footer.insertAdjacentHTML(appendLocation, userBtnOptions);
+			this.#footer.insertAdjacentHTML(appendLocation, this.#options.sanitizer(userBtnOptions));
 			const buttons = this.buttons;
 			return buttons[swapOrder ? 0 : buttons.length - 1];
 		}
@@ -354,7 +367,7 @@ class modbox {
 			...userBtnOptions
 		};
 
-		this.#footer.insertAdjacentHTML(appendLocation, `
+		this.#footer.insertAdjacentHTML(appendLocation, this.#options.sanitizer(`
 			<button
 				type="button"
 				class="btn btn-${btnOptions.outline ? 'outline-' : ''}${btnOptions.style} ${btnOptions.class} ${btnOptions.size ? `btn-${btnOptions.size}` : ''}"
@@ -365,7 +378,7 @@ class modbox {
 			>
 				${btnOptions.icon ? `<i class="${btnOptions.icon} me-2"></i>` : ''}${btnOptions.label}
 			</button>
-		`.trim());
+		`.trim()));
 
 		const btn = this.#footer.querySelector(`#${btnOptions.id}`);
 
@@ -431,6 +444,16 @@ class modbox {
 		return modbox.alert({
 			style: 'success',
 			title: 'Success',
+			...modbox.#checkUserOptions(userOptions)
+		});
+	}
+
+
+	// convenience method for a warning style alert modbox
+	static warning(userOptions = {}) {
+		return modbox.alert({
+			style: 'warning',
+			title: 'Warning',
 			...modbox.#checkUserOptions(userOptions)
 		});
 	}

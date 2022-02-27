@@ -2,7 +2,7 @@
  * bootstrap-modbox
  * Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
  *
- * version: 1.2.1
+ * version: 1.3.0
  * author: Eric Robertson
  * license: MIT
  *
@@ -10,7 +10,7 @@
  */
 class modbox {
 
-	static version = '1.2.1';
+	static version = '1.3.0';
 
 	/* private members */
 
@@ -67,8 +67,12 @@ class modbox {
 			minlength: null,
 			maxlength: null,
 			pattern: null,
-			required: false
+			required: false,
+			sanitizer: false
 		},
+
+		// meant to be overridden with user defined function
+		sanitizer: modbox.#sanitizeString
 	};
 
 
@@ -87,19 +91,19 @@ class modbox {
 
 
 	// generate a pseudo-random id
-	static #getUID = (prefix = 'modbox-') => {
+	static #getUID(prefix = 'modbox-') {
 		return prefix + Math.floor(Math.random() * 1000000);
 	}
 
 
 	// more specific type checking than standard typeof
-	static #typeof = (obj) => {
+	static #typeof(obj) {
 		return (typeof obj === 'object') ? Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() : typeof obj;
 	}
 
 
 	// recursive object merge
-	static #deepMerge = (target, source) => {
+	static #deepMerge(target, source) {
 		const result = { ...target, ...source };
 
 		Object.keys(result).forEach(key => {
@@ -116,13 +120,19 @@ class modbox {
 
 
 	// if string passed in as options argument, convert to an object and use as the body value
-	static #checkUserOptions = (userOptions) => {
+	static #checkUserOptions(userOptions) {
 		return (typeof userOptions === 'string') ? { body: userOptions } : userOptions;
 	}
 
 
+	// default sanitizer function which just returns the string unmodified
+	static #sanitizeString(str = '') {
+		return str;
+	}
+
+
 	// build custom modal that returns a Promise
-	static #buildPromiseModal = (options = {}, type = 'alert') => {
+	static #buildPromiseModal(options = {}, type = 'alert') {
 		options = {
 			...options,
 			// defaults that cannot be overridden
@@ -154,7 +164,10 @@ class modbox {
 						const isValid = (validateInput === true) ? inputEl.reportValidity() : true;
 
 						if (isValid) {
-							resolve(inputEl.value);
+							const sanitizer = (typeof box.options.input.sanitizer === 'function') ? box.options.input.sanitizer :
+								(box.options.input.sanitizer === true) ? box.options.sanitizer : modbox.#sanitizeString;
+
+							resolve(sanitizer(inputEl.value));
 							box.hide();
 						}
 					};
@@ -199,7 +212,7 @@ class modbox {
 	}
 
 
-	#buildModal = () => {
+	#buildModal() {
 		const isDarkStyle = ['primary', 'secondary', 'success', 'danger', 'dark', 'body'].includes(this.#options.style);
 		const titleStyle = this.#options.titleStyle || (isDarkStyle ? 'white' : 'dark');
 		const closeButtonStyle = `btn-close ${isDarkStyle ? 'btn-close-white' : ''}`;
@@ -217,7 +230,7 @@ class modbox {
 			`.trim();
 		}
 
-		modbox.container.insertAdjacentHTML('beforeend', `
+		modbox.container.insertAdjacentHTML('beforeend', this.#options.sanitizer(`
 			<div class="modal ${this.#options.fade ? 'fade' : ''}" id="${this.#options.id}" tabindex="-1" aria-labelledby="${this.#options.id}-title" aria-hidden="true">
 				<div class="modal-dialog ${this.#options.scrollable ? 'modal-dialog-scrollable' : ''} ${this.#options.center ? 'modal-dialog-centered' : ''} ${this.#options.size ? `modal-${this.#options.size}` : ''}">
 					<div class="modal-content">
@@ -229,7 +242,7 @@ class modbox {
 					</div>
 				</div>
 			</div>
-		`.trim());
+		`.trim()));
 
 		this.#modalEl = modbox.container.querySelector(`#${this.#options.id}`);
 		this.#footer = this.#modalEl.querySelector('.modal-footer');
@@ -239,7 +252,7 @@ class modbox {
 	}
 
 
-	#addButtons = () => {
+	#addButtons() {
 		if (!Array.isArray(this.#options.buttons)) {
 			this.#options.buttons = [];
 		}
@@ -257,7 +270,7 @@ class modbox {
 	}
 
 
-	#addEvents = () => {
+	#addEvents() {
 		Object.entries(this.#options.events).forEach(([type, fn]) => {
 			this.addEvent(type, fn);
 		});
@@ -355,7 +368,7 @@ class modbox {
 		const appendLocation = swapOrder ? 'afterbegin' : 'beforeend';
 
 		if (typeof userBtnOptions === 'string' && userBtnOptions.length) {
-			this.#footer.insertAdjacentHTML(appendLocation, userBtnOptions);
+			this.#footer.insertAdjacentHTML(appendLocation, this.#options.sanitizer(userBtnOptions));
 			const buttons = this.buttons;
 			return buttons[swapOrder ? 0 : buttons.length - 1];
 		}
@@ -366,7 +379,7 @@ class modbox {
 			...userBtnOptions
 		};
 
-		this.#footer.insertAdjacentHTML(appendLocation, `
+		this.#footer.insertAdjacentHTML(appendLocation, this.#options.sanitizer(`
 			<button
 				type="button"
 				class="btn btn-${btnOptions.outline ? 'outline-' : ''}${btnOptions.style} ${btnOptions.class} ${btnOptions.size ? `btn-${btnOptions.size}` : ''}"
@@ -377,7 +390,7 @@ class modbox {
 			>
 				${btnOptions.icon ? `<i class="${btnOptions.icon} me-2"></i>` : ''}${btnOptions.label}
 			</button>
-		`.trim());
+		`.trim()));
 
 		const btn = this.#footer.querySelector(`#${btnOptions.id}`);
 
@@ -443,6 +456,16 @@ class modbox {
 		return modbox.alert({
 			style: 'success',
 			title: 'Success',
+			...modbox.#checkUserOptions(userOptions)
+		});
+	}
+
+
+	// convenience method for a warning style alert modbox
+	static warning(userOptions = {}) {
+		return modbox.alert({
+			style: 'warning',
+			title: 'Warning',
 			...modbox.#checkUserOptions(userOptions)
 		});
 	}

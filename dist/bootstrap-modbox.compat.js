@@ -78,7 +78,7 @@ var _addEvents = /*#__PURE__*/new WeakSet();
  * bootstrap-modbox
  * Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
  *
- * version: 1.2.1
+ * version: 1.3.0
  * author: Eric Robertson
  * license: MIT
  *
@@ -90,6 +90,7 @@ var modbox = /*#__PURE__*/function () {
   // more specific type checking than standard typeof
   // recursive object merge
   // if string passed in as options argument, convert to an object and use as the body value
+  // default sanitizer function which just returns the string unmodified
   // build custom modal that returns a Promise
 
   /* public members */
@@ -195,7 +196,7 @@ var modbox = /*#__PURE__*/function () {
       var appendLocation = swapOrder ? 'afterbegin' : 'beforeend';
 
       if (typeof userBtnOptions === 'string' && userBtnOptions.length) {
-        _classPrivateFieldGet(this, _footer).insertAdjacentHTML(appendLocation, userBtnOptions);
+        _classPrivateFieldGet(this, _footer).insertAdjacentHTML(appendLocation, _classPrivateFieldGet(this, _options).sanitizer(userBtnOptions));
 
         var buttons = this.buttons;
         return buttons[swapOrder ? 0 : buttons.length - 1];
@@ -205,7 +206,7 @@ var modbox = /*#__PURE__*/function () {
         id: _classStaticPrivateMethodGet(modbox, modbox, _getUID).call(modbox, 'modbox-btn-')
       }, userBtnOptions);
 
-      _classPrivateFieldGet(this, _footer).insertAdjacentHTML(appendLocation, "\n\t\t\t<button\n\t\t\t\ttype=\"button\"\n\t\t\t\tclass=\"btn btn-".concat(btnOptions.outline ? 'outline-' : '').concat(btnOptions.style, " ").concat(btnOptions.class, " ").concat(btnOptions.size ? "btn-".concat(btnOptions.size) : '', "\"\n\t\t\t\tid=\"").concat(btnOptions.id, "\"\n\t\t\t\t").concat(btnOptions.title ? "title=\"".concat(btnOptions.title, "\"") : '', "\n\t\t\t\t").concat(btnOptions.close ? 'data-bs-dismiss="modal"' : '', "\n\t\t\t\t").concat(btnOptions.disabled ? 'disabled' : '', "\n\t\t\t>\n\t\t\t\t").concat(btnOptions.icon ? "<i class=\"".concat(btnOptions.icon, " me-2\"></i>") : '').concat(btnOptions.label, "\n\t\t\t</button>\n\t\t").trim());
+      _classPrivateFieldGet(this, _footer).insertAdjacentHTML(appendLocation, _classPrivateFieldGet(this, _options).sanitizer("\n\t\t\t<button\n\t\t\t\ttype=\"button\"\n\t\t\t\tclass=\"btn btn-".concat(btnOptions.outline ? 'outline-' : '').concat(btnOptions.style, " ").concat(btnOptions.class, " ").concat(btnOptions.size ? "btn-".concat(btnOptions.size) : '', "\"\n\t\t\t\tid=\"").concat(btnOptions.id, "\"\n\t\t\t\t").concat(btnOptions.title ? "title=\"".concat(btnOptions.title, "\"") : '', "\n\t\t\t\t").concat(btnOptions.close ? 'data-bs-dismiss="modal"' : '', "\n\t\t\t\t").concat(btnOptions.disabled ? 'disabled' : '', "\n\t\t\t>\n\t\t\t\t").concat(btnOptions.icon ? "<i class=\"".concat(btnOptions.icon, " me-2\"></i>") : '').concat(btnOptions.label, "\n\t\t\t</button>\n\t\t").trim()));
 
       var btn = _classPrivateFieldGet(this, _footer).querySelector("#".concat(btnOptions.id));
 
@@ -335,6 +336,16 @@ var modbox = /*#__PURE__*/function () {
         style: 'success',
         title: 'Success'
       }, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions)));
+    } // convenience method for a warning style alert modbox
+
+  }, {
+    key: "warning",
+    value: function warning() {
+      var userOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      return modbox.alert(_objectSpread({
+        style: 'warning',
+        title: 'Warning'
+      }, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions)));
     } // convenience method for an danger style alert modbox
 
   }, {
@@ -438,6 +449,11 @@ function _checkUserOptions(userOptions) {
   } : userOptions;
 }
 
+function _sanitizeString() {
+  var str = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  return str;
+}
+
 function _buildPromiseModal() {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'alert';
@@ -470,7 +486,8 @@ function _buildPromiseModal() {
           var isValid = validateInput === true ? inputEl.reportValidity() : true;
 
           if (isValid) {
-            resolve(inputEl.value);
+            var sanitizer = typeof box.options.input.sanitizer === 'function' ? box.options.input.sanitizer : box.options.input.sanitizer === true ? box.options.sanitizer : _classStaticPrivateMethodGet(modbox, modbox, _sanitizeString);
+            resolve(sanitizer(inputEl.value));
             box.hide();
           }
         };
@@ -526,7 +543,7 @@ function _buildModal2() {
     title = "\n\t\t\t\t<div class=\"modal-header ".concat(_classPrivateFieldGet(this, _options).style ? "bg-".concat(_classPrivateFieldGet(this, _options).style) : '', "\">\n\t\t\t\t\t<h5 class=\"modal-title text-").concat(titleStyle, "\">\n\t\t\t\t\t\t").concat(_classPrivateFieldGet(this, _options).icon ? "<i class=\"".concat(_classPrivateFieldGet(this, _options).icon, " me-3\"></i>") : '', "\n\t\t\t\t\t\t<span id=\"").concat(_classPrivateFieldGet(this, _options).id, "-title\">").concat(_classPrivateFieldGet(this, _options).title, "</span>\n\t\t\t\t\t</h5>\n\t\t\t\t\t<button type=\"button\" class=\"").concat(closeButtonStyle, "\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n\t\t\t\t</div>\n\t\t\t").trim();
   }
 
-  modbox.container.insertAdjacentHTML('beforeend', "\n\t\t\t<div class=\"modal ".concat(_classPrivateFieldGet(this, _options).fade ? 'fade' : '', "\" id=\"").concat(_classPrivateFieldGet(this, _options).id, "\" tabindex=\"-1\" aria-labelledby=\"").concat(_classPrivateFieldGet(this, _options).id, "-title\" aria-hidden=\"true\">\n\t\t\t\t<div class=\"modal-dialog ").concat(_classPrivateFieldGet(this, _options).scrollable ? 'modal-dialog-scrollable' : '', " ").concat(_classPrivateFieldGet(this, _options).center ? 'modal-dialog-centered' : '', " ").concat(_classPrivateFieldGet(this, _options).size ? "modal-".concat(_classPrivateFieldGet(this, _options).size) : '', "\">\n\t\t\t\t\t<div class=\"modal-content\">\n\t\t\t\t\t\t").concat(title, "\n\t\t\t\t\t\t<div class=\"modal-body\">\n\t\t\t\t\t\t\t").concat(_classPrivateFieldGet(this, _options).body, "\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"modal-footer ").concat(_classPrivateFieldGet(this, _options).justifyButtons ? "d-flex justify-content-".concat(_classPrivateFieldGet(this, _options).justifyButtons) : '', "\"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t").trim());
+  modbox.container.insertAdjacentHTML('beforeend', _classPrivateFieldGet(this, _options).sanitizer("\n\t\t\t<div class=\"modal ".concat(_classPrivateFieldGet(this, _options).fade ? 'fade' : '', "\" id=\"").concat(_classPrivateFieldGet(this, _options).id, "\" tabindex=\"-1\" aria-labelledby=\"").concat(_classPrivateFieldGet(this, _options).id, "-title\" aria-hidden=\"true\">\n\t\t\t\t<div class=\"modal-dialog ").concat(_classPrivateFieldGet(this, _options).scrollable ? 'modal-dialog-scrollable' : '', " ").concat(_classPrivateFieldGet(this, _options).center ? 'modal-dialog-centered' : '', " ").concat(_classPrivateFieldGet(this, _options).size ? "modal-".concat(_classPrivateFieldGet(this, _options).size) : '', "\">\n\t\t\t\t\t<div class=\"modal-content\">\n\t\t\t\t\t\t").concat(title, "\n\t\t\t\t\t\t<div class=\"modal-body\">\n\t\t\t\t\t\t\t").concat(_classPrivateFieldGet(this, _options).body, "\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"modal-footer ").concat(_classPrivateFieldGet(this, _options).justifyButtons ? "d-flex justify-content-".concat(_classPrivateFieldGet(this, _options).justifyButtons) : '', "\"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t").trim()));
 
   _classPrivateFieldSet(this, _modalEl, modbox.container.querySelector("#".concat(_classPrivateFieldGet(this, _options).id)));
 
@@ -574,7 +591,7 @@ function _addEvents2() {
   }
 }
 
-_defineProperty(modbox, "version", '1.2.1');
+_defineProperty(modbox, "version", '1.3.0');
 
 var _defaultOptions = {
   writable: true,
@@ -619,8 +636,11 @@ var _defaultOptions = {
       minlength: null,
       maxlength: null,
       pattern: null,
-      required: false
-    }
+      required: false,
+      sanitizer: false
+    },
+    // meant to be overridden with user defined function
+    sanitizer: _classStaticPrivateMethodGet(modbox, modbox, _sanitizeString)
   })
 };
 var _defaultButtonOptions = {

@@ -110,6 +110,10 @@ main .nav {
 	padding-top: 60px;
 }
 
+main .nav > .nav-link:hover {
+	background-color: #ebf2f4;
+}
+
 
 section {
 	margin-bottom: 60px;

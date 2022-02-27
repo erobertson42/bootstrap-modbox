@@ -58,7 +58,7 @@
 						<pre>
 							<code class="lang-js">
 								// specific version
-								import modbox from 'https://unpkg.com/bootstrap-modbox@1.2.1/dist/bootstrap-modbox.esm.min.js';
+								import modbox from 'https://unpkg.com/bootstrap-modbox@1.3.0/dist/bootstrap-modbox.esm.min.js';
 							</code>
 						</pre>
 					</li>
@@ -81,25 +81,26 @@
 			<section>
 				<h5>Notes</h5>
 				<ul>
-					<li>The input value returned by <code>modbox.prompt()</code> is not sanitized in any way.  If the intent is to store or process this data, it is your responsibility to make sure it is safe.</li>
 					<li>
-						<p>Safari does not yet support <a href="https://caniuse.com/mdn-javascript_classes_private_class_methods" target="_caniuse">private class methods</a> (latest version as of writing: 15).  As a work-around, I added a Grunt task to convert all private methods into private field functions:</p>
+						<p><b>Sanitization:</b></p>
 
-						<pre>
-							<code class="line-numbers lang-js">
-								/* source */
-								#myPrivateMethod(foo, bar) {
-									// do the thing
-								}
+						<p>This library builds its markup as a string, then uses the <code>element.insertAdjacentHTML()</code> method to parse and inject the
+						resulting nodes into the DOM. There has been some concern shown for other libraries using similar methods
+						(<code>element.insertHTML</code>, jQuery <code>$(element).html()</code>, etc) that this could be a potential XSS attack vector (eg. user
+						submitted data), considering that custom markup can be passed as a string with some configuration options (title, body, etc).</p>
 
-								/* dist */
-								#myPrivateMethod = (foo, bar) => {
-									// do the thing
-								}
-							</code>
-						</pre>
+						<p>I understand this argument in theory, however in practice, I feel it's a non-issue. It should be the responsibility of
+						each developer to handle such situations. If you're using user submitted data to build the markup for a modbox, it is on
+						you to make sure the data is clean and safe. Handling this task is outside the scope of this library.</p>
 
-						<p>This step is meant to be temporary, and I plan to remove it sometime after Safari adds support.</p>
+						<p>So that said, I'm not going to take the time to write and maintain my own sanitizer, nor am I going to add an external
+						dependency. However, as a compromise, I have added a <code>sanitizer</code> option that accepts a function, which can be from an
+						external library like <a href="https://github.com/cure53/DOMPurify" target="_blank">DOMPurify</a> (for example), should you wish to include/use one
+						on your own. In addition, the <code>.prompt()</code> modal also has an <code>input.sanitizer</code> option that can clean the user input
+						before being passed to the Promise resolve function. See the documentation for more details.</p>
+
+						<p>Please note that if you use software which scans your code for vulnerabilities, the solution above will most likely not
+						satisfy those scans, since markup is still permitted and the sanitizer is optional.</p>
 					</li>
 				</ul>
 			</section>

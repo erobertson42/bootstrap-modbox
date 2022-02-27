@@ -53,12 +53,6 @@ module.exports = function(grunt) {
 		});
 	});
 
-	// temporary Safari compatibility - convert private methods to private field functions (https://caniuse.com/mdn-javascript_classes_private_class_methods)
-	grunt.registerTask('safariCompat', 'Convert private methods to private field functions (temporary Safari compatibility).', function () {
-		const contents = grunt.file.read('dist/bootstrap-modbox.js').replace(/(\s+#[a-z0-9_]+)\((.*?)\) {/gi, '$1 = ($2) => {');
-		grunt.file.write('dist/bootstrap-modbox.js', contents);
-	});
-
 	// prepare js module file - add export command
 	grunt.registerTask('prepareDistModule', 'Add export command.', function() {
 		grunt.task.requires('prepareDist');
@@ -70,5 +64,5 @@ module.exports = function(grunt) {
 
 
 	// default tasks
-	grunt.registerTask('default', ['clean', 'prepareDist', 'babel', 'safariCompat', 'prepareDistModule', 'uglify']);
+	grunt.registerTask('default', ['clean', 'prepareDist', 'babel', 'prepareDistModule', 'uglify']);
 };
