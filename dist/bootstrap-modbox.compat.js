@@ -622,7 +622,7 @@ var _defaultOptions = {
       style: 'primary'
     },
     closeButton: {
-      label: 'Cancel',
+      label: 'Close',
       style: 'secondary'
     },
     // only applies to .prompt() class modal

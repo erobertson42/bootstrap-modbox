@@ -40,7 +40,7 @@ class modbox {
 			style: 'primary'
 		},
 		closeButton: {
-			label: 'Cancel',
+			label: 'Close',
 			style: 'secondary'
 		},
 

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
+## [1.3.1] - 2022-02-27
+### Changed
+- Set the default label for the `closeButton` to actually "Close" (as opposed to "Cancel").  How'd I miss that?
+
+
 ## [1.3.0] - 2022-02-26
 ### Added
 - New `.warning()` alert modal variant.
