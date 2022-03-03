@@ -28,6 +28,7 @@ class modbox {
 		destroyOnClose: false,
 		defaultButton: true,
 		swapButtonOrder: false,
+		showTitleCloseButton: true,
 		justifyButtons: null,
 		events: {},
 
@@ -204,6 +205,14 @@ class modbox {
 		const isDarkStyle = ['primary', 'secondary', 'success', 'danger', 'dark', 'body'].includes(this.#options.style);
 		const titleStyle = this.#options.titleStyle || (isDarkStyle ? 'white' : 'dark');
 		const closeButtonStyle = `btn-close ${isDarkStyle ? 'btn-close-white' : ''}`;
+		let titleCloseButton = '';
+
+		if (this.#options.showHeaderCloseButton) {
+			titleCloseButton = `
+				<button type="button" class="${closeButtonStyle}" data-bs-dismiss="modal" aria-label="Close"></button>
+			`.trim();
+		}
+
 		let title = '';
 
 		if (this.#options.title) {
@@ -213,7 +222,7 @@ class modbox {
 						${this.#options.icon ? `<i class="${this.#options.icon} me-3"></i>` : ''}
 						<span id="${this.#options.id}-title">${this.#options.title}</span>
 					</h5>
-					<button type="button" class="${closeButtonStyle}" data-bs-dismiss="modal" aria-label="Close"></button>
+					${titleCloseButton}
 				</div>
 			`.trim();
 		}
