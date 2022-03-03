@@ -207,7 +207,7 @@ class modbox {
 		const closeButtonStyle = `btn-close ${isDarkStyle ? 'btn-close-white' : ''}`;
 		let titleCloseButton = '';
 
-		if (this.#options.showHeaderCloseButton) {
+		if (this.#options.showTitleCloseButton) {
 			titleCloseButton = `
 				<button type="button" class="${closeButtonStyle}" data-bs-dismiss="modal" aria-label="Close"></button>
 			`.trim();
