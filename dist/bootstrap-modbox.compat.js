@@ -78,7 +78,7 @@ var _addEvents = /*#__PURE__*/new WeakSet();
  * bootstrap-modbox
  * Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
  *
- * version: 1.3.1
+ * version: 1.4.0
  * author: Eric Robertson
  * license: MIT
  *
@@ -537,13 +537,7 @@ function _buildModal2() {
   var isDarkStyle = ['primary', 'secondary', 'success', 'danger', 'dark', 'body'].includes(_classPrivateFieldGet(this, _options).style);
   var titleStyle = _classPrivateFieldGet(this, _options).titleStyle || (isDarkStyle ? 'white' : 'dark');
   var closeButtonStyle = "btn-close ".concat(isDarkStyle ? 'btn-close-white' : '');
-  var title = '';
-
-  if (_classPrivateFieldGet(this, _options).title) {
-    title = "\n\t\t\t\t<div class=\"modal-header ".concat(_classPrivateFieldGet(this, _options).style ? "bg-".concat(_classPrivateFieldGet(this, _options).style) : '', "\">\n\t\t\t\t\t<h5 class=\"modal-title text-").concat(titleStyle, "\">\n\t\t\t\t\t\t").concat(_classPrivateFieldGet(this, _options).icon ? "<i class=\"".concat(_classPrivateFieldGet(this, _options).icon, " me-3\"></i>") : '', "\n\t\t\t\t\t\t<span id=\"").concat(_classPrivateFieldGet(this, _options).id, "-title\">").concat(_classPrivateFieldGet(this, _options).title, "</span>\n\t\t\t\t\t</h5>\n\t\t\t\t\t<button type=\"button\" class=\"").concat(closeButtonStyle, "\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n\t\t\t\t</div>\n\t\t\t").trim();
-  }
-
-  modbox.container.insertAdjacentHTML('beforeend', _classPrivateFieldGet(this, _options).sanitizer("\n\t\t\t<div class=\"modal ".concat(_classPrivateFieldGet(this, _options).fade ? 'fade' : '', "\" id=\"").concat(_classPrivateFieldGet(this, _options).id, "\" tabindex=\"-1\" aria-labelledby=\"").concat(_classPrivateFieldGet(this, _options).id, "-title\" aria-hidden=\"true\">\n\t\t\t\t<div class=\"modal-dialog ").concat(_classPrivateFieldGet(this, _options).scrollable ? 'modal-dialog-scrollable' : '', " ").concat(_classPrivateFieldGet(this, _options).center ? 'modal-dialog-centered' : '', " ").concat(_classPrivateFieldGet(this, _options).size ? "modal-".concat(_classPrivateFieldGet(this, _options).size) : '', "\">\n\t\t\t\t\t<div class=\"modal-content\">\n\t\t\t\t\t\t").concat(title, "\n\t\t\t\t\t\t<div class=\"modal-body\">\n\t\t\t\t\t\t\t").concat(_classPrivateFieldGet(this, _options).body, "\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"modal-footer ").concat(_classPrivateFieldGet(this, _options).justifyButtons ? "d-flex justify-content-".concat(_classPrivateFieldGet(this, _options).justifyButtons) : '', "\"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t").trim()));
+  modbox.container.insertAdjacentHTML('beforeend', _classPrivateFieldGet(this, _options).sanitizer("\n\t\t\t<div class=\"modal ".concat(_classPrivateFieldGet(this, _options).fade ? 'fade' : '', "\" id=\"").concat(_classPrivateFieldGet(this, _options).id, "\" tabindex=\"-1\" aria-labelledby=\"").concat(_classPrivateFieldGet(this, _options).id, "-title\" aria-hidden=\"true\">\n\t\t\t\t<div class=\"modal-dialog ").concat(_classPrivateFieldGet(this, _options).scrollable ? 'modal-dialog-scrollable' : '', " ").concat(_classPrivateFieldGet(this, _options).center ? 'modal-dialog-centered' : '', " ").concat(_classPrivateFieldGet(this, _options).size ? "modal-".concat(_classPrivateFieldGet(this, _options).size) : '', "\">\n\t\t\t\t\t<div class=\"modal-content\">\n\t\t\t\t\t\t<div class=\"modal-header ").concat(_classPrivateFieldGet(this, _options).style ? "bg-".concat(_classPrivateFieldGet(this, _options).style) : '', " ").concat(!_classPrivateFieldGet(this, _options).title ? 'd-none' : '', "\">\n\t\t\t\t\t\t\t<h5 class=\"modal-title text-").concat(titleStyle, "\">\n\t\t\t\t\t\t\t\t").concat(_classPrivateFieldGet(this, _options).icon ? "<i class=\"".concat(_classPrivateFieldGet(this, _options).icon, " me-3\"></i>") : '', "\n\t\t\t\t\t\t\t\t<span id=\"").concat(_classPrivateFieldGet(this, _options).id, "-title\">").concat(_classPrivateFieldGet(this, _options).title, "</span>\n\t\t\t\t\t\t\t</h5>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"").concat(closeButtonStyle, " ").concat(_classPrivateFieldGet(this, _options).showHeaderClose === false ? 'd-none' : '', "\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"modal-body\">\n\t\t\t\t\t\t\t").concat(_classPrivateFieldGet(this, _options).body, "\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"modal-footer ").concat(_classPrivateFieldGet(this, _options).justifyButtons ? "d-flex justify-content-".concat(_classPrivateFieldGet(this, _options).justifyButtons) : '', "\"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t").trim()));
 
   _classPrivateFieldSet(this, _modalEl, modbox.container.querySelector("#".concat(_classPrivateFieldGet(this, _options).id)));
 
@@ -591,7 +585,7 @@ function _addEvents2() {
   }
 }
 
-_defineProperty(modbox, "version", '1.3.1');
+_defineProperty(modbox, "version", '1.4.0');
 
 var _defaultOptions = {
   writable: true,
@@ -613,6 +607,7 @@ var _defaultOptions = {
     defaultButton: true,
     swapButtonOrder: false,
     justifyButtons: null,
+    showHeaderClose: true,
     events: {},
     // only applies to constructor modals
     buttons: [],
