@@ -29,6 +29,7 @@ class modbox {
 		defaultButton: true,
 		swapButtonOrder: false,
 		justifyButtons: null,
+		showHeaderClose: true,
 		events: {},
 
 		// only applies to constructor modals
@@ -204,25 +205,18 @@ class modbox {
 		const isDarkStyle = ['primary', 'secondary', 'success', 'danger', 'dark', 'body'].includes(this.#options.style);
 		const titleStyle = this.#options.titleStyle || (isDarkStyle ? 'white' : 'dark');
 		const closeButtonStyle = `btn-close ${isDarkStyle ? 'btn-close-white' : ''}`;
-		let title = '';
-
-		if (this.#options.title) {
-			title = `
-				<div class="modal-header ${this.#options.style ? `bg-${this.#options.style}` : ''}">
-					<h5 class="modal-title text-${titleStyle}">
-						${this.#options.icon ? `<i class="${this.#options.icon} me-3"></i>` : ''}
-						<span id="${this.#options.id}-title">${this.#options.title}</span>
-					</h5>
-					<button type="button" class="${closeButtonStyle}" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-			`.trim();
-		}
 
 		modbox.container.insertAdjacentHTML('beforeend', this.#options.sanitizer(`
 			<div class="modal ${this.#options.fade ? 'fade' : ''}" id="${this.#options.id}" tabindex="-1" aria-labelledby="${this.#options.id}-title" aria-hidden="true">
 				<div class="modal-dialog ${this.#options.scrollable ? 'modal-dialog-scrollable' : ''} ${this.#options.center ? 'modal-dialog-centered' : ''} ${this.#options.size ? `modal-${this.#options.size}` : ''}">
 					<div class="modal-content">
-						${title}
+						<div class="modal-header ${this.#options.style ? `bg-${this.#options.style}` : ''} ${!this.#options.title ? 'd-none' : ''}">
+							<h5 class="modal-title text-${titleStyle}">
+								${this.#options.icon ? `<i class="${this.#options.icon} me-3"></i>` : ''}
+								<span id="${this.#options.id}-title">${this.#options.title}</span>
+							</h5>
+							<button type="button" class="${closeButtonStyle} ${this.#options.showHeaderClose === false ? 'd-none' : ''}" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
 						<div class="modal-body">
 							${this.#options.body}
 						</div>

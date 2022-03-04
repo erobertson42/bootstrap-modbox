@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
+## [1.4.0] - 2022-03-04
+### Added
+- New `showHeaderClose` modal configuration option which can hide the header close button ("X") ([docs](https://erobertson42.github.io/bootstrap-modbox/docs.html#options-showHeaderClose)).
+
+### Changed
+- Setting `title` to `null` or an empty string previously excluded the header markup from the DOM entirely.  Now it is still rendered but hidden, so it is available for future use if needed.  The same behavior applies to the new `showHeaderClose` option.
+- Updated documentation to reflect changes.
+
+
 ## [1.3.1] - 2022-02-27
 ### Changed
 - Set the default label for the `closeButton` to actually "Close" (as opposed to "Cancel").  How'd I miss that?
