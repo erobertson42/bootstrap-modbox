@@ -45,7 +45,7 @@ The modbox library can be added to your project in several ways:
 	```
 	```javascript
 	// specific version
-	import modbox from 'https://unpkg.com/bootstrap-modbox@1.4.0/dist/bootstrap-modbox.esm.min.js';
+	import modbox from 'https://unpkg.com/bootstrap-modbox@1.5.0/dist/bootstrap-modbox.esm.min.js';
 	```
 
 - Download from [GitHub](https://github.com/erobertson42/bootstrap-modbox/releases):
@@ -90,6 +90,23 @@ modbox.confirm({
 
 
 ## Notes
+
+- **Bootstrap ES module:**
+	Modbox will automatically attempt to locate a reference to Bootstrap in the global namespace.  If it does not exist, such as when loading Bootstrap as an ES module, you will also need to pass it as a reference to the `modbox.bootstrapModal` property before it can be used.
+	```javascript
+	import * as bootstrap from '/path/to/bootstrap.esm.min.js';
+	import modbox from '/path/to/bootstrap-modbox.esm.min.js';
+	modbox.bootstrapModal = bootstrap.Modal;
+	```
+	... or ...
+	```javascript
+	import { Modal } from '/path/to/bootstrap.esm.min.js';
+	import modbox from '/path/to/bootstrap-modbox.esm.min.js';
+	modbox.bootstrapModal = Modal;
+	```
+	Unfortunately, it is not as simple as automatically importing Bootstrap into the module version of modbox.  The ES standard module system requires a path to the file to be imported.  Meaning if I were to include it, I would have to hardcode the path, and anyone using modbox would either have to use that same path to Bootstrap, or modify the code with their own path - which is obviously not desirable.  Alternatively, if I imported Bootstrap using the specifier syntax (`import * as bootstrap from 'bootstrap'`), then a bundler like webpack would be required and no one could use the ES module version in a vanilla JavaScript environment (it would throw an error).
+
+	A JavaScript [import map](https://github.com/WICG/import-maps/) could work, however, it is currently still an experimental feature and [not supported](https://caniuse.com/import-maps) by all browsers.  For now, the above solution should be sufficient, and I have added a more descriptive error thrown if the `bootstrap` object is not found.
 
 - **Sanitization:**
 	This library builds its markup as a string, then uses the `element.insertAdjacentHTML()` method to parse and inject the resulting nodes into the DOM.  There has been some concern shown for other libraries using similar methods (`element.insertHTML`, jQuery `$(element).html()`, etc) that this could be a potential XSS attack vector (eg. user submitted data), considering that custom markup can be passed as a string with some configuration options (title, body, etc).

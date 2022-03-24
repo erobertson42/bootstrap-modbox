@@ -2,7 +2,7 @@
  * bootstrap-modbox
  * Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
  *
- * version: 1.4.0
+ * version: 1.5.0
  * author: Eric Robertson
  * license: MIT
  *
@@ -10,7 +10,7 @@
  */
 export default class modbox {
 
-	static version = '1.4.0';
+	static version = '1.5.0';
 
 	/* private members */
 
@@ -19,12 +19,9 @@ export default class modbox {
 	#modalEl;
 	#footer;
 
+	static #bootstrapModal;
 
 	static #defaultOptions = {
-		// bootstrap modal default options
-		...bootstrap.Modal.Default,
-
-		// modbox default options
 		icon: null,
 		style: 'white',
 		titleStyle: null,
@@ -278,6 +275,24 @@ export default class modbox {
 	/* public members */
 
 	constructor(userOptions = {}) {
+		// make sure there is a reference to bootstrap
+		if (!modbox.#bootstrapModal) {
+			// if bootstrapModal property has not been set, try to use global bootstrap object if it exists
+			if (typeof bootstrap === 'object') {
+				modbox.#bootstrapModal = bootstrap.Modal;
+			}
+			else {
+				throw new Error('The "modbox.bootstrapModal" property is undefined.  If importing Bootstrap as an ES module, you must also manually set this property.  See the modbox README/docs for more info.');
+			}
+		}
+
+		// add bootstrap modal defaults to modbox default options
+		// this is done here as opposed to on #defaultOptions initialization to avoid hoisting issues when bootstrap is loaded as an ES module
+		modbox.#defaultOptions = {
+			...modbox.#bootstrapModal.Default,
+			...modbox.#defaultOptions
+		};
+
 		this.#options = {
 			// modbox default options
 			...modbox.#defaultOptions,
@@ -286,6 +301,7 @@ export default class modbox {
 			...modbox.#checkUserOptions(userOptions)
 		};
 
+		// check for required options
 		if (typeof this.#options.body !== 'string' || !this.#options.body.length) {
 			if (typeof this.#options.message === 'string' && this.#options.message.length) {
 				this.#options.body = this.#options.message;
@@ -299,7 +315,7 @@ export default class modbox {
 		this.#buildModal();
 
 		// create bootstrap modal from generated HTML
-		this.#modal = new bootstrap.Modal(
+		this.#modal = new modbox.#bootstrapModal(
 			this.#modalEl,
 			(({ backdrop, keyboard, focus }) => ({ backdrop, keyboard, focus }))(this.#options)
 		);
@@ -332,6 +348,16 @@ export default class modbox {
 
 	get buttons() {
 		return [...this.#footer.querySelectorAll('button')];
+	}
+
+
+	static get bootstrapModal() {
+		return modbox.#bootstrapModal;
+	}
+
+
+	static set bootstrapModal(bootstrapModalRef) {
+		modbox.#bootstrapModal = bootstrapModalRef;
 	}
 
 
@@ -559,11 +585,11 @@ export default class modbox {
 	}
 
 	static getInstance(modalEl) {
-		return bootstrap.Modal.getInstance(modalEl);
+		return modbox.#bootstrapModal.getInstance(modalEl);
 	}
 
 	static getOrCreateInstance(modalEl) {
-		return bootstrap.Modal.getOrCreateInstance(modalEl);
+		return modbox.#bootstrapModal.getOrCreateInstance(modalEl);
 	}
 
 }

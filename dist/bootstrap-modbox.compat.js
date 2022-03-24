@@ -78,7 +78,7 @@ var _addEvents = /*#__PURE__*/new WeakSet();
  * bootstrap-modbox
  * Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
  *
- * version: 1.4.0
+ * version: 1.5.0
  * author: Eric Robertson
  * license: MIT
  *
@@ -125,9 +125,24 @@ var modbox = /*#__PURE__*/function () {
       value: void 0
     });
 
+    // make sure there is a reference to bootstrap
+    if (!_classStaticPrivateFieldSpecGet(modbox, modbox, _bootstrapModal)) {
+      // if bootstrapModal property has not been set, try to use global bootstrap object if it exists
+      if (typeof bootstrap === 'object') {
+        _classStaticPrivateFieldSpecSet(modbox, modbox, _bootstrapModal, bootstrap.Modal);
+      } else {
+        throw new Error('The "modbox.bootstrapModal" property is undefined.  If importing Bootstrap as an ES module, you must also manually set this property.  See the modbox README/docs for more info.');
+      }
+    } // add bootstrap modal defaults to modbox default options
+    // this is done here as opposed to on #defaultOptions initialization to avoid hoisting issues when bootstrap is loaded as an ES module
+
+
+    _classStaticPrivateFieldSpecSet(modbox, modbox, _defaultOptions, _objectSpread(_objectSpread({}, _classStaticPrivateFieldSpecGet(modbox, modbox, _bootstrapModal).Default), _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions)));
+
     _classPrivateFieldSet(this, _options, _objectSpread(_objectSpread({}, _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions)), {}, {
       id: _classStaticPrivateMethodGet(modbox, modbox, _getUID).call(modbox)
-    }, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions)));
+    }, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions))); // check for required options
+
 
     if (typeof _classPrivateFieldGet(this, _options).body !== 'string' || !_classPrivateFieldGet(this, _options).body.length) {
       if (typeof _classPrivateFieldGet(this, _options).message === 'string' && _classPrivateFieldGet(this, _options).message.length) {
@@ -141,7 +156,7 @@ var modbox = /*#__PURE__*/function () {
     _classPrivateMethodGet(this, _buildModal, _buildModal2).call(this); // create bootstrap modal from generated HTML
 
 
-    _classPrivateFieldSet(this, _modal, new bootstrap.Modal(_classPrivateFieldGet(this, _modalEl), function (_ref) {
+    _classPrivateFieldSet(this, _modal, new (_classStaticPrivateFieldSpecGet(modbox, modbox, _bootstrapModal))(_classPrivateFieldGet(this, _modalEl), function (_ref) {
       var backdrop = _ref.backdrop,
           keyboard = _ref.keyboard,
           focus = _ref.focus;
@@ -267,6 +282,14 @@ var modbox = /*#__PURE__*/function () {
       _classPrivateFieldGet(this, _modal).dispose();
     }
   }], [{
+    key: "bootstrapModal",
+    get: function get() {
+      return _classStaticPrivateFieldSpecGet(modbox, modbox, _bootstrapModal);
+    },
+    set: function set(bootstrapModalRef) {
+      _classStaticPrivateFieldSpecSet(modbox, modbox, _bootstrapModal, bootstrapModalRef);
+    }
+  }, {
     key: "defaultOptions",
     get: function get() {
       return _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions);
@@ -408,12 +431,12 @@ var modbox = /*#__PURE__*/function () {
   }, {
     key: "getInstance",
     value: function getInstance(modalEl) {
-      return bootstrap.Modal.getInstance(modalEl);
+      return _classStaticPrivateFieldSpecGet(modbox, modbox, _bootstrapModal).getInstance(modalEl);
     }
   }, {
     key: "getOrCreateInstance",
     value: function getOrCreateInstance(modalEl) {
-      return bootstrap.Modal.getOrCreateInstance(modalEl);
+      return _classStaticPrivateFieldSpecGet(modbox, modbox, _bootstrapModal).getOrCreateInstance(modalEl);
     }
   }]);
 
@@ -585,12 +608,15 @@ function _addEvents2() {
   }
 }
 
-_defineProperty(modbox, "version", '1.4.0');
+_defineProperty(modbox, "version", '1.5.0');
 
+var _bootstrapModal = {
+  writable: true,
+  value: void 0
+};
 var _defaultOptions = {
   writable: true,
-  value: _objectSpread(_objectSpread({}, bootstrap.Modal.Default), {}, {
-    // modbox default options
+  value: {
     icon: null,
     style: 'white',
     titleStyle: null,
@@ -636,7 +662,7 @@ var _defaultOptions = {
     },
     // meant to be overridden with user defined function
     sanitizer: _classStaticPrivateMethodGet(modbox, modbox, _sanitizeString)
-  })
+  }
 };
 var _defaultButtonOptions = {
   writable: true,

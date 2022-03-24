@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
+## [1.5.0] - 2022-03-24
+### Added
+- New optional `bootstrapModal` property to manually define a reference to the Bootstrap Modal class.  Modbox will automatically attempt to locate a reference in the global namespace, and this is only recommended if loading Bootstrap as a module.
+
+### Changed
+- Append Bootstrap modal defaults to modbox `defaultOptions` in the constructor as opposed to on initialization to avoid hoisting issues when Bootstrap is loaded as an ES module.
+
+
 ## [1.4.0] - 2022-03-04
 ### Added
 - New `showHeaderClose` modal configuration option which can hide the header close button ("X") ([docs](https://erobertson42.github.io/bootstrap-modbox/docs.html#options-showHeaderClose)).
