@@ -711,6 +711,11 @@
 								<p>Creates a <span class="fw-bolder">prompt</span> type modal.</p>
 							</dd>
 
+							<dt class="anchor" id="methods-setDefaults">setDefaults(<code>string modalType</code>, <code>object modalOptions</code>)</dt>
+							<dd>
+								<p>Allows setting default options independently for each modal type.  Inherits from and overwrites options set by <code>modbox.defaultOptions</code>.  The <code>modalType</code> argument can be any of the available types of class/static modals: <code>alert</code>, <code>info</code>, <code>success</code>, <code>warning</code>, <code>danger</code>, <code>confirm</code>, <code>prompt</code>.  Does not affect instance modals created by calling the constructor.</p>
+							</dd>
+
 							<dt class="anchor" id="methods-success">success(<code>object options</code>)</dt>
 							<dd>
 								<p>Returns: <code>promise</code></p>
@@ -734,8 +739,8 @@
 								<code class="line-numbers lang-js">
 									new modbox({
 										events: {
-											shown: () => console.log('modal shown'),
-											hidden: () => console.log('modal hidden')
+											shown: (event, modal) => console.log('modal shown'),
+											hidden: (event, modal) => console.log('modal hidden')
 										}
 									});
 								</code>

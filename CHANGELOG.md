@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
+## [1.6.0] - 2022-05-14
+### Added
+- New `setDefaults()` method to allow independent default options for each modal type ([docs](https://erobertson42.github.io/bootstrap-modbox/docs.html#methods-setDefaults)).
+
+### Changed
+- The `getUID()` private method now uses `Date.now()` epoch to guarantee a unique ID.  Previously, getting a duplicate value was highly improbable, but not impossible.
+
+
 ## [1.5.0] - 2022-03-24
 ### Added
 - New optional `bootstrapModal` property to manually define a reference to the Bootstrap Modal class.  Modbox will automatically attempt to locate a reference in the global namespace, and this is only recommended if loading Bootstrap as a module.

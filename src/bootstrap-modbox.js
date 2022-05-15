@@ -29,10 +29,10 @@ class modbox {
 		showHeaderClose: true,
 		events: {},
 
-		// only applies to constructor modals
+		// only applies to instance/constructor modals
 		buttons: [],
 
-		// only applies to class modals, and overwrites defaults set by modbox.defaultButtonOptions
+		// only applies to static modals, and overwrites defaults set by modbox.defaultButtonOptions
 		okButton: {
 			label: 'OK',
 			style: 'primary'
@@ -42,7 +42,7 @@ class modbox {
 			style: 'secondary'
 		},
 
-		// only applies to .prompt() class modal
+		// only applies to .prompt() static modal
 		input: {
 			type: 'text',
 			class: '',
@@ -76,9 +76,42 @@ class modbox {
 	};
 
 
-	// generate a pseudo-random id
+	// default options for each static modal type
+	static #modalDefaults = {
+		alert: {
+			title: 'Alert'
+		},
+		info: {
+			style: 'info',
+			title: 'Information'
+		},
+		success: {
+			style: 'success',
+			title: 'Success'
+		},
+		warning: {
+			style: 'warning',
+			title: 'Warning'
+		},
+		danger: {
+			style: 'danger',
+			title: 'Error'
+		},
+		confirm: {
+			title: 'Confirm'
+		},
+		prompt: {
+			title: 'Prompt',
+			input: {
+				id: modbox.#getUID('modbox-input-')
+			}
+		}
+	};
+
+
+	// generate a unique id
 	static #getUID(prefix = 'modbox-') {
-		return prefix + Math.floor(Math.random() * 1000000);
+		return prefix + Date.now();
 	}
 
 
@@ -108,6 +141,15 @@ class modbox {
 	// if string passed in as options argument, convert to an object and use as the body value
 	static #checkUserOptions(userOptions) {
 		return (typeof userOptions === 'string') ? { body: userOptions } : userOptions;
+	}
+
+
+	// this has to be done on the fly as opposed to when initializing #modalDefaults above, otherwise changes to modbox.defaultOptions will not be reflected in the static modals
+	static #mergeModalOptions(modalType, userOptions = {}) {
+		return modbox.#deepMerge(
+			modbox.#deepMerge(modbox.#defaultOptions, modbox.#modalDefaults[modalType]),
+			modbox.#checkUserOptions(userOptions)
+		);
 	}
 
 
@@ -369,6 +411,23 @@ class modbox {
 	}
 
 
+	// set default options for each static modal type
+	static setDefaults(modalType, modalOptions = {}) {
+		modalType = modalType.trim?.().toLowerCase?.();
+
+		if (modalType === 'error') {
+			modalType = 'danger';
+		}
+
+		if (!modalType || !['alert', 'info', 'success', 'warning', 'danger', 'confirm', 'prompt'].includes(modalType)) {
+			throw new Error('Invalid modal type.');
+		}
+
+		modalOptions = modbox.#typeof(modalOptions) === 'object' ? modalOptions : {};
+		modbox.#modalDefaults[modalType] = modbox.#deepMerge(modbox.#modalDefaults[modalType], modalOptions);
+	}
+
+
 	addButton(userBtnOptions = {}, swapOrder = this.#options.swapButtonOrder) {
 		// show footer if hidden
 		this.#footer.classList.remove('d-none');
@@ -439,53 +498,41 @@ class modbox {
 
 	// convenience method for a generic alert modbox
 	static alert(userOptions = {}) {
-		const defaultOptions = {
-			title: 'Alert',
-			closeButton: modbox.#defaultOptions.closeButton
-		};
-
-		const options = modbox.#deepMerge(defaultOptions, modbox.#checkUserOptions(userOptions));
-		return modbox.#buildPromiseModal(options);
+		return modbox.#buildPromiseModal(
+			modbox.#mergeModalOptions('alert', userOptions)
+		);
 	}
 
 
 	// convenience method for an info style alert modbox
 	static info(userOptions = {}) {
-		return modbox.alert({
-			style: 'info',
-			title: 'Information',
-			...modbox.#checkUserOptions(userOptions)
-		});
+		return modbox.#buildPromiseModal(
+			modbox.#mergeModalOptions('info', userOptions)
+		);
 	}
 
 
 	// convenience method for a success style alert modbox
 	static success(userOptions = {}) {
-		return modbox.alert({
-			style: 'success',
-			title: 'Success',
-			...modbox.#checkUserOptions(userOptions)
-		});
+		return modbox.#buildPromiseModal(
+			modbox.#mergeModalOptions('success', userOptions)
+		);
 	}
 
 
 	// convenience method for a warning style alert modbox
 	static warning(userOptions = {}) {
-		return modbox.alert({
-			style: 'warning',
-			title: 'Warning',
-			...modbox.#checkUserOptions(userOptions)
-		});
+		return modbox.#buildPromiseModal(
+			modbox.#mergeModalOptions('warning', userOptions)
+		);
 	}
 
 
 	// convenience method for an danger style alert modbox
 	static danger(userOptions = {}) {
-		return modbox.alert({
-			style: 'danger',
-			title: 'Error',
-			...modbox.#checkUserOptions(userOptions)
-		});
+		return modbox.#buildPromiseModal(
+			modbox.#mergeModalOptions('danger', userOptions)
+		);
 	}
 
 
@@ -497,30 +544,16 @@ class modbox {
 
 	// convenience method for a confirmation modbox
 	static confirm(userOptions = {}) {
-		const defaultOptions = {
-			title: 'Confirm',
-			okButton: modbox.#defaultOptions.okButton,
-			closeButton: modbox.#defaultOptions.closeButton
-		};
-
-		const options = modbox.#deepMerge(defaultOptions, modbox.#checkUserOptions(userOptions));
-		return modbox.#buildPromiseModal(options, 'confirm');
+		return modbox.#buildPromiseModal(
+			modbox.#mergeModalOptions('confirm', userOptions),
+			'confirm'
+		);
 	}
 
 
 	// convenience method for a prompt modbox
 	static prompt(userOptions = {}) {
-		const defaultOptions = {
-			title: 'Prompt',
-			input: {
-				...modbox.#defaultOptions.input,
-				id: modbox.#getUID('modbox-input-')
-			},
-			okButton: modbox.#defaultOptions.okButton,
-			closeButton: modbox.#defaultOptions.closeButton
-		};
-
-		const options = modbox.#deepMerge(defaultOptions, modbox.#checkUserOptions(userOptions));
+		const options = modbox.#mergeModalOptions('prompt', userOptions);
 
 		// if regex passed as pattern, convert to string first
 		if (modbox.#typeof(options.input?.pattern) === 'regexp') {

@@ -40,10 +40,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _classStaticPrivateFieldSpecSet(receiver, classConstructor, descriptor, value) { _classCheckPrivateStaticAccess(receiver, classConstructor); _classCheckPrivateStaticFieldDescriptor(descriptor, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
 
-function _classStaticPrivateFieldSpecGet(receiver, classConstructor, descriptor) { _classCheckPrivateStaticAccess(receiver, classConstructor); _classCheckPrivateStaticFieldDescriptor(descriptor, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
-
-function _classCheckPrivateStaticFieldDescriptor(descriptor, action) { if (descriptor === undefined) { throw new TypeError("attempted to " + action + " private static field before its declaration"); } }
-
 function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
 
 function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set"); _classApplyDescriptorSet(receiver, descriptor, value); return value; }
@@ -53,6 +49,10 @@ function _classApplyDescriptorSet(receiver, descriptor, value) { if (descriptor.
 function _classPrivateFieldGet(receiver, privateMap) { var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
 
 function _classExtractFieldDescriptor(receiver, privateMap, action) { if (!privateMap.has(receiver)) { throw new TypeError("attempted to " + action + " private field on non-instance"); } return privateMap.get(receiver); }
+
+function _classStaticPrivateFieldSpecGet(receiver, classConstructor, descriptor) { _classCheckPrivateStaticAccess(receiver, classConstructor); _classCheckPrivateStaticFieldDescriptor(descriptor, "get"); return _classApplyDescriptorGet(receiver, descriptor); }
+
+function _classCheckPrivateStaticFieldDescriptor(descriptor, action) { if (descriptor === undefined) { throw new TypeError("attempted to " + action + " private static field before its declaration"); } }
 
 function _classApplyDescriptorGet(receiver, descriptor) { if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
 
@@ -78,7 +78,7 @@ var _addEvents = /*#__PURE__*/new WeakSet();
  * bootstrap-modbox
  * Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
  *
- * version: 1.5.0
+ * version: 1.6.0
  * author: Eric Robertson
  * license: MIT
  *
@@ -86,10 +86,12 @@ var _addEvents = /*#__PURE__*/new WeakSet();
  */
 var modbox = /*#__PURE__*/function () {
   /* private members */
-  // generate a pseudo-random id
+  // default options for each static modal type
+  // generate a unique id
   // more specific type checking than standard typeof
   // recursive object merge
   // if string passed in as options argument, convert to an object and use as the body value
+  // this has to be done on the fly as opposed to when initializing #modalDefaults above, otherwise changes to modbox.defaultOptions will not be reflected in the static modals
   // default sanitizer function which just returns the string unmodified
   // build custom modal that returns a Promise
 
@@ -312,6 +314,26 @@ var modbox = /*#__PURE__*/function () {
       }
 
       _classStaticPrivateFieldSpecSet(modbox, modbox, _defaultButtonOptions, _objectSpread(_objectSpread({}, _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultButtonOptions)), userDefaultButtonOptions));
+    } // set default options for each static modal type
+
+  }, {
+    key: "setDefaults",
+    value: function setDefaults(modalType) {
+      var _modalType$trim, _modalType, _modalType$trim$call$, _modalType$trim$call;
+
+      var modalOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      modalType = (_modalType$trim = (_modalType = modalType).trim) === null || _modalType$trim === void 0 ? void 0 : (_modalType$trim$call$ = (_modalType$trim$call = _modalType$trim.call(_modalType)).toLowerCase) === null || _modalType$trim$call$ === void 0 ? void 0 : _modalType$trim$call$.call(_modalType$trim$call);
+
+      if (modalType === 'error') {
+        modalType = 'danger';
+      }
+
+      if (!modalType || !['alert', 'info', 'success', 'warning', 'danger', 'confirm', 'prompt'].includes(modalType)) {
+        throw new Error('Invalid modal type.');
+      }
+
+      modalOptions = _classStaticPrivateMethodGet(modbox, modbox, _typeof).call(modbox, modalOptions) === 'object' ? modalOptions : {};
+      _classStaticPrivateFieldSpecGet(modbox, modbox, _modalDefaults)[modalType] = _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, _classStaticPrivateFieldSpecGet(modbox, modbox, _modalDefaults)[modalType], modalOptions);
     }
   }, {
     key: "container",
@@ -331,54 +353,35 @@ var modbox = /*#__PURE__*/function () {
     key: "alert",
     value: function alert() {
       var userOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var defaultOptions = {
-        title: 'Alert',
-        closeButton: _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions).closeButton
-      };
-
-      var options = _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, defaultOptions, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions));
-
-      return _classStaticPrivateMethodGet(modbox, modbox, _buildPromiseModal).call(modbox, options);
+      return _classStaticPrivateMethodGet(modbox, modbox, _buildPromiseModal).call(modbox, _classStaticPrivateMethodGet(modbox, modbox, _mergeModalOptions).call(modbox, 'alert', userOptions));
     } // convenience method for an info style alert modbox
 
   }, {
     key: "info",
     value: function info() {
       var userOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return modbox.alert(_objectSpread({
-        style: 'info',
-        title: 'Information'
-      }, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions)));
+      return _classStaticPrivateMethodGet(modbox, modbox, _buildPromiseModal).call(modbox, _classStaticPrivateMethodGet(modbox, modbox, _mergeModalOptions).call(modbox, 'info', userOptions));
     } // convenience method for a success style alert modbox
 
   }, {
     key: "success",
     value: function success() {
       var userOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return modbox.alert(_objectSpread({
-        style: 'success',
-        title: 'Success'
-      }, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions)));
+      return _classStaticPrivateMethodGet(modbox, modbox, _buildPromiseModal).call(modbox, _classStaticPrivateMethodGet(modbox, modbox, _mergeModalOptions).call(modbox, 'success', userOptions));
     } // convenience method for a warning style alert modbox
 
   }, {
     key: "warning",
     value: function warning() {
       var userOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return modbox.alert(_objectSpread({
-        style: 'warning',
-        title: 'Warning'
-      }, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions)));
+      return _classStaticPrivateMethodGet(modbox, modbox, _buildPromiseModal).call(modbox, _classStaticPrivateMethodGet(modbox, modbox, _mergeModalOptions).call(modbox, 'warning', userOptions));
     } // convenience method for an danger style alert modbox
 
   }, {
     key: "danger",
     value: function danger() {
       var userOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      return modbox.alert(_objectSpread({
-        style: 'danger',
-        title: 'Error'
-      }, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions)));
+      return _classStaticPrivateMethodGet(modbox, modbox, _buildPromiseModal).call(modbox, _classStaticPrivateMethodGet(modbox, modbox, _mergeModalOptions).call(modbox, 'danger', userOptions));
     } // alternate method name for the danger() modal
 
   }, {
@@ -392,15 +395,7 @@ var modbox = /*#__PURE__*/function () {
     key: "confirm",
     value: function confirm() {
       var userOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var defaultOptions = {
-        title: 'Confirm',
-        okButton: _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions).okButton,
-        closeButton: _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions).closeButton
-      };
-
-      var options = _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, defaultOptions, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions));
-
-      return _classStaticPrivateMethodGet(modbox, modbox, _buildPromiseModal).call(modbox, options, 'confirm');
+      return _classStaticPrivateMethodGet(modbox, modbox, _buildPromiseModal).call(modbox, _classStaticPrivateMethodGet(modbox, modbox, _mergeModalOptions).call(modbox, 'confirm', userOptions), 'confirm');
     } // convenience method for a prompt modbox
 
   }, {
@@ -409,16 +404,8 @@ var modbox = /*#__PURE__*/function () {
       var _options$input;
 
       var userOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var defaultOptions = {
-        title: 'Prompt',
-        input: _objectSpread(_objectSpread({}, _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions).input), {}, {
-          id: _classStaticPrivateMethodGet(modbox, modbox, _getUID).call(modbox, 'modbox-input-')
-        }),
-        okButton: _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions).okButton,
-        closeButton: _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions).closeButton
-      };
 
-      var options = _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, defaultOptions, _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions)); // if regex passed as pattern, convert to string first
+      var options = _classStaticPrivateMethodGet(modbox, modbox, _mergeModalOptions).call(modbox, 'prompt', userOptions); // if regex passed as pattern, convert to string first
 
 
       if (_classStaticPrivateMethodGet(modbox, modbox, _typeof).call(modbox, (_options$input = options.input) === null || _options$input === void 0 ? void 0 : _options$input.pattern) === 'regexp') {
@@ -445,7 +432,7 @@ var modbox = /*#__PURE__*/function () {
 
 function _getUID() {
   var prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'modbox-';
-  return prefix + Math.floor(Math.random() * 1000000);
+  return prefix + Date.now();
 }
 
 function _typeof(obj) {
@@ -470,6 +457,11 @@ function _checkUserOptions(userOptions) {
   return typeof userOptions === 'string' ? {
     body: userOptions
   } : userOptions;
+}
+
+function _mergeModalOptions(modalType) {
+  var userOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, _classStaticPrivateMethodGet(modbox, modbox, _deepMerge).call(modbox, _classStaticPrivateFieldSpecGet(modbox, modbox, _defaultOptions), _classStaticPrivateFieldSpecGet(modbox, modbox, _modalDefaults)[modalType]), _classStaticPrivateMethodGet(modbox, modbox, _checkUserOptions).call(modbox, userOptions));
 }
 
 function _sanitizeString() {
@@ -608,7 +600,7 @@ function _addEvents2() {
   }
 }
 
-_defineProperty(modbox, "version", '1.5.0');
+_defineProperty(modbox, "version", '1.6.0');
 
 var _bootstrapModal = {
   writable: true,
@@ -635,9 +627,9 @@ var _defaultOptions = {
     justifyButtons: null,
     showHeaderClose: true,
     events: {},
-    // only applies to constructor modals
+    // only applies to instance/constructor modals
     buttons: [],
-    // only applies to class modals, and overwrites defaults set by modbox.defaultButtonOptions
+    // only applies to static modals, and overwrites defaults set by modbox.defaultButtonOptions
     okButton: {
       label: 'OK',
       style: 'primary'
@@ -646,7 +638,7 @@ var _defaultOptions = {
       label: 'Close',
       style: 'secondary'
     },
-    // only applies to .prompt() class modal
+    // only applies to .prompt() static modal
     input: {
       type: 'text',
       class: '',
@@ -677,5 +669,38 @@ var _defaultButtonOptions = {
     disabled: false,
     close: true,
     callback: null
+  }
+};
+var _modalDefaults = {
+  writable: true,
+  value: {
+    alert: {
+      title: 'Alert'
+    },
+    info: {
+      style: 'info',
+      title: 'Information'
+    },
+    success: {
+      style: 'success',
+      title: 'Success'
+    },
+    warning: {
+      style: 'warning',
+      title: 'Warning'
+    },
+    danger: {
+      style: 'danger',
+      title: 'Error'
+    },
+    confirm: {
+      title: 'Confirm'
+    },
+    prompt: {
+      title: 'Prompt',
+      input: {
+        id: _classStaticPrivateMethodGet(modbox, modbox, _getUID).call(modbox, 'modbox-input-')
+      }
+    }
   }
 };
