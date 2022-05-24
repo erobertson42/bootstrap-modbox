@@ -2,7 +2,7 @@
  * bootstrap-modbox
  * Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
  *
- * version: 1.6.0
+ * version: 1.6.1
  * author: Eric Robertson
  * license: MIT
  *
@@ -10,7 +10,7 @@
  */
 export default class modbox {
 
-	static version = '1.6.0';
+	static version = '1.6.1';
 
 	/* private members */
 
@@ -123,7 +123,7 @@ export default class modbox {
 
 	// generate a unique id
 	static #getUID(prefix = 'modbox-') {
-		return prefix + Date.now();
+		return prefix + Date.now() + Math.floor(Math.random() * 10000);
 	}
 
 
@@ -238,7 +238,7 @@ export default class modbox {
 			}
 
 			// settle the Promise if the modal is closed in a way other than clicking the buttons (click X, click backdrop, press ESC, etc)
-			box.addEvent('hide', () => {
+			box.addEvent('hidden', () => {
 				if (type === 'alert') {
 					resolve();
 				}

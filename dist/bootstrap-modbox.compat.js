@@ -78,7 +78,7 @@ var _addEvents = /*#__PURE__*/new WeakSet();
  * bootstrap-modbox
  * Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
  *
- * version: 1.6.0
+ * version: 1.6.1
  * author: Eric Robertson
  * license: MIT
  *
@@ -432,7 +432,7 @@ var modbox = /*#__PURE__*/function () {
 
 function _getUID() {
   var prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'modbox-';
-  return prefix + Date.now();
+  return prefix + Date.now() + Math.floor(Math.random() * 10000);
 }
 
 function _typeof(obj) {
@@ -537,7 +537,7 @@ function _buildPromiseModal() {
     } // settle the Promise if the modal is closed in a way other than clicking the buttons (click X, click backdrop, press ESC, etc)
 
 
-    box.addEvent('hide', function () {
+    box.addEvent('hidden', function () {
       if (type === 'alert') {
         resolve();
       } else if (['confirm', 'prompt'].includes(type) && document.activeElement !== okBtn) {
@@ -600,7 +600,7 @@ function _addEvents2() {
   }
 }
 
-_defineProperty(modbox, "version", '1.6.0');
+_defineProperty(modbox, "version", '1.6.1');
 
 var _bootstrapModal = {
   writable: true,

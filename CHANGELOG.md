@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
+## [1.6.1] - 2022-05-24
+### Changed
+- Updated the `getUID()` private method *again*.  It turns out that JavaScript dates aren't precise enough, and it resulted in identical epoch values generated when called multiple times in quick succession.  It now uses a combination of both the old and new methods.
+
+### Fixed
+- Fixed an event timing issue in Safari preventing the modal Promise `resolve()` function from firing.
+
+
 ## [1.6.0] - 2022-05-14
 ### Added
 - New `setDefaults()` method to allow independent default options for each modal type ([docs](https://erobertson42.github.io/bootstrap-modbox/docs.html#methods-setDefaults)).
