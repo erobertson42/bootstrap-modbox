@@ -208,6 +208,12 @@ class modbox {
 							options.okButton.callback.call(this, ev, modal);
 						}
 
+						const defaultPrevented = ev.defaultPrevented != null ? ev.defaultPrevented : ev.returnValue === false;
+
+						if (defaultPrevented) {
+							return;
+						}
+
 						okCallback();
 					}
 				});
