@@ -44,14 +44,14 @@ The modbox library can be added to your project in several ways:
 	<script src="https://unpkg.com/bootstrap-modbox"></script>
 
 	<!-- specific version -->
-	<script src="https://unpkg.com/bootstrap-modbox@1.6.0/dist/bootstrap-modbox.min.js"></script>
+	<script src="https://unpkg.com/bootstrap-modbox@1.6.2/dist/bootstrap-modbox.min.js"></script>
 	```
 	```javascript
 	// latest version
 	import modbox from 'https://unpkg.com/bootstrap-modbox/dist/bootstrap-modbox.esm.min.js';
 
 	// specific version
-	import modbox from 'https://unpkg.com/bootstrap-modbox@1.6.0/dist/bootstrap-modbox.esm.min.js';
+	import modbox from 'https://unpkg.com/bootstrap-modbox@1.6.2/dist/bootstrap-modbox.esm.min.js';
 	```
 
 - Download from [GitHub](https://github.com/erobertson42/bootstrap-modbox/releases):
