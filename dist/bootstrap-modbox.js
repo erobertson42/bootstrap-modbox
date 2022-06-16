@@ -2,7 +2,7 @@
  * bootstrap-modbox
  * Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
  *
- * version: 1.6.1
+ * version: 1.6.2
  * author: Eric Robertson
  * license: MIT
  *
@@ -10,7 +10,7 @@
  */
 class modbox {
 
-	static version = '1.6.1';
+	static version = '1.6.2';
 
 	/* private members */
 
@@ -218,6 +218,12 @@ class modbox {
 					callback: function(ev, modal) {
 						if (typeof options.okButton.callback === 'function') {
 							options.okButton.callback.call(this, ev, modal);
+						}
+
+						const defaultPrevented = ev.defaultPrevented != null ? ev.defaultPrevented : ev.returnValue === false;
+
+						if (defaultPrevented) {
+							return;
 						}
 
 						okCallback();

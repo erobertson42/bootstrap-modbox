@@ -415,6 +415,7 @@
 								<p>Type: <code>object</code></p>
 								<p>Default: <code>[default button]</code></p>
 								<p>Configuration for the "OK" button.  This is a special option only available to the class modals <code>.confirm()</code> and <code>.prompt()</code>.  Accepts the same configuration options as a standard <code>buttons</code> object.  Also resolves the returned Promise, and in the case of <code>.prompt()</code>, the value of the input field is passed to the <code>resolve()</code> function.</p>
+								<p>Calling <code>event.preventDefault()</code> from within the callback function will prevent the Promise from resolving.</p>
 							</dd>
 
 							<dt class="anchor" id="options-relatedTarget">relatedTarget</dt>
