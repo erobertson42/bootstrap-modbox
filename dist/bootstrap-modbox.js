@@ -2,7 +2,7 @@
  * bootstrap-modbox
  * Native JavaScript wrapper for simple Bootstrap 5 modals. Provides support for alert, confirm, and prompt modals, as well as advanced custom dialogs.
  *
- * version: 1.6.2
+ * version: 1.7.0
  * author: Eric Robertson
  * license: MIT
  *
@@ -10,7 +10,7 @@
  */
 class modbox {
 
-	static version = '1.6.2';
+	static version = '1.7.0';
 
 	/* private members */
 
@@ -39,6 +39,7 @@ class modbox {
 		swapButtonOrder: false,
 		justifyButtons: null,
 		showHeaderClose: true,
+		headerCloseStyle: null,
 		events: {},
 
 		// only applies to instance/constructor modals
@@ -261,17 +262,17 @@ class modbox {
 	#buildModal() {
 		const isDarkStyle = ['primary', 'secondary', 'success', 'danger', 'dark', 'body'].includes(this.#options.style);
 		const titleStyle = this.#options.titleStyle || (isDarkStyle ? 'white' : 'dark');
-		const closeButtonStyle = `btn-close ${isDarkStyle ? 'btn-close-white' : ''}`;
+		const closeButtonStyle = `btn-close ${(this.#options.headerCloseStyle === 'white' || (!this.#options.headerCloseStyle && isDarkStyle)) ? 'btn-close-white' : ''}`;
 
 		modbox.container.insertAdjacentHTML('beforeend', this.#options.sanitizer(`
 			<div class="modal ${this.#options.fade ? 'fade' : ''}" id="${this.#options.id}" tabindex="-1" aria-labelledby="${this.#options.id}-title" aria-hidden="true">
 				<div class="modal-dialog ${this.#options.scrollable ? 'modal-dialog-scrollable' : ''} ${this.#options.center ? 'modal-dialog-centered' : ''} ${this.#options.size ? `modal-${this.#options.size}` : ''}">
 					<div class="modal-content">
 						<div class="modal-header ${this.#options.style ? `bg-${this.#options.style}` : ''} ${!this.#options.title ? 'd-none' : ''}">
-							<h5 class="modal-title text-${titleStyle}">
+							<div class="modal-title h5 text-${titleStyle}">
 								${this.#options.icon ? `<i class="${this.#options.icon} me-3"></i>` : ''}
 								<span id="${this.#options.id}-title">${this.#options.title}</span>
-							</h5>
+							</div>
 							<button type="button" class="${closeButtonStyle} ${this.#options.showHeaderClose === false ? 'd-none' : ''}" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">

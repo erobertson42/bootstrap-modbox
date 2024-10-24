@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
+## [1.7.0] - 2024-10-23
+### Added
+- New `headerCloseStyle` modal configuration option to specify the header close button ("X") style ([docs](https://erobertson42.github.io/bootstrap-modbox/docs.html#options-headerCloseStyle)).
+
+### Changed
+- I have stopped generating the compatibility version of the library. All features are now supported by greater than 90% of browsers, so I feel it is no longer necessary. This allows me to drop the babel dependency, as well as decrease the distribution size. However, I have backed-up version 1.6.2 to an alternate branch in the unlikely event anyone still needs it.
+- The `.modal-title` element has been changed from `h5` to `div.h5`.  This was to correct a very minor issue with some ADA accessibility compliancy scanners which could flag this element as being an invalid heading rank ([more info](https://www.w3.org/WAI/tutorials/page-structure/headings/)).
+- Updated documentation to reflect changes.
+- Documentation now uses the standard modbox library instead of the compatibility version.
+
+
 ## [1.6.2] - 2022-06-15
 ### Changed
 - Calling `event.preventDefault()` from within the `okButton` callback function now prevents the Promise from resolving.  (thanks [@yankarinRG](https://github.com/yankarinRG))

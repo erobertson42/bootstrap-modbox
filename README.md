@@ -19,9 +19,11 @@ I know, not *another* JavaScript library for Bootstrap modals, right?
 
 However, I found that existing libraries seem to be no longer updated/supported, are for older versions of Bootstrap, and/or still require jQuery.  So, I decided to write my own for Bootstrap 5, using all native JavaScript and native Bootstrap markup and CSS - there is no custom styling.
 
-I should mention that both the standard and module versions of the library are using [newer JavaScript features](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#browser_compatibility) (as of this writing) which are only supported in more recent versions of the major browsers; like class structures, including private fields and methods.
+~~I should mention that both the standard and module versions of the library are using [newer JavaScript features](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#browser_compatibility) (as of this writing) which are only supported in more recent versions of the major browsers; like class structures, including private fields and methods.~~
 
-That said, I have also included a compatibility version of the library transpiled by Babel, if needed.  It targets the versions of all major browsers which first included class support (for specifics, check out the [Grunt configuration file](https://github.com/erobertson42/bootstrap-modbox/blob/main/Gruntfile.js)).  I *did not* go back as far as ES5, because Bootstrap 5 no longer supports it either.
+~~That said, I have also included a compatibility version of the library transpiled by Babel, if needed.  It targets the versions of all major browsers which first included class support (for specifics, check out the [Grunt configuration file](https://github.com/erobertson42/bootstrap-modbox/blob/main/Gruntfile.js)).  I *did not* go back as far as ES5, because Bootstrap 5 no longer supports it either.~~
+
+**Important Note:**  As of version `1.7.0`, I have stopped generating the compatibility version of the library.  All features are now supported by greater than 90% of browsers, so I feel it is no longer necessary.  This allows me to drop the babel dependency, as well as decrease the distribution size.  However, I have backed-up version 1.6.2 to an alternate branch in the unlikely event anyone still needs it.
 
 
 ## Requirements
@@ -44,14 +46,14 @@ The modbox library can be added to your project in several ways:
 	<script src="https://unpkg.com/bootstrap-modbox"></script>
 
 	<!-- specific version -->
-	<script src="https://unpkg.com/bootstrap-modbox@1.6.2/dist/bootstrap-modbox.min.js"></script>
+	<script src="https://unpkg.com/bootstrap-modbox@1.7.0/dist/bootstrap-modbox.min.js"></script>
 	```
 	```javascript
 	// latest version
 	import modbox from 'https://unpkg.com/bootstrap-modbox/dist/bootstrap-modbox.esm.min.js';
 
 	// specific version
-	import modbox from 'https://unpkg.com/bootstrap-modbox@1.6.2/dist/bootstrap-modbox.esm.min.js';
+	import modbox from 'https://unpkg.com/bootstrap-modbox@1.7.0/dist/bootstrap-modbox.esm.min.js';
 	```
 
 - Download from [GitHub](https://github.com/erobertson42/bootstrap-modbox/releases):
@@ -126,4 +128,4 @@ modbox.confirm({
 
 ## Copyright and License
 
-&copy; 2021-2022 Eric Robertson and released under the [MIT License](https://github.com/erobertson42/bootstrap-modbox/blob/main/LICENSE).
+&copy; 2021-2024 Eric Robertson and released under the [MIT License](https://github.com/erobertson42/bootstrap-modbox/blob/main/LICENSE).

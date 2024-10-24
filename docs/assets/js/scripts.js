@@ -70,7 +70,7 @@ function addFooter() {
 		<footer class="bg-dark">
 			<div class="container">
 				<div class="text-center">
-					&copy; 2021-2022 Eric Robertson and released under the <a href="https://github.com/erobertson42/bootstrap-modbox/blob/main/LICENSE" target="_license">MIT License</a>
+					&copy; 2021-${new Date().getFullYear()} Eric Robertson and released under the <a href="https://github.com/erobertson42/bootstrap-modbox/blob/main/LICENSE" target="_license">MIT License</a>
 				</div>
 			</div>
 		</footer>

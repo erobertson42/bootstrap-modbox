@@ -2,25 +2,6 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		clean: ['dist/*'],
-		babel: {
-			options: {
-				presets: ['@babel/preset-env'],
-				targets: {
-					chrome: '49',
-					edge: '13',
-					firefox: '45',
-					opera: '36',
-					safari: '9',
-					android: '49',
-					ios: '9'
-				}
-			},
-			dist: {
-				files: [
-					{ src: 'dist/<%= pkg.name %>.js', dest: 'dist/<%= pkg.name %>.compat.js' }
-				]
-			}
-		},
 		uglify: {
 			options: {
 				compress: true,
@@ -31,15 +12,13 @@ module.exports = function(grunt) {
 			dist: {
 				files: [
 					{ src: 'dist/<%= pkg.name %>.js', dest: 'dist/<%= pkg.name %>.min.js' },
-					{ src: 'dist/<%= pkg.name %>.esm.js', dest: 'dist/<%= pkg.name %>.esm.min.js' },
-					{ src: 'dist/<%= pkg.name %>.compat.js', dest: 'dist/<%= pkg.name %>.compat.min.js' }
+					{ src: 'dist/<%= pkg.name %>.esm.js', dest: 'dist/<%= pkg.name %>.esm.min.js' }
 				]
 			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-babel');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 
 
@@ -64,5 +43,5 @@ module.exports = function(grunt) {
 
 
 	// default tasks
-	grunt.registerTask('default', ['clean', 'prepareDist', 'babel', 'prepareDistModule', 'uglify']);
+	grunt.registerTask('default', ['clean', 'prepareDist', 'prepareDistModule', 'uglify']);
 };

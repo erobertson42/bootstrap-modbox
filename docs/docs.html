@@ -6,7 +6,7 @@
 
 	<title>bootstrap-modbox - Documentation</title>
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 	<link rel="stylesheet" href="vendor/prism/prism.css">
 	<link rel="stylesheet" href="assets/css/styles.css">
@@ -101,7 +101,7 @@
 
 						<p>A configuration object to be passed in to any modbox modal.  If a string is passed in place of the options object when creating a modbox, it will be used as the <code>body</code>.</p>
 						<dl>
-							<dt class="anchor" id="options-backdrop">backdrop <a href="https://getbootstrap.com/docs/5.1/components/modal/#options" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dt class="anchor" id="options-backdrop">backdrop <a href="https://getbootstrap.com/docs/5.3/components/modal/#options" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
 							<dd>
 								<p>Type: <code>boolean</code> | <code>string</code></p>
 								<p>Default: <code>true</code></p>
@@ -182,7 +182,7 @@
 											<td>outline</td>
 											<td><code>boolean</code></td>
 											<td><code>false</code></td>
-											<td>Whether to use the <a href="https://getbootstrap.com/docs/5.1/components/buttons/#outline-buttons" target="_bsdocs">outline button</a> style.</td>
+											<td>Whether to use the <a href="https://getbootstrap.com/docs/5.3/components/buttons/#outline-buttons" target="_bsdocs">outline button</a> style.</td>
 										</tr>
 										<tr>
 											<td>size</td>
@@ -194,7 +194,7 @@
 											<td>style</td>
 											<td><code>string</code></td>
 											<td><code>'secondary'</code></td>
-											<td>Sets the color based on the predefined <a href="https://getbootstrap.com/docs/5.1/components/buttons/#examples" target="_bsdocs">Bootstrap utility classes</a>.  Possible values:<br><code>primary, secondary, success, danger, warning, info, light, dark, link</code></td>
+											<td>Sets the color based on the predefined <a href="https://getbootstrap.com/docs/5.3/components/buttons/#examples" target="_bsdocs">Bootstrap utility classes</a>.  Possible values:<br><code>primary, secondary, success, danger, warning, info, light, dark, link</code></td>
 										</tr>
 										<tr>
 											<td>title</td>
@@ -248,11 +248,18 @@
 								<p>Animates the modal when shown and hidden.</p>
 							</dd>
 
-							<dt class="anchor" id="options-focus">focus <a href="https://getbootstrap.com/docs/5.1/components/modal/#options" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dt class="anchor" id="options-focus">focus <a href="https://getbootstrap.com/docs/5.3/components/modal/#options" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
 							<dd>
 								<p>Type: <code>boolean</code></p>
 								<p>Default: <code>true</code></p>
 								<p>Puts the focus on the modal when initialized.</p>
+							</dd>
+
+							<dt class="anchor" id="options-headerCloseStyle">headerCloseStyle</dt>
+							<dd>
+								<p>Type: <code>string</code></p>
+								<p>Default: <code>null</code></p>
+								<p>Sets the style of the header close button ("X").  If <code>null</code>, this will be automatically set to <code>dark</code> or <code>white</code>, depending on the value of the <code>style</code> option.  Possible values: <code>dark, white</code></p>
 							</dd>
 
 							<dt class="anchor" id="options-icon">icon</dt>
@@ -393,10 +400,10 @@
 							<dd>
 								<p>Type: <code>string</code></p>
 								<p>Default: <code>null</code></p>
-								<p>Adds <a href="https://getbootstrap.com/docs/5.1/utilities/flex/#justify-content" target="_bsdocs">Bootstrap flex utility classes</a> to the modal footer to alter the alignment of the buttons.  Possible values: <code>start, end, center, between, around, evenly</code></p>
+								<p>Adds <a href="https://getbootstrap.com/docs/5.3/utilities/flex/#justify-content" target="_bsdocs">Bootstrap flex utility classes</a> to the modal footer to alter the alignment of the buttons.  Possible values: <code>start, end, center, between, around, evenly</code></p>
 							</dd>
 
-							<dt class="anchor" id="options-keyboard">keyboard <a href="https://getbootstrap.com/docs/5.1/components/modal/#options" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dt class="anchor" id="options-keyboard">keyboard <a href="https://getbootstrap.com/docs/5.3/components/modal/#options" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
 							<dd>
 								<p>Type: <code>boolean</code></p>
 								<p>Default: <code>true</code></p>
@@ -476,7 +483,7 @@
 							<dd>
 								<p>Type: <code>string</code></p>
 								<p>Default: <code>'white'</code></p>
-								<p>Sets the header background color based on the predefined <a href="https://getbootstrap.com/docs/5.1/utilities/background/#background-color" target="_bsdocs">Bootstrap utility classes</a>.  Possible values:<br><code>primary, secondary, success, danger, warning, info, light, dark, body, white</code></p>
+								<p>Sets the header background color based on the predefined <a href="https://getbootstrap.com/docs/5.3/utilities/background/#background-color" target="_bsdocs">Bootstrap utility classes</a>.  Possible values:<br><code>primary, secondary, success, danger, warning, info, light, dark, body, white</code></p>
 							</dd>
 
 							<dt class="anchor" id="options-swapButtonOrder">swapButtonOrder</dt>
@@ -497,7 +504,7 @@
 							<dd>
 								<p>Type: <code>string</code></p>
 								<p>Default: <code>null</code></p>
-								<p>Sets the title text color based on the predefined <a href="https://getbootstrap.com/docs/5.1/utilities/colors/#colors" target="_bsdocs">Bootstrap utility classes</a>.  If <code>null</code>, this will be automatically set to <code>dark</code> or <code>white</code>, depending on the value of the <code>style</code> option.  Possible values:<br><code>primary, secondary, success, danger, warning, info, light, dark, body, white, muted</code></p>
+								<p>Sets the title text color based on the predefined <a href="https://getbootstrap.com/docs/5.3/utilities/colors/#colors" target="_bsdocs">Bootstrap utility classes</a>.  If <code>null</code>, this will be automatically set to <code>dark</code> or <code>white</code>, depending on the value of the <code>style</code> option.  Possible values:<br><code>primary, secondary, success, danger, warning, info, light, dark, body, white, muted</code></p>
 							</dd>
 						</dl>
 					</section>
@@ -635,27 +642,27 @@
 								<p>Completely deletes the modal.  Calls <code>.dispose()</code> to clean up the stored data, and removes applicable elements from the DOM.</p>
 							</dd>
 
-							<dt class="anchor" id="methods-dispose">dispose() <a href="https://getbootstrap.com/docs/5.1/components/modal/#dispose" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dt class="anchor" id="methods-dispose">dispose() <a href="https://getbootstrap.com/docs/5.3/components/modal/#dispose" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
 							<dd>
 								<p>Destroys an element's modal. (Removes stored data on the DOM element)</p>
 							</dd>
 
-							<dt class="anchor" id="methods-handleUpdate">handleUpdate() <a href="https://getbootstrap.com/docs/5.1/components/modal/#handleupdate" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dt class="anchor" id="methods-handleUpdate">handleUpdate() <a href="https://getbootstrap.com/docs/5.3/components/modal/#handleupdate" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
 							<dd>
 								<p>Manually readjust the modal's position if the height of a modal changes while it is open (i.e. in case a scrollbar appears).</p>
 							</dd>
 
-							<dt class="anchor" id="methods-hide">hide() <a href="https://getbootstrap.com/docs/5.1/components/modal/#hide" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dt class="anchor" id="methods-hide">hide() <a href="https://getbootstrap.com/docs/5.3/components/modal/#hide" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
 							<dd>
 								<p>Manually hides a modal. <b>Returns to the caller before the modal has actually been hidden</b> (i.e. before the <code>hidden.bs.modal</code> event occurs).</p>
 							</dd>
 
-							<dt class="anchor" id="methods-show">show(<code>element relatedTarget</code>) <a href="https://getbootstrap.com/docs/5.1/components/modal/#show" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dt class="anchor" id="methods-show">show(<code>element relatedTarget</code>) <a href="https://getbootstrap.com/docs/5.3/components/modal/#show" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
 							<dd>
 								<p>Manually opens a modal. <b>Returns to the caller before the modal has actually been shown</b> (i.e. before the <code>shown.bs.modal</code> event occurs).  Also, you can pass a DOM element as an argument that can be received in the modal events (as the <code>relatedTarget</code> property).  If no element is passed, the <code>relatedTarget</code> modal configuration option will be used instead (if set).</p>
 							</dd>
 
-							<dt class="anchor" id="methods-toggle">toggle() <a href="https://getbootstrap.com/docs/5.1/components/modal/#toggle-1" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dt class="anchor" id="methods-toggle">toggle() <a href="https://getbootstrap.com/docs/5.3/components/modal/#toggle-1" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
 							<dd>
 								<p>Manually toggles a modal. <b>Returns to the caller before the modal has actually been shown or hidden</b> (i.e. before the <code>shown.bs.modal</code> or <code>hidden.bs.modal</code> event occurs).</p>
 							</dd>
@@ -688,13 +695,13 @@
 								<p>Alternate method name for the <code>.danger()</code> modal.</p>
 							</dd>
 
-							<dt class="anchor" id="methods-getInstance">getInstance(<code>element modal</code>) <a href="https://getbootstrap.com/docs/5.1/components/modal/#getinstance" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dt class="anchor" id="methods-getInstance">getInstance(<code>element modal</code>) <a href="https://getbootstrap.com/docs/5.3/components/modal/#getinstance" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
 							<dd>
 								<p>Returns: <code>object modal</code></p>
 								<p>Get the modal instance associated with a DOM element.</p>
 							</dd>
 
-							<dt class="anchor" id="methods-getOrCreateInstance">getOrCreateInstance(<code>element modal</code>) <a href="https://getbootstrap.com/docs/5.1/components/modal/#getorcreateinstance" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
+							<dt class="anchor" id="methods-getOrCreateInstance">getOrCreateInstance(<code>element modal</code>) <a href="https://getbootstrap.com/docs/5.3/components/modal/#getorcreateinstance" target="_bsdocs"><span class="badge bg-info float-end">Bootstrap native</span></a></dt>
 							<dd>
 								<p>Returns: <code>object modal</code></p>
 								<p>Get the modal instance associated with a DOM element, or create a new one in case it wasn't initialized.</p>
@@ -790,7 +797,7 @@
 	</main>
 
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js"></script>
 	<script src="vendor/prism/prism.js"></script>
 	<script src="assets/js/scripts.js"></script>
