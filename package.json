@@ -19,6 +19,7 @@
   },
   "browser": "dist/bootstrap-modbox.min.js",
   "files": [
+    "CHANGELOG.md",
     "dist/*"
   ],
   "scripts": {
